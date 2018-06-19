@@ -36,8 +36,8 @@ Epoch.Data = Average.Data;
 %     axis ij;
 % end
 
-%[Segmentation,TimeSegmentation] = AdaptiveSegmentation(Epoch.Data,NumSegmentation);
-%save('Segmentation.mat','Segmentation','TimeSegmentation');
+[Segmentation,TimeSegmentation] = AdaptiveSegmentation(Epoch.Data,NumSegmentation);
+save('Segmentation.mat','Segmentation','TimeSegmentation');
 load ./Segmentation.mat
 %Segmentation = Epoch.Data;
 

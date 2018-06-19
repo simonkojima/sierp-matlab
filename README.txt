@@ -1,6 +1,5 @@
 # BCIToolBox
-ToolBox BCI
-
+BCI ToolBox for Analysis
 
 Author : Simon Kojima
 
