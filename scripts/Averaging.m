@@ -1,5 +1,5 @@
-clear all;
-
+close all;
+clearvars
 %% ------------------------------------------------------------------------
 %Averaging
 %Author : Simon Kojima

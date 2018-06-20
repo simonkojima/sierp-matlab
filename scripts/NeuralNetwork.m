@@ -1,8 +1,41 @@
-clear all;
+close all;
+clearvars
 
 % Linear Discriminant Analysis Classifier
 % Version : alpha 2
 % Author : Simon Kojima
+
+%% Preferences
+
+cd /home/simon/Documents/MATLAB/Classifier
+run MakeDatasets.m
+load ./Datasets.mat
+
+%%
+
+layers = [sequenceInputLayer(29)
+          lstmLayer(200)
+          fullyConnectedLayer(2)
+          softmaxLayer()
+          classificationLayer()];
+
+%X = categorical(X);
+Y = categorical(Y);
+%TestData = categorical(TestData);
+      
+options = trainingOptions('sgdm','MaxEpochs',1000,'InitialLearnRate',0.0001,'Plots','training-progress');
+convnet = trainNetwork(X,Y,layers,options);
+
+Result = classify(convnet,TestData);
+
+%% Evaluation
+
+ClassifierEvaluation(Result,ActualLabel);
+
+
+%%
+
+return
 
 load ./EpochData.mat
 

@@ -1,4 +1,4 @@
-function k = DetDimension(U,S,RetainingVariance)
+function k = DetDimension(S,RetainingVariance)
 %
 %   Principle Component Analysis
 %   Version : 2

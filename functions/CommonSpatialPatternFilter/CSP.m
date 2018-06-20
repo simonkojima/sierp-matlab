@@ -1,4 +1,4 @@
-function [Ht,Hnt] = CSP(Vt,Vnt)
+function [Ht,Hnt,H] = CSP(Vt,Vnt)
 
 %
 % Common Spatial Pattern Filter
@@ -14,18 +14,6 @@ function [Ht,Hnt] = CSP(Vt,Vnt)
 % classification in a movement task (Johannes Mueller-Gerking)
 % 
 
-%% Data Making
-% 
-% clear all
-% load ./EpochData.mat
-%     
-% for i=1:size(Average.Data{1},3)
-%     Vt(:,:,i) = Average.Data{1}(:,:,i);
-% end
-% 
-% for i=1:size(Average.Data{2},3)
-%     Vnt(:,:,i) = Average.Data{2}(:,:,i);
-% end
 %% Making Normalized Covariance Matrices
 
 for i=1:size(Vt,3)
@@ -44,50 +32,15 @@ Rb = mean(Rb,3);
 Rc = Ra + Rb;
 
 [Bc,lambda] = eig(Rc);
-% [lambda,index] = sort(diag(lambda),'descend');
-% lambda = diag(lambda);
-% Bc = Bc(:,index);
 
 W = sqrt(inv(lambda))*Bc';
 
 Sa = W*Ra*W';
 Sb = W*Rb*W';
 
-[U,S] = svd(Sa)
-
-% [U,Pa] = eig(Sa);
-% [Pa,index] = sort(diag(Pa),'descend');
-% Pa = diag(Pa);
-% U = U(:,index);
-% 
+[U,S] = svd(Sa);
 Ht = (U(:,1)'*W)';
 Hnt = (U(:,end)'*W)';
 
-H = (U'*W)'
+H = (U'*W)';
 
-%Ha = P(1,:)';
-%Hb = P(end,:)';
-
-return
-X{1} = [];
-for i=1:size(Va,3)
-    Z{1}(:,:,i) = Ha'*Va(:,:,i);
-    temp = var(Z{1}(:,:,i),0,2)';
-    X{1} = [X{1}; temp];
-end
-
-X{2} = [];
-for i=1:size(Vb,3)
-    Z{2}(:,:,i) = Hb'*Vb(:,:,i);
-    temp = var(Z{2}(:,:,i),0,2)';
-    X{2} = [X{2}; temp];
-end
-
-for i=1:2
-   X{i} = X{i}./sum(X{i}); 
-end
-
-plot((1:length(X{1}))/length(X{1}),X{1},'bo');
-hold on
-plot((1:length(X{2}))/length(X{2}),X{2},'ro');
-hold off

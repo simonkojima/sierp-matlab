@@ -1,5 +1,5 @@
-clear all;
-
+close all;
+clearvars
 %--------------------------------------------------------------------------
 %   EEG to MAT File Converter
 %   Author : Simon Kojima

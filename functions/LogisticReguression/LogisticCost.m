@@ -1,4 +1,4 @@
-function [J Grad] = ComputeCost(X,Y,Theta,Lambda)
+function [J Grad] = LogisticCost(X,Y,Theta,Lambda)
 %
 %   Compute Cost Function of Logistic Reguression
 %   Version : alpha 5

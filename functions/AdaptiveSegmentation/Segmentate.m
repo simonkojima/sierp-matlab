@@ -1,4 +1,4 @@
-function x = MakeVector(S,T)
+function x = Segmentate(S,T)
 %
 % Make Vector
 % Version : alpha 5
