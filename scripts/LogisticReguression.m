@@ -1,3 +1,4 @@
+close all;
 clear all;
 %
 %   Logistic Reguression Classifier
@@ -10,14 +11,14 @@ load ./EpochData.mat;
 
 PlotOn = 0;
 
-NumTrainingData = [100 100];
-NumTestData = [36 36];
+NumTrainingData = [20 20];
+NumTestData = [7 7];
 
 Threshold = 0.5;
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-Epoch.Data = Average.Data;
+Epoch.Data = Average.AveragedEpoch;
 
 %% Making Data
 
@@ -36,8 +37,8 @@ Epoch.Data = Average.Data;
 %     axis ij;
 % end
 
-[Segmentation,TimeSegmentation] = AdaptiveSegmentation(Epoch.Data,NumSegmentation);
-save('Segmentation.mat','Segmentation','TimeSegmentation');
+%[Segmentation,TimeSegmentation] = AdaptiveSegmentation(Epoch.Data,NumSegmentation);
+%save('Segmentation.mat','Segmentation','TimeSegmentation');
 load ./Segmentation.mat
 %Segmentation = Epoch.Data;
 
@@ -73,6 +74,8 @@ end
 
 Y = [zeros(NumTrainingData(1),1);ones(NumTrainingData(2),1)];
 TestRes = [zeros(NumTestData(1),1);ones(NumTestData(2),1)];
+
+X = Standardization(X);
 
 %% Applying PCA
 

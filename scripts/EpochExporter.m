@@ -24,7 +24,7 @@ FilterRange = [1 40];
 AlphaThreshold = 100;        %(%)
 
 DownSamplingRate = 1;
-AveragingNum = 1;
+AveragingNum = 5;
 
 PlotYRange = [-6 12];         %ylabel Range (uV uV)
 PlotDivision = [3 3];
