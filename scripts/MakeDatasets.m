@@ -15,8 +15,8 @@ NumTestData = [7 7];
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-PlotEnable = 0;
-SegmentateEnable = 0;
+PlotEnable = 1;
+SegmentateEnable = 1;
 
 Epoch.Data = Average.AveragedEpoch;
 
@@ -35,11 +35,11 @@ Segmentation = Segmentate(Epoch.Data,TimeSegmentation);
 H = [Ht Hnt];
 
 if PlotEnable == 1
-    subplot(2,1,1)
+    subplot(1,2,1)
     topoplot(Ht,'P300_7ch.ced','electrodes','labelpoint');
     hold on
     title('CSP Filter for Target');
-    subplot(2,1,2)
+    subplot(1,2,2)
     topoplot(Hnt,'P300_7ch.ced','electrodes','labelpoint');
     title('CSP Filter for Non-Target');
     hold off

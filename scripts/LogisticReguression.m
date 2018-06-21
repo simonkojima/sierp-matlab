@@ -8,10 +8,11 @@ clearvars
 %% Preferences
 
 cd /home/simon/Documents/MATLAB/Classifier
+run EpochExporter.m
 run MakeDatasets.m
 load ./Datasets.mat
 
-Threshold = 0.5;
+Threshold = 0.9;
 InitialTheta = zeros(size(X,2),1);
 
 %%

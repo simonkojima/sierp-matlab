@@ -18,10 +18,10 @@ PlotColor = {'b','r'};
 
 Files = [1 4];              %Suffix of Files
 PreFileName = '20180514_P300000';
-Range = [-0.1 0.5];         %(s s)
+Range = [0.2 0.4];         %(s s)
 Threshold = [-100 100];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [1 40];
+FilterRange = [0.5 30];
 AlphaThreshold = 100;        %(%)
 
 DownSamplingRate = 1;
