@@ -1,4 +1,4 @@
-function [U,S,V] = PCA(X);
+function [U,S,V] = PCA(X)
 %
 %   Principle Component Analysis
 %   Version : 3
