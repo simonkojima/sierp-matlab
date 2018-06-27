@@ -7,17 +7,18 @@ clearvars
 %
 %% Preferences
 
-cd /home/simon/Documents/MATLAB/Classifier
-run EpochExporter.m
+%cd /home/simon/Documents/MATLAB/Classifier
+cd C:\Users\Simon\Documents\MATLAB\Classifier
+%run EpochExporter.m
 run MakeDatasets.m
 load ./Datasets.mat
 
-Threshold = 0.9;
+Threshold = 0.5;
 InitialTheta = zeros(size(X,2),1);
 
 %%
 
-[MinTheta,MinCost] = fminunc(@(t)LogisticCost(X,Y,t,100),InitialTheta,optimset('GradObj', 'on', 'MaxIter', 50000));
+[MinTheta,MinCost] = fminunc(@(t)LogisticCost(X,Y,t,100),InitialTheta,optimset('GradObj', 'on', 'MaxIter', 50000,'Display','notify'));
 Result = logsig(TestData*MinTheta);
 
 for i=1:size(TestData,1)

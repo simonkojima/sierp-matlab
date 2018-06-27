@@ -1,4 +1,4 @@
-function normalize = Normalization(x)
+function [normalize,minvec,maxvec] = Normalization(x)
 %
 % Normalize Feature Vector (Matrix)
 % Version : 1
@@ -8,5 +8,8 @@ function normalize = Normalization(x)
 %
 
 for i=1:size(x,2)
-    normalize(:,i) = (x(:,i) - min(x(:,i)))./(max(x(:,i))-min(x(:,i)));
+    normalize = (x - min(x))./(max(x)-min(x));
 end
+
+minvec = min(x);
+maxvec = max(x);

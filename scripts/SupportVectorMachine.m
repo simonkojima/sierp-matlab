@@ -7,7 +7,9 @@ clearvars
 %
 %% Preferences
 
-cd /home/simon/Documents/MATLAB/Classifier
+%cd /home/simon/Documents/MATLAB/Classifier
+cd C:\Users\Simon\Documents\MATLAB\Classifier
+%run EpochExporter.m
 run MakeDatasets.m
 load ./Datasets.mat
 

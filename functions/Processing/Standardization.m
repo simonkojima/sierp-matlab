@@ -1,4 +1,4 @@
-function zscore = Standardization(x);
+function [zscore,meanvec,stdvec] = Standardization(x)
 %
 % Standardize Feature Vector (Matrix)
 % Version : 1
@@ -7,6 +7,6 @@ function zscore = Standardization(x);
 % x : DataNum x FeatureNum
 %
 
-for i=1:size(x,2)
-    zscore(:,i) = (x(:,i) - mean(x(:,i)))./std(x(:,i));
-end
+zscore = (x - mean(x))./std(x);
+meanvec = mean(x);
+stdvec = std(x);

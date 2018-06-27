@@ -1,7 +1,7 @@
 function [U,S,V] = PCA(X)
 %
 %   Principle Component Analysis
-%   Version : 3
+%   Version : 4
 %   Author : Simon Kojima
 %
 %   Example...
@@ -13,7 +13,7 @@ function [U,S,V] = PCA(X)
 %
 %   See also RetainedVariance
 
-[m,n] = size(X);
-[U,S,V] = svd((X'*X)./m);
+X = (X - mean(X))./var(X);
+[U,S,V] = svd((X'*X)./size(X,1));
 
 end

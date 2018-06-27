@@ -15,8 +15,9 @@ NumTestData = [7 7];
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-PlotEnable = 1;
-SegmentateEnable = 1;
+PlotEnable = 0;
+SegmentateEnable = 0;
+ShuffleEnable = 0;
 
 Epoch.Data = Average.AveragedEpoch;
 
@@ -45,14 +46,16 @@ if PlotEnable == 1
     hold off
 end
 
-for i=1:size(Segmentation,2)
-    RandomIndex{i} = randperm(size(Segmentation{i},3));
-    for j=1:size(Segmentation{i},3)
-        Temp{i}(:,:,j) = Segmentation{i}(:,:,RandomIndex{i}(j));
+if ShuffleEnable == 1
+    for i=1:size(Segmentation,2)
+        RandomIndex{i} = randperm(size(Segmentation{i},3));
+        for j=1:size(Segmentation{i},3)
+            Temp{i}(:,:,j) = Segmentation{i}(:,:,RandomIndex{i}(j));
+        end
     end
+    Segmentation = Temp;
+    clear Temp;
 end
-Segmentation = Temp;
-clear Temp;
 
 X = [];
 for i=1:NumTrainingData(1)
@@ -75,11 +78,13 @@ end
 Y = [zeros(NumTrainingData(1),1);ones(NumTrainingData(2),1)];
 ActualLabel = [zeros(NumTestData(1),1);ones(NumTestData(2),1)];
 
-X = Standardization(X);
+[X,meanvec,stdvec] = Standardization(X);
+%[X,min,max] = Normalization(X);
 
+% TestData = (TestData - meanvec)./stdvec;
 %% Applying PCA
 
-[U,S] = PCA(X);
+[U,S,V] = PCA(X);
 
 k = DetDimension(S,RetainingVariance);
 
@@ -90,7 +95,7 @@ RetainedVariance(S,k);
 
 %% Initialize
 
-X = [ones(size(X,1),1) X];
-TestData = [ones(size(TestData,1),1) TestData];
+% X = [ones(size(X,1),1) X];
+% TestData = [ones(size(TestData,1),1) TestData];
 
 save('Datasets.mat','X','Y','TestData','ActualLabel');

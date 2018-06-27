@@ -21,10 +21,14 @@ for i=1:size(PredictedLabel)
     end
 end
 
+Precision = TruePos/(TruePos+FalsePos);
+Recall = TruePos/(TruePos+FalseNeg);
+
 fprintf('True Positive : %.0f\n',TruePos);
 fprintf('True Negative : %.0f\n',TrueNeg);
 fprintf('False Positive : %.0f\n',FalsePos);
 fprintf('False Negative : %.0f\n',FalseNeg);
-fprintf('Precision : %.2f%%\n',TruePos/(TruePos+FalsePos)*100);
-fprintf('Recall : %.2f%%\n',TruePos/(TruePos+FalseNeg)*100);
-fprintf('\nAccurecy : %.2f%%\n',(TruePos+TrueNeg)/(TruePos+TrueNeg+FalsePos+FalseNeg)*100);
+fprintf('Precision : %.2f%%\n',Precision*100);
+fprintf('Recall : %.2f%%\n',Recall*100);
+fprintf('\nF Score : %.2f%%\n',2*(Precision*Recall)./(Precision+Recall)*100);
+%fprintf('\nAccurecy : %.2f%%\n',(TruePos+TrueNeg)/(TruePos+TrueNeg+FalsePos+FalseNeg)*100);
