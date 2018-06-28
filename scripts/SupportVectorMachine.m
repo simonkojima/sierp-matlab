@@ -9,19 +9,21 @@ clearvars
 
 %cd /home/simon/Documents/MATLAB/Classifier
 cd C:\Users\Simon\Documents\MATLAB\Classifier
-%run EpochExporter.m
-run MakeDatasets.m
-load ./Datasets.mat
 
+load ./TrainingDatasets.mat
+load ./TestDataSets.mat
 
-%%
+%% Training
 
-%Model = fitcsvm(X,Y,'Standardize',true,'KernelFunction','gaussian'); 
-Model = fitcsvm(X,Y,'Standardize',true,'KernelFunction','linear');
-%Model = fitcsvm(X,Y,'KernelFunction','kernel'); 
-
-[Result,Score] = predict(Model,TestData);
+for i=1:size(TrainingData.X,2)
+    %Model = fitcsvm(X,Y,'Standardize',true,'KernelFunction','gaussian'); 
+    Model{i} = fitcsvm(TrainingData.X{i},TrainingData.Y{i},'Standardize',true,'KernelFunction','linear');
+    %Model{i} = fitcsvm(TrainingData.X{i},TrainingData.Y{i},'Standardize',true,'KernelFunction','gaussian');
+    %Model = fitcsvm(X,Y,'KernelFunction','kernel'); 
+    [Result{i},Score{i}] = predict(Model{i},TestData.X{i});
+end
 
 %% Evaluation
-
-ClassifierEvaluation(Result,ActualLabel);
+for i=1:size(TrainingData.X,2)
+    FMScore{i} = ClassifierEvaluation(Result{i},TestData.Y{i},0);
+end

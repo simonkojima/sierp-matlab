@@ -15,9 +15,9 @@ NumTestData = [7 7];
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-PlotEnable = 0;
-SegmentateEnable = 0;
-ShuffleEnable = 0;
+PlotEnable = 1;
+SegmentateEnable = 1;
+ShuffleEnable = 1;
 
 Epoch.Data = Average.AveragedEpoch;
 

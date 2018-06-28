@@ -1,34 +1,39 @@
-function ClassifierEvaluation(PredictedLabel,ActualLabel)
+function [FMScore,F1Score,TP,TN,FP,FN] = ClassifierEvaluation(PredictedLabel,ActualLabel,PrintEnable)
 
-FalsePos = 0;
-FalseNeg = 0;
-TruePos = 0;
-TrueNeg = 0;
+TP = 0;
+TN = 0;
+FP = 0;
+FN = 0;
 
 for i=1:size(PredictedLabel)
     if PredictedLabel(i) == ActualLabel(i)
         if PredictedLabel(i) == 1
-            TruePos = TruePos+1;
+            TP = TP+1;
         elseif PredictedLabel(i) == 0
-            TrueNeg = TrueNeg+1;
+            TN = TN+1;
         end
     else
        if PredictedLabel(i) == 1
-            FalsePos = FalsePos+1;
+            FP = FP+1;
        elseif PredictedLabel(i) == 0
-            FalseNeg = FalseNeg +1;
+            FN = FN +1;
        end
     end
 end
 
-Precision = TruePos/(TruePos+FalsePos);
-Recall = TruePos/(TruePos+FalseNeg);
+Precision = TP/(TP+FP);
+Recall = TP/(TP+FN);
 
-fprintf('True Positive : %.0f\n',TruePos);
-fprintf('True Negative : %.0f\n',TrueNeg);
-fprintf('False Positive : %.0f\n',FalsePos);
-fprintf('False Negative : %.0f\n',FalseNeg);
-fprintf('Precision : %.2f%%\n',Precision*100);
-fprintf('Recall : %.2f%%\n',Recall*100);
-fprintf('\nF Score : %.2f%%\n',2*(Precision*Recall)./(Precision+Recall)*100);
-%fprintf('\nAccurecy : %.2f%%\n',(TruePos+TrueNeg)/(TruePos+TrueNeg+FalsePos+FalseNeg)*100);
+FMScore = sqrt((TP./(TP+FP)).*(TP./(TP+FN)));
+F1Score = 2*(Precision*Recall)./(Precision+Recall);
+
+if PrintEnable == 1
+    fprintf('\nTrue Positive : %.0f\n',TP);
+    fprintf('True Negative : %.0f\n',TN);
+    fprintf('False Positive : %.0f\n',FP);
+    fprintf('False Negative : %.0f\n',FN);
+    fprintf('FM Score : %.2f\n',FMScore);
+    %fprintf('Precision : %.2f%%\n',Precision*100);
+    %fprintf('Recall : %.2f%%\n',Recall*100);
+    %fprintf('F Score : %.2f%%\n',2*(Precision*Recall)./(Precision+Recall));
+end
