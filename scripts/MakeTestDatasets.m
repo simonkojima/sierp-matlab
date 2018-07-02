@@ -7,8 +7,8 @@ clearvars
 %
 %% Preferences
 
-%cd /home/simon/Documents/MATLAB/Classifier
-cd C:\Users\Simon\Documents\MATLAB\Classifier
+cd /home/simon/Documents/MATLAB/Classifier
+%cd C:\Users\Simon\Documents\MATLAB\Classifier
 load ./KFoldEpochData.mat
 load ./TrainedParams.mat
 
@@ -47,6 +47,12 @@ end
 
 for i=1:k
     X{i} = X{i}*TrainedParams.PCA{i}.U(:,1:TrainedParams.PCA{i}.k);
+end
+
+%% Add an intercept term
+
+for i=1:k
+    X{i} = [ones(size(X{i},1),1) X{i}];
 end
 
 %% Save Data

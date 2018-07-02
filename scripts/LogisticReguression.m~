@@ -13,7 +13,8 @@ cd /home/simon/Documents/MATLAB/Classifier
 load ./TrainingDatasets.mat
 load ./TestDatasets.mat
 
-Threshold = 0.6;
+Threshold = 0.5;
+
 
 %%
 k = size(TrainingData.X,2);
@@ -38,3 +39,8 @@ end
 fprintf('\n');
 fprintf('Mean F1 Score : %.2f\n',mean(F1));
 fprintf('Mean MCC Score : %.2f\n',mean(MCC));
+
+return
+%% Evaluation
+
+ClassifierEvaluation(Result,ActualLabel);

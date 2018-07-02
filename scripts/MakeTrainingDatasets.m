@@ -7,14 +7,16 @@ clearvars
 %
 %% Preferences
 
-%cd /home/simon/Documents/MATLAB/Classifier
-cd C:\Users\Simon\Documents\MATLAB\Classifier
+cd /home/simon/Documents/MATLAB/Classifier
+%cd C:\Users\Simon\Documents\MATLAB\Classifier
 load ./KFoldEpochData.mat
+
+ChannnelLocationFile = 'P300_7ch.ced';
 
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-PlotEnable = 1;
+PlotEnable = 0;
 SegmentateEnable = 1;
 
 %% Making Data
@@ -48,6 +50,17 @@ for i=1:k
     Segmentation{i} = Segmentate(Merged{i},TimeSegmentation{i});
     [Ht,Hnt] = CSP(Segmentation{i}{2},Segmentation{i}{1});
     H{i} = [Ht Hnt];
+
+end
+
+if PlotEnable == 1
+   for i=1:k
+       figure('Name',['CSP Filter No.' num2str(i)]);
+       subplot(1,2,1);
+       topoplot(H{i}(:,1),ChannnelLocationFile,'electrodes','labelpoint');
+       subplot(1,2,2);
+       topoplot(H{i}(:,2),ChannnelLocationFile,'electrodes','labelpoint');
+   end
 end
 
 for i=1:k
@@ -81,10 +94,13 @@ for i=1:k
     X{i} = X{i}*pca{i}.U(:,1:pca{i}.k);
 end
 
-%% Save Data
+%% Add an intercept term
 
-% X = [ones(size(X,1),1) X];
-% TestData = [ones(size(TestData,1),1) TestData];
+for i=1:k
+    X{i} = [ones(size(X{i},1),1) X{i}];
+end
+
+%% Save Data
 
 TrainingData.X = X;
 TrainingData.Y = Y;

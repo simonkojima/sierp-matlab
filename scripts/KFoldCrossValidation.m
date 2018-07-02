@@ -1,8 +1,8 @@
 close all;
 clearvars;
 
-%cd /home/simon/Documents/MATLAB/Classifier
-cd C:\Users\Simon\Documents\MATLAB\Classifier
+cd /home/simon/Documents/MATLAB/Classifier
+%cd C:\Users\Simon\Documents\MATLAB\Classifier
 
 load ./EpochData.mat
 Epoch.Data = Average.AveragedEpoch;
