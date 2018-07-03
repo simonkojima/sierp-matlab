@@ -7,7 +7,7 @@ cd /home/simon/Documents/MATLAB/Classifier
 load ./EpochData.mat
 Epoch.Data = Average.AveragedEpoch;
 
-k = 10;
+k = 5;
 
 %% Shuffle
 for i=1:size(Epoch.Data,2)
