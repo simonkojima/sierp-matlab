@@ -39,6 +39,7 @@ clear temp;
 
 if SegmentateEnable == 1
     for i=1:k
+        fprintf('< %02.0f of %02.0f > ',i,k);
         TimeSegmentation{i} = AdaptiveSegmentation(Merged{i},NumSegmentation);
         save('Segmentation.mat','TimeSegmentation');
     end
