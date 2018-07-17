@@ -7,14 +7,16 @@ clearvars
 %
 %% Preferences
 
-% edit EpochExporter.m
-% edit KFoldCrossValidation.m
-% edit MakeTrainingDatasets.m
-% edit MakeTestDatasets.m
+EditEnable = 0;
+
+if EditEnable == 1
+    edit EpochExporter.m
+    edit KFold.m
+    edit MakeTrainingDatasets.m
+    edit MakeTestDatasets.m
+end
 
 run EpochExporter.m
-run KFoldCrossValidation.m
+run KFold.m
 run MakeTrainingDatasets.m
 run MakeTestDatasets.m
-
-return

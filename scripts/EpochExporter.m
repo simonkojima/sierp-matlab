@@ -1,14 +1,13 @@
 close all;
 clearvars
-
 %% ------------------------------------------------------------------------
 %Epoch Exporter
 %Author : Simon Kojima
 %Version : 12
 
 %All data must have the following format!!
-%Data : Number of Sample x Number of Channel
-%Time : Number of Sample x 1
+%Data : Number of Channel x Number of Sample
+%Time : 1 x Number of Sample
 %Trigger : Number of Sample x1
 
 %% ------------------------------------------------------------------------
@@ -21,7 +20,7 @@ PreFileName = '20180514_P300000';
 Range = [0 1];         %(s s)
 Threshold = [-100 100];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [0.5 35];
+FilterRange = [0.1 15];
 AlphaThreshold = 100;        %(%)
 
 DownSamplingRate = 1;
@@ -72,7 +71,7 @@ clear count;
 for i=1:length(TriggerSelect)
     count{i} = 0;
    for j=1:length(Trigger)
-      if Trigger(j) == TriggerSelect(i)    
+      if Trigger(j) == TriggerSelect(i)
           count{i} = count{i}+1;
           BaseLineEpoch{i}(:,:,count{i}) = Data(:,j+BaseLineRange(1)*Fs:j+BaseLineRange(2)*Fs);
           fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{i},TriggerSelect(i));
