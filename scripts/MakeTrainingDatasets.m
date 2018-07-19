@@ -7,7 +7,7 @@ clearvars
 %
 %% Preferences
 
-cd /home/simon/Documents/MATLAB/Classifier
+%cd /home/simon/Documents/MATLAB/Classifier
 %cd C:\Users\Simon\Documents\MATLAB\Classifier
 load ./KFoldEpochData.mat
 
@@ -16,7 +16,7 @@ ChannnelLocationFile = 'P300_7ch.ced';
 RetainingVariance = 99;
 NumSegmentation = 10;
 
-PlotEnable = 0;
+PlotEnable = 1;
 SegmentateEnable = 1;
 
 %% Making Data
