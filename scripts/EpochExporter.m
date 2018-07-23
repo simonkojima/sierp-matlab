@@ -1,4 +1,3 @@
-close all;
 clearvars
 %% ------------------------------------------------------------------------
 %Epoch Exporter
@@ -16,7 +15,7 @@ TriggerSelect = [1 5];
 PlotColor = {'b','r'};
 
 Files = [1 4];              %Suffix of Files
-PreFileName = '20180611_P300_B36_000';
+PreFileName = '20180514_P300000';
 Range = [0 1];         %(s s)
 Threshold = [-100 100];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)

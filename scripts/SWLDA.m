@@ -1,4 +1,3 @@
-close all;
 clearvars
 % Step Wise Linear Discriminant Analysis Classifier
 % Version : alpha 1

@@ -1,4 +1,3 @@
-close all;
 clearvars
 %
 %   Make Datasets for Classifier

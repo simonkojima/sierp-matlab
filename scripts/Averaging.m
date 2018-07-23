@@ -16,14 +16,14 @@ TriggerSelect = [1 5];
 PlotColor = {'b','r'};
 
 Files = [1 4];              %Suffix of Files
-PreFileName = '20180611_P300_B36_000';
+PreFileName = '20180514_P300000';
 Range = [-0.1 0.5];         %(s s)
 Threshold = [-100 100];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40];
 AlphaThreshold = 100;        %(%)
 
-PlotYRange = [-10 5];         %ylabel Range (uV uV)
+PlotYRange = [-6 11];         %ylabel Range (uV uV)
 PlotDivision = [3 3];
 PlotPosition = [1 2 3 5 7 8 9];
 PlotYLabel = 'Potential (\muV)';

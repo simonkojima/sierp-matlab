@@ -1,4 +1,3 @@
-close all;
 clearvars
 % Linear Discriminant Analysis Classifier
 % Version : alpha 1

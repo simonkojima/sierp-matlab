@@ -1,4 +1,3 @@
-close all;
 clearvars
 %
 %   Logistic Reguression Classifier
@@ -7,7 +6,7 @@ clearvars
 %
 %% Preferences
 
-cd /home/simon/Documents/MATLAB/Classifier
+%cd /home/simon/Documents/MATLAB/Classifier
 %cd C:\Users\Simon\Documents\MATLAB\Classifier
 
 load ./TrainingDatasets.mat

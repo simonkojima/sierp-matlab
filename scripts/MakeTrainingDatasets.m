@@ -1,4 +1,3 @@
-close all;
 clearvars
 %
 %   Make Datasets for Classifier
@@ -17,7 +16,9 @@ RetainingVariance = 99;
 NumSegmentation = 10;
 
 PlotEnable = 1;
-SegmentateEnable = 1;
+SegmentateEnable = 0;
+
+TopoPlotRange = [-5 5];
 
 %% Making Data
 
@@ -59,10 +60,11 @@ if PlotEnable == 1
        figure('Name',['CSP Filter No.' num2str(i)]);
        subplot(1,2,1);
        title('CSP Filter for Target');
-       topoplot(H{i}(:,1),ChannnelLocationFile);
+       topoplot(H{i}(:,1),ChannnelLocationFile,'maplimits',TopoPlotRange,'whitebk','on');
        subplot(1,2,2);
        title('CSP Filter for Non-Target');
-       topoplot(H{i}(:,2),ChannnelLocationFile);
+       topoplot(H{i}(:,2),ChannnelLocationFile,'maplimits',TopoPlotRange,'whitebk','on');
+       colorbar;
    end
 end
 

@@ -1,4 +1,3 @@
-close all;
 clearvars;
 
 %cd /home/simon/Documents/MATLAB/Classifier
