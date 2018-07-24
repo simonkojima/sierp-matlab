@@ -1,4 +1,4 @@
-function [MCC,F1,TP,TN,FP,FN] = ClassifierEvaluation(PredictedLabel,ActualLabel,PrintEnable)
+function [MCC,F1,Accurecy,TP,TN,FP,FN] = ClassifierEvaluation(PredictedLabel,ActualLabel,PrintEnable)
 
 TP = 0;
 TN = 0;
@@ -24,6 +24,7 @@ end
 Precision = TP/(TP+FP);
 Recall = TP/(TP+FN);
 
+Accurecy = (TP+TN)./(TP+TN+FP+FN);
 F1 = 2*(Precision*Recall)./(Precision+Recall);
 MCC = (TP*TN-FP*FN)/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN));
 
@@ -41,6 +42,7 @@ if PrintEnable == 1
     fprintf(' True Negative : %.0f\n',TN);
     fprintf('False Positive : %.0f\n',FP);
     fprintf('False Negative : %.0f\n',FN);
+    fprintf('      Accurecy : %.0f%%\n',Accurecy*100);
     fprintf('      F1 Score : %.2f\n',F1);
     fprintf('           MCC : %.2f\n',MCC);
     %fprintf('Precision : %.2f%%\n',Precision*100);

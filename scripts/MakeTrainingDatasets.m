@@ -59,12 +59,12 @@ if PlotEnable == 1
    for i=1:k
        figure('Name',['CSP Filter No.' num2str(i)]);
        subplot(1,2,1);
-       title('CSP Filter for Target');
+       title('\fontsize{15}CSP Filter for Target');
        topoplot(H{i}(:,1),ChannnelLocationFile,'maplimits',TopoPlotRange,'whitebk','on');
        subplot(1,2,2);
-       title('CSP Filter for Non-Target');
+       title('\fontsize{15}CSP Filter for Non-Target');
        topoplot(H{i}(:,2),ChannnelLocationFile,'maplimits',TopoPlotRange,'whitebk','on');
-       colorbar;
+       colorbar('fontsize',15);
    end
 end
 
