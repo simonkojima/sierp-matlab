@@ -16,7 +16,7 @@ RetainingVariance = 99;
 NumSegmentation = 10;
 
 PlotEnable = 1;
-SegmentateEnable = 0;
+SegmentateEnable = 1;
 
 TopoPlotRange = [-5 5];
 

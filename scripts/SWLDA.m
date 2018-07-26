@@ -4,7 +4,6 @@ clearvars
 % Author : Simon Kojima
 %% Preferences
 
-
 load ./TrainingDatasets.mat
 load ./TestDatasets.mat
 
@@ -32,10 +31,10 @@ end
 
 %% Evaluation
 for i=1:size(TrainingData.X,2)
-    [MCC(i),F1(i),Accurecy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
+    [MCC(i),F1(i),Accuracy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
 end
 
 fprintf('\n');
-fprintf(' Mean Accurecy : %.0f%%\n',mean(Accurecy)*100);
+fprintf(' Mean Accuracy : %.0f%%\n',mean(Accuracy)*100);
 fprintf(' Mean F1 Score : %.2f\n',mean(F1));
 fprintf('Mean MCC Score : %.2f\n',mean(MCC));
