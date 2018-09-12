@@ -167,12 +167,14 @@ end
 
 %% Down Sampling
 
-for i=1:length(TriggerSelect)
-   for j=1:size(Average.Data{i},3)
-       for k=1:size(Average.Data{i},1)
-       Average.DownSampled{i}(k,:,j) = decimate(Average.Data{i}(k,:,j),DownSamplingRate);
-       end
-   end
+if DownSamplingRate ~= 1
+    for i=1:length(TriggerSelect)
+        for j=1:size(Average.Data{i},3)
+            for k=1:size(Average.Data{i},1)
+            Average.DownSampled{i}(k,:,j) = decimate(Average.Data{i}(k,:,j),DownSamplingRate);
+            end
+        end
+    end
 end
 
 save('./EpochData.mat','Average','EpochTime','Fs','Label');

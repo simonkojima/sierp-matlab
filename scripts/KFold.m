@@ -1,4 +1,4 @@
-clearvars;
+clearvars
 
 %cd /home/simon/Documents/MATLAB/Classifier
 %cd C:\Users\Simon\Documents\MATLAB\Classifier

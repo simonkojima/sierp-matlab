@@ -6,7 +6,6 @@ clearvars
 %
 %% Preferences
 
-
 load ./TrainingDatasets.mat
 load ./TestDatasets.mat
 
@@ -18,6 +17,7 @@ for i=1:size(TrainingData.X,2)
 end
 
 %% Evaluation
+
 for i=1:size(TrainingData.X,2)
     [MCC(i),F1(i),Accuracy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
 end
