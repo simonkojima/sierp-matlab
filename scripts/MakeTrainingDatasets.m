@@ -16,7 +16,7 @@ RetainingVariance = 99;
 NumSegmentation = 10;
 
 PlotEnable = 1;
-SegmentateEnable = 1;
+SegmentateEnable = 0;
 
 TopoPlotRange = [-5 5];
 
@@ -96,7 +96,7 @@ end
 for i=1:k
     [pca{i}.U,pca{i}.S,pca{i}.V] = PCA(X{i});
     pca{i}.k = DetDimension(pca{i}.S,RetainingVariance);
-    X{i} = X{i}*pca{i}.U(:,1:pca{i}.k);
+%     X{i} = X{i}*pca{i}.U(:,1:pca{i}.k);
 end
 
 %% Add an intercept term

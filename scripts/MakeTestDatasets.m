@@ -45,7 +45,7 @@ end
 %% Applying PCA
 
 for i=1:k
-    X{i} = X{i}*TrainedParams.PCA{i}.U(:,1:TrainedParams.PCA{i}.k);
+%     X{i} = X{i}*TrainedParams.PCA{i}.U(:,1:TrainedParams.PCA{i}.k);
 end
 
 %% Add an intercept term
