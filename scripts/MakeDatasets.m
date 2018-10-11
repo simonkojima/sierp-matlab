@@ -7,13 +7,13 @@ clearvars
 %
 %% Preferences
 
-EditEnable = 0;
+OpenEnable = 0;
 
-if EditEnable == 1
-    edit EpochExporter.m
-    edit KFold.m
-    edit MakeTrainingDatasets.m
-    edit MakeTestDatasets.m
+if OpenEnable == 1
+    open EpochExporter.m
+    open KFold.m
+    open MakeTrainingDatasets.m
+    open MakeTestDatasets.m
 end
 
 run EpochExporter.m

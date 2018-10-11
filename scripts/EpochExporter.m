@@ -11,11 +11,11 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [9 13];
+TriggerSelect = [1 5];
 PlotColor = {'b','r'};
 
-Files = [1 4];              %Suffix of Files
-PreFileName = '20180523_P300_Stream_B33_000';
+Files = [1 3];              %Suffix of Files
+PreFileName = '20181001_B35_000';
 Range = [0 1];         %(s s)
 Threshold = [-100 100];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
