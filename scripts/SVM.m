@@ -11,15 +11,15 @@ load ./TestDatasets.mat
 
 %% Training
 
-for i=1:size(TrainingData.X,2)
-    Model{i} = fitcsvm(TrainingData.X{i},TrainingData.Y{i},'KernelFunction','linear');
-    [Result{i},Score{i}] = predict(Model{i},TestData.X{i});
+for l=1:size(TrainingData.X,2)
+    Model{l} = fitcsvm(TrainingData.X{l},TrainingData.Y{l},'KernelFunction','linear');
+    [Result{l},Score{l}] = predict(Model{l},TestData.X{l});
 end
 
 %% Evaluation
 
-for i=1:size(TrainingData.X,2)
-    [MCC(i),F1(i),Accuracy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
+for l=1:size(TrainingData.X,2)
+    [MCC(l),F1(l),Accuracy(l)] = ClassifierEvaluation(Result{l},TestData.Y{l},1);
 end
 
 fprintf('\n');

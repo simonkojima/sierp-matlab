@@ -9,14 +9,14 @@ load ./TestDatasets.mat
 
 %% Training
 
-for i=1:size(TrainingData.X,2)
-    MdlLinear{i} = fitcdiscr(TrainingData.X{i},TrainingData.Y{i},'DiscrimType','pseudoLinear');
-    Result{i} = predict(MdlLinear{i},TestData.X{i});
+for l=1:size(TrainingData.X,2)
+    MdlLinear{l} = fitcdiscr(TrainingData.X{l},TrainingData.Y{l},'DiscrimType','pseudoLinear');
+    Result{l} = predict(MdlLinear{l},TestData.X{l});
 end
 
 %% Evaluation
-for i=1:size(TrainingData.X,2)
-    [MCC(i),F1(i),Accuracy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
+for l=1:size(TrainingData.X,2)
+    [MCC(l),F1(l),Accuracy(l)] = ClassifierEvaluation(Result{l},TestData.Y{l},1);
 end
 
 fprintf('\n');

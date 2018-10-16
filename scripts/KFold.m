@@ -9,10 +9,10 @@ Epoch.Data = Average.AveragedEpoch;
 k = 10;
 
 %% Shuffle
-for i=1:size(Epoch.Data,2)
-    RandomIndex{i} = randperm(size(Epoch.Data{i},3));
-    for j=1:size(Epoch.Data{i},3)
-        Temp{i}(:,:,j) = Epoch.Data{i}(:,:,RandomIndex{i}(j));
+for l=1:size(Epoch.Data,2)
+    RandomIndex{l} = randperm(size(Epoch.Data{l},3));
+    for m=1:size(Epoch.Data{l},3)
+        Temp{l}(:,:,m) = Epoch.Data{l}(:,:,RandomIndex{l}(m));
     end
 end
 Epoch.Data = Temp;
@@ -20,15 +20,15 @@ clear Temp;
 
 %% Devide Datasets
 
-for i=1:size(Epoch.Data,2)
-   count{i} = 0; 
+for l=1:size(Epoch.Data,2)
+   count{l} = 0; 
 end
 
-for i=1:k
-    for j=1:size(Epoch.Data,2)
-        for n=1:NumData(size(Epoch.Data{j},3),k,i)
-            count{j} = count{j} + 1;
-            K{i}{j}(:,:,n) = Epoch.Data{j}(:,:,count{j});
+for l=1:k
+    for m=1:size(Epoch.Data,2)
+        for n=1:NumData(size(Epoch.Data{m},3),k,l)
+            count{m} = count{m} + 1;
+            K{l}{m}(:,:,n) = Epoch.Data{m}(:,:,count{m});
         end
     end
 end

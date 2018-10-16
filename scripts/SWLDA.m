@@ -8,14 +8,14 @@ load ./TrainingDatasets.mat
 load ./TestDatasets.mat
 
 %% Step Wise
-for i=1:size(TrainingData.X,2)
-    temp.train{i} = [];
-    temp.test{i} = [];
-    [~,~,~,inmodel{i},~,~,~] = stepwisefit(TrainingData.X{i},TrainingData.Y{i},'display','off');
-    for j=1:size(inmodel{i},2)
-        if inmodel{i}(j) == 1
-            temp.train{i} = cat(2,temp.train{i},TrainingData.X{i}(:,j));
-            temp.test{i} = cat(2,temp.test{i},TestData.X{i}(:,j));
+for l=1:size(TrainingData.X,2)
+    temp.train{l} = [];
+    temp.test{l} = [];
+    [~,~,~,inmodel{l},~,~,~] = stepwisefit(TrainingData.X{l},TrainingData.Y{l},'display','off');
+    for m=1:size(inmodel{l},2)
+        if inmodel{l}(m) == 1
+            temp.train{l} = cat(2,temp.train{l},TrainingData.X{l}(:,m));
+            temp.test{l} = cat(2,temp.test{l},TestData.X{l}(:,m));
         end
     end
 end
@@ -24,14 +24,14 @@ TestData.X = temp.test;
 
 %% Training
 
-for i=1:size(TrainingData.X,2)
-    MdlLinear{i} = fitcdiscr(TrainingData.X{i},TrainingData.Y{i},'DiscrimType','pseudoLinear');
-    Result{i} = predict(MdlLinear{i},TestData.X{i});
+for l=1:size(TrainingData.X,2)
+    MdlLinear{l} = fitcdiscr(TrainingData.X{l},TrainingData.Y{l},'DiscrimType','pseudoLinear');
+    Result{l} = predict(MdlLinear{l},TestData.X{l});
 end
 
 %% Evaluation
-for i=1:size(TrainingData.X,2)
-    [MCC(i),F1(i),Accuracy(i)] = ClassifierEvaluation(Result{i},TestData.Y{i},1);
+for l=1:size(TrainingData.X,2)
+    [MCC(l),F1(l),Accuracy(l)] = ClassifierEvaluation(Result{l},TestData.Y{l},1);
 end
 
 fprintf('\n');

@@ -12,11 +12,11 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [1 5];
+TriggerSelect = [1 3];
 PlotColor = {'b','r'};
 
 Files = [1 3];              %Suffix of Files
-PreFileName = '20181001_B35_000';
+PreFileName = '20181016_B36_000';
 Range = [-0.1 0.5];         %(s s)
 Threshold = [-50 50];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
@@ -46,7 +46,7 @@ for i=Files(1):Files(2)
     Temp.Trigger = [Temp.Trigger Trigger];
 end
 
-Data = Temp.Data;
+Data = fastica(Temp.Data);
 Trigger = Temp.Trigger;
 
 %fprintf('Size : %f\n',size(temp));
