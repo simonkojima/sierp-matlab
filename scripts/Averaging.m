@@ -12,10 +12,10 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [1 4];
-PlotColor = {'b','r'};
+TriggerSelect = [2 8 130];
+PlotColor = {'b','r','k'};
 
-Files = [1 4];              %Suffix of Files
+Files = [5 8];              %Suffix of Files
 PreFileName = '20181022_B35_000';
 Range = [-0.1 0.5];         %(s s)
 Threshold = [-50 50];       %min max (uV uV)
@@ -25,7 +25,7 @@ AlphaThreshold = 100;        %(%)
 
 NumChannel = 64;
 
-PlotYRange = [-7 7];         %ylabel Range (uV uV)
+PlotYRange = [-7 7];         %ylabel Range (uV uV) [0 0] -> Auto
 %PlotDivision = [3 3];
 %PlotPosition = [1 2 3 5 7 8 9];
 PlotDivision = [9 11];
@@ -35,8 +35,8 @@ PlotXLabel = 'Time (ms)';
 
 Temp.Data = [];
 Temp.Trigger = [];
-for i=Files(1):Files(2)
-    FileName = sprintf(strcat(PreFileName,'%d.mat'),i);
+for l=Files(1):Files(2)
+    FileName = sprintf(strcat(PreFileName,'%d.mat'),l);
     load(FileName);
     [B, A] = butter(2, FilterRange/(Fs/2), 'bandpass');
     EOGData = Data(NumChannel+1:NumChannel+2,:);
@@ -54,13 +54,13 @@ Trigger = Temp.Trigger;
 %% Slicing Epoch Data
 %Average.Data{length(TriggerSelect)} = zeros(length(i+Time2SampleNum(Range(1),Fs):i+Time2SampleNum(Range(2),Fs)),NChannel);
 %[NSample, NChannel] = size(Data);
-for i=1:length(TriggerSelect)
-   count{i} = 0;
+for l=1:length(TriggerSelect)
+   count{l} = 0;
    for j=1:length(Trigger)
-      if Trigger(j) == TriggerSelect(i)
-          count{i} = count{i}+1;
-          Average.Data{i}(:,:,count{i}) = Data(:,j+Range(1)*Fs:j+Range(2)*Fs);
-          fprintf('Slicing Epoch Data No.%.0f of Trigger No.%.0f\n',count{i},TriggerSelect(i));
+      if Trigger(j) == TriggerSelect(l)
+          count{l} = count{l}+1;
+          Average.Data{l}(:,:,count{l}) = Data(:,j+Range(1)*Fs:j+Range(2)*Fs);
+          fprintf('Slicing Epoch Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
       end
    end
 end
@@ -68,13 +68,13 @@ clear count;
 
 %% Base Line
 %BaseLineEpoch{length(TriggerSelect)} = zeros(length(i+Time2SampleNum(BaseLineRange(1),Fs):i+Time2SampleNum(BaseLineRange(2),Fs)),NChannel);
-for i=1:length(TriggerSelect)
-    count{i} = 0;
+for l=1:length(TriggerSelect)
+    count{l} = 0;
    for j=1:length(Trigger)
-      if Trigger(j) == TriggerSelect(i)    
-          count{i} = count{i}+1;
-          BaseLineEpoch{i}(:,:,count{i}) = Data(:,j+BaseLineRange(1)*Fs:j+BaseLineRange(2)*Fs);
-          fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{i},TriggerSelect(i));
+      if Trigger(j) == TriggerSelect(l)    
+          count{l} = count{l}+1;
+          BaseLineEpoch{l}(:,:,count{l}) = Data(:,j+BaseLineRange(1)*Fs:j+BaseLineRange(2)*Fs);
+          fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
           %BaseLineEpoch{i}(:,:,count) = Data(j+Time2SampleNum(BaseLineRange(1),Fs):j+Time2SampleNum(BaseLineRange(2),Fs),:);
       end
    end
@@ -82,33 +82,33 @@ end
 clear count;
 
 %% Compute BaseLine
-for i=1:length(TriggerSelect)
-    BaseLine{i} = repmat(mean(BaseLineEpoch{i},2),1,size(Average.Data{i},2));
+for l=1:length(TriggerSelect)
+    BaseLine{l} = repmat(mean(BaseLineEpoch{l},2),1,size(Average.Data{l},2));
 end
 
-for i=1:length(TriggerSelect)
-   Average.Data{i} = Average.Data{i} - BaseLine{i}; 
+for l=1:length(TriggerSelect)
+   Average.Data{l} = Average.Data{l} - BaseLine{l}; 
 end
 
 %% Evaluate Each Epoch Data
 %Average.Accepted{length(TriggerSelect)} = 0;
-for i=1:length(TriggerSelect)
-    [Row,Column,Dimension] = size(Average.Data{i});
+for l=1:length(TriggerSelect)
+    [Row,Column,Dimension] = size(Average.Data{l});
     if Threshold(1) ~= 0 || Threshold(2) ~= 0
        for j=1:Dimension
-           temp = mean(squeeze(Average.Data{i}(:,:,j)),1);
+           temp = mean(squeeze(Average.Data{l}(:,:,j)),1);
            AllRangeBandPower = bandpower(temp',Fs,FilterRange);
            AlphaRangeBandPower = bandpower(temp',Fs,[8 13]);
            PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
            if (min(temp(:)) < Threshold(1)) || (max(temp(:)) > Threshold(2))
-                    Average.Data{i}(:,:,j) = zeros(Row,Column);
-                    Average.Accepted{i}(j) = 0;
+                    Average.Data{l}(:,:,j) = zeros(Row,Column);
+                    Average.Accepted{l}(j) = 0;
            else
                if PerPower > AlphaThreshold
-                    Average.Data{i}(:,:,j) = zeros(Row,Column);
-                    Average.Accepted{i}(j) = 0;
+                    Average.Data{l}(:,:,j) = zeros(Row,Column);
+                    Average.Accepted{l}(j) = 0;
                else
-                    Average.Accepted{i}(j) = 1;
+                    Average.Accepted{l}(j) = 1;
                end
            end
        end
@@ -117,47 +117,49 @@ for i=1:length(TriggerSelect)
 end
 clear temp
 
-for i=1:size(Average.Data,2)
+for l=1:size(Average.Data,2)
     count = 0;
-    Average.NumAllEpoch{i} = size(Average.Data{i},3);
-    for j=1:size(Average.Data{i},3)
-       if Average.Accepted{i}(j) == 1
+    Average.NumAllEpoch{l} = size(Average.Data{l},3);
+    for j=1:size(Average.Data{l},3)
+       if Average.Accepted{l}(j) == 1
            count = count+1;
-           Average.Temporary{i}(:,:,count) = Average.Data{i}(:,:,j);
+           Average.Temporary{l}(:,:,count) = Average.Data{l}(:,:,j);
        end
     end
-    Average.Accepted{i} = sum(Average.Accepted{i});
+    Average.Accepted{l} = sum(Average.Accepted{l});
 end
 clear count;
 
 Average.Data = Average.Temporary;
 Average = rmfield(Average,'Temporary');
 
-for i=1:length(TriggerSelect)
-    fprintf('Trigger No.%.0f, Accepted Epoch Data : %.0f of %.0f\n',TriggerSelect(i),Average.Accepted{i},Average.NumAllEpoch{i});
+for l=1:length(TriggerSelect)
+    fprintf('Trigger No.%.0f, Accepted Epoch Data : %.0f of %.0f\n',TriggerSelect(l),Average.Accepted{l},Average.NumAllEpoch{l});
 end
 
 %% Averaging
 EpochTime = Range(1):1/Fs:Range(2);
 EpochTime = EpochTime';
 
-for i=1:length(TriggerSelect)
-   [Row,Column,Dimension] = size(Average.Data{i});
+for l=1:length(TriggerSelect)
+   [Row,Column,Dimension] = size(Average.Data{l});
    for j=1:Dimension
-       Average.Data{i} = mean(Average.Data{i},3);
+       Average.Data{l} = mean(Average.Data{l},3);
    end
 end
 
 %% Plot
 
 Figure1 = figure('Name','Result','NumberTitle','off');
-for i=1:length(TriggerSelect)
-    [Row,Column,Dimension] = size(Average.Data{i});
+for l=1:length(TriggerSelect)
+    [Row,Column,Dimension] = size(Average.Data{l});
     for j=1:Row
         subplot(PlotDivision(1),PlotDivision(2),PlotPosition(j));
-        plot(EpochTime,Average.Data{i}(j,:),PlotColor{i});
+        plot(EpochTime,Average.Data{l}(j,:),PlotColor{l});
         hold on
-        %ylim(PlotYRange)
+        if sum(PlotYRange) ~= 0
+            ylim(PlotYRange)
+        end
         xlim(Range)
         %ylabel({Label{j},PlotYLabel});
         ylabel(Label{j});
@@ -168,8 +170,8 @@ for i=1:length(TriggerSelect)
     end
 end
 
-for i=1:Row
-    subplot(PlotDivision(1),PlotDivision(2),PlotPosition(i));
+for l=1:Row
+    subplot(PlotDivision(1),PlotDivision(2),PlotPosition(l));
     plot(xlim, [0 0], 'k');
     plot([0 0], ylim, 'k');
     %legend('Standard','Deviant');

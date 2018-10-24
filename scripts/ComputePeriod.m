@@ -1,7 +1,8 @@
 close all
 clearvars
+clc
 
-FileName = '20180530_P300_Stream_B39_0001.mat';
+FileName = '20181022_B35_0001.mat';
 
 load(FileName);
 
@@ -44,6 +45,15 @@ for l=1:size(TriggerList,2)
         TriggerCount(2,index) = 1;
     end
     
+end
+
+Temp = TriggerCount;
+
+[B,I] = sort(Temp(1,:));
+TriggerCount = B;
+
+for l=1:length(TriggerCount)
+   TriggerCount(2,l)  = Temp(2,I(l));
 end
 
 fprintf('Mean Period        : %.30f ms\n',mean(Period)*1000);

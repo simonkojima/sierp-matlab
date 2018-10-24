@@ -10,7 +10,7 @@ clearvars
 Fs = 48828; %Hz
 Duration = 10; %s
 
-FileName = 'Sweep.wav';
+FileName = 'C:\Users\Simon\Documents\MATLAB\Sound\Sweep.wav';
 
 StartFrequency = 0; %Hz
 EndFrequency = 24414; %Hz

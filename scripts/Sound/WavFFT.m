@@ -8,7 +8,7 @@ close all;
 
 %% Preferences
 
-FileName = 'Sweep.wav';
+FileName = 'C:\Users\Simon\Documents\MATLAB\Sound\Sweep.wav';
 
 HammingEnable = 0;
 

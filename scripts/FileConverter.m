@@ -50,5 +50,5 @@ for i=1:FileNumber
     
 end
 
-clear all;
+clearvars
 fprintf('Completed !!\n');

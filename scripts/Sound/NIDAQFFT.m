@@ -8,7 +8,7 @@ close all
 
 %% Preferences
 
-FileName = 'TDT_Sweep.mat';
+FileName = 'C:\Users\Simon\Documents\MATLAB\Sound\TDT_Sweep.mat';
 
 HammingEnable = 0;
 
