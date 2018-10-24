@@ -10,7 +10,7 @@ clearvars
 OpenEnable = 0;
 
 if OpenEnable == 1
-    open EpochExporter.m90
+    open EpochExporter.m
     open KFold.m
     open MakeTrainingDatasets.m
     open MakeTestDatasets.m

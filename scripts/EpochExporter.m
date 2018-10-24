@@ -27,7 +27,7 @@ ICAEnable = 1;
 %ChannelSelection = [10 12 14 32 50 52 54];
 ChannelSelection = 1:64;
 
-DownSamplingRate = 1;
+DownSamplingRate = 4;
 AveragingNum = 5;
 
 Temp.Data = [];
