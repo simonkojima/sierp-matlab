@@ -16,7 +16,7 @@ RetainingVariance = 99;
 NumSegmentation = 10;
 
 PlotEnable = 0;
-SegmentateEnable = 1;
+SegmentateEnable = 0;
 
 TopoPlotRange = [-10 10];
 
@@ -42,15 +42,15 @@ if SegmentateEnable == 1
     for l=1:k
         fprintf('< %02.0f of %02.0f > ',l,k);
         TimeSegmentation{l} = AdaptiveSegmentation(Merged{l},NumSegmentation);
-        save('Segmentation.mat','TimeSegmentation');
+        Data{l} = Segmentate(Merged{l},TimeSegmentation{l});
     end
+else
+    TimeSegmentation = [];
+    Data = Merged;
 end
 
-load ./Segmentation.mat
-
 for l=1:k
-    Segmentation{l} = Segmentate(Merged{l},TimeSegmentation{l});
-    [Ht,Hnt] = CSP(Segmentation{l}{2},Segmentation{l}{1});
+    [Ht,Hnt] = CSP(Data{l}{2},Data{l}{1});
     H{l} = [Ht Hnt];
 
 end
@@ -74,15 +74,15 @@ for l=1:k
 end
 
 for l=1:k
-    for m=1:size(Segmentation{l}{1},3)
-        X{l} = [X{l}; reshape(H{l}'*Segmentation{l}{1}(:,:,m),1,size(Segmentation{l}{1},2)*size(H{l},2)) FilteredVariance(H{l},Segmentation{l}{1}(:,:,m))];
+    for m=1:size(Data{l}{1},3)
+        X{l} = [X{l}; reshape(H{l}'*Data{l}{1}(:,:,m),1,size(Data{l}{1},2)*size(H{l},2)) FilteredVariance(H{l},Data{l}{1}(:,:,m))];
         Y{l} = [Y{l};0];
     end
 end
 
 for l=1:k
-    for m=1:size(Segmentation{l}{2},3)
-        X{l} = [X{l}; reshape(H{l}'*Segmentation{l}{2}(:,:,m),1,size(Segmentation{l}{2},2)*size(H{l},2)) FilteredVariance(H{l},Segmentation{l}{2}(:,:,m))];
+    for m=1:size(Data{l}{2},3)
+        X{l} = [X{l}; reshape(H{l}'*Data{l}{2}(:,:,m),1,size(Data{l}{2},2)*size(H{l},2)) FilteredVariance(H{l},Data{l}{2}(:,:,m))];
         Y{l} = [Y{l};1];
     end
 end
@@ -96,7 +96,7 @@ end
 for l=1:k
     [pca{l}.U,pca{l}.S,pca{l}.V] = PCA(X{l});
     pca{l}.k = DetDimension(pca{l}.S,RetainingVariance);
-    %X{i} = X{i}*pca{i}.U(:,1:pca{i}.k);
+    X{l} = X{l}*pca{l}.U(:,1:pca{l}.k);
 end
 
 %% Add an intercept term
@@ -115,5 +115,6 @@ TrainedParams.TimeSegmentation = TimeSegmentation;
 TrainedParams.Standardize = Standardize;
 TrainedParams.H = H;
 
+save('Segmentation.mat','TimeSegmentation');
 save('TrainingDatasets.mat','TrainingData');
 save('TrainedParams.mat','TrainedParams');

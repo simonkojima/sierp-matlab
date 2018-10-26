@@ -10,48 +10,53 @@ clearvars
 %cd C:\Users\Simon\Documents\MATLAB\Classifier
 load ./KFoldEpochData.mat
 load ./TrainedParams.mat
+load ./Segmentation.mat
 
 %% Making Data
 
 k = size(K,2);
 
-for i=1:k
-    Segmentation{i} = Segmentate(K{i},TrainedParams.TimeSegmentation{i});
+if isempty(TimeSegmentation) == 0
+    for l=1:k
+        Data{l} = Segmentate(K{l},TrainedParams.TimeSegmentation{l});
+    end
+else
+    Data = K;
 end
 
-for i=1:k
-   X{i} = []; 
-   Y{i} = [];
+for l=1:k
+   X{l} = []; 
+   Y{l} = [];
 end
 
-for i=1:k
-    for j=1:size(Segmentation{i}{1},3)
-        X{i} = [X{i}; reshape(TrainedParams.H{i}'*Segmentation{i}{1}(:,:,j),1,size(Segmentation{i}{1},2)*size(TrainedParams.H{i},2)) FilteredVariance(TrainedParams.H{i},Segmentation{i}{1}(:,:,j))];
-        Y{i} = [Y{i};0];
+for l=1:k
+    for j=1:size(Data{l}{1},3)
+        X{l} = [X{l}; reshape(TrainedParams.H{l}'*Data{l}{1}(:,:,j),1,size(Data{l}{1},2)*size(TrainedParams.H{l},2)) FilteredVariance(TrainedParams.H{l},Data{l}{1}(:,:,j))];
+        Y{l} = [Y{l};0];
     end
 end
 
-for i=1:k
-    for j=1:size(Segmentation{i}{2},3)
-        X{i} = [X{i}; reshape(TrainedParams.H{i}'*Segmentation{i}{2}(:,:,j),1,size(Segmentation{i}{2},2)*size(TrainedParams.H{i},2)) FilteredVariance(TrainedParams.H{i},Segmentation{i}{2}(:,:,j))];
-        Y{i} = [Y{i};1];
+for l=1:k
+    for j=1:size(Data{l}{2},3)
+        X{l} = [X{l}; reshape(TrainedParams.H{l}'*Data{l}{2}(:,:,j),1,size(Data{l}{2},2)*size(TrainedParams.H{l},2)) FilteredVariance(TrainedParams.H{l},Data{l}{2}(:,:,j))];
+        Y{l} = [Y{l};1];
     end
 end
 
-for i=1:k
-    X{i} = (X{i} - TrainedParams.Standardize{i}.meanvec)./TrainedParams.Standardize{i}.stdvec;
+for l=1:k
+    X{l} = (X{l} - TrainedParams.Standardize{l}.meanvec)./TrainedParams.Standardize{l}.stdvec;
 end
 
 %% Applying PCA
 
-for i=1:k
-    %X{i} = X{i}*TrainedParams.PCA{i}.U(:,1:TrainedParams.PCA{i}.k);
+for l=1:k
+    X{l} = X{l}*TrainedParams.PCA{l}.U(:,1:TrainedParams.PCA{l}.k);
 end
 
 %% Add an intercept term
 
-for i=1:k
-    X{i} = [ones(size(X{i},1),1) X{i}];
+for l=1:k
+    X{l} = [ones(size(X{l},1),1) X{l}];
 end
 
 %% Save Data

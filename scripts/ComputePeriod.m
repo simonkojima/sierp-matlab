@@ -1,8 +1,7 @@
 close all
 clearvars
-clc
 
-FileName = '20181022_B35_0001.mat';
+FileName = '20181025_TriggerTest_0003.mat';
 
 load(FileName);
 

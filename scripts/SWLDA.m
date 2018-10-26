@@ -7,7 +7,7 @@ clearvars
 load ./TrainingDatasets.mat
 load ./TestDatasets.mat
 
-%% Step Wise
+%% Step Wise+
 for l=1:size(TrainingData.X,2)
     temp.train{l} = [];
     temp.test{l} = [];

@@ -22,13 +22,21 @@ BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [0.1 15]; %0.1 15
 AlphaThreshold = 100;        %(%)
 
-ICAEnable = 1;
+ICAEnable = 0;
 
-%ChannelSelection = [10 12 14 32 50 52 54];
+NumChannel = 64;
+EOGEnable = 1;
+
+%ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
+%ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8s
+%ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+
 ChannelSelection = 1:64;
+%ChannelSelection = 1:2:64;
+%ChannelSelection = 1:7;
 
-DownSamplingRate = 4;
-AveragingNum = 5;
+ReSamplingRate = [100 1000]; %[p q] -> Fs*(p/q)
+AveragingNum = 9;
 
 Temp.Data = [];
 Temp.Trigger = [];
@@ -36,6 +44,10 @@ for l=Files(1):Files(2)
     FileName = sprintf(strcat(PreFileName,'%d.mat'),l);
     load(FileName);
     [B, A] = butter(2, FilterRange/(Fs/2), 'bandpass');
+    if EOGEnable == 1
+        EOGData = Data(NumChannel+1:NumChannel+2,:);
+    end
+    Data = Data(1:NumChannel,:);
     Data = filtfilt(B, A, Data')';
     Temp.Data = [Temp.Data Data];
     Temp.Trigger = [Temp.Trigger Trigger];
@@ -154,11 +166,29 @@ for l=1:length(TriggerSelect)
     fprintf('Trigger No.%.0f, Accepted Epoch Data : %.0f of %.0f\n',TriggerSelect(l),Average.Accepted{l},Average.NumAllEpoch{l});
 end
 
-%% Averaging
-EpochTime = Range(1):1/Fs:Range(2);
-EpochTime = EpochTime';
+%% Down Sampling
 
-Epoch.Data = Average.Data;
+if sum(ReSamplingRate) ~= 0
+    temp = [];
+    for l=1:length(TriggerSelect)
+        for m=1:size(Average.Data{l},3)
+            for n=1:size(Average.Data{l},1)
+            temp{l}(n,:,m) = resample(Average.Data{l}(n,:,m),ReSamplingRate(1),ReSamplingRate(2));
+            end
+        end
+    end
+    Average.Data = temp;
+    clear temp;
+end
+
+
+%% Averaging
+if sum(ReSamplingRate) ~= 0
+    EpochTime = Range(1):(ReSamplingRate(2)/(Fs*ReSamplingRate(1))):Range(2);
+else
+    EpochTime = Range(1):1/Fs:Range(2);
+end
+
 
 for l=1:length(TriggerSelect)
    for m=1:size(Average.Data{l},3)
@@ -172,22 +202,9 @@ for l=1:length(TriggerSelect)
 end
 
 for l=1:length(TriggerSelect)
-   [Row,Column,Dimension] = size(Average.Data{l});
-   for m=1:Dimension
+   for m=1:size(Average.Data{l},3)
        Average.AllAveraged{l} = mean(Average.Data{l},3);
    end
-end
-
-%% Down Sampling
-
-if DownSamplingRate ~= 1
-    for l=1:length(TriggerSelect)
-        for m=1:size(Average.Data{l},3)
-            for n=1:size(Average.Data{l},1)
-            Average.DownSampled{l}(n,:,m) = decimate(Average.Data{l}(n,:,m),DownSamplingRate);
-            end
-        end
-    end
 end
 
 save('./EpochData.mat','Average','EpochTime','Fs','Label');
