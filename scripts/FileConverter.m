@@ -7,14 +7,14 @@ clearvars
 %--------------------------------------------------------------------------
 %   Settings
 
-EEGFileName = '20181025_TriggerTest_';
-FileNumber = 8;
+EEGFileName = '20181028_B35';
+FileNumber = 11;
 
 %--------------------------------------------------------------------------
 
-for i=1:FileNumber
+for l=1:FileNumber
    
-    FileNumberString = num2str(i);
+    FileNumberString = num2str(l);
     
     for j=1:4-strlength(FileNumberString)
         FileNumberString = strcat(num2str(0),FileNumberString);

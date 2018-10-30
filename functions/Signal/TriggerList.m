@@ -1,9 +1,8 @@
-close all
-clearvars
+function TriggerList(Trigger,Time)
 
-FileName = '20181025_TriggerTest_0003.mat';
-
-load(FileName);
+if Time == 0
+   Time = zeros(size(Trigger)) ;
+end
 
 TriggerList = [];
 count = 0;
@@ -22,20 +21,22 @@ for l=1:length(TriggerList)-1
 end
 
 TriggerCount = [];
+flag = 0;
 for l=1:size(TriggerList,2)
     if isempty(TriggerCount) == 1
         TriggerCount(1,1) = TriggerList(1,l);
         TriggerCount(2,1) = 1;
-    end
+    else
         
-    for m=1:size(TriggerCount,2)
-       if TriggerCount(1,m) == TriggerList(1,l)
-          TriggerCount(2,m) = TriggerCount(2,m) + 1;
-          flag = 0;
-          break;
-       else
-          flag = 1;
-       end
+        for m=1:size(TriggerCount,2)
+            if TriggerCount(1,m) == TriggerList(1,l)
+                TriggerCount(2,m) = TriggerCount(2,m) + 1;
+                flag = 0;
+                break;
+            else
+                flag = 1;
+            end
+        end
     end
     
     if flag == 1
@@ -55,7 +56,10 @@ for l=1:length(TriggerCount)
    TriggerCount(2,l)  = Temp(2,I(l));
 end
 
-fprintf('Mean Period        : %.30f ms\n',mean(Period)*1000);
-fprintf('Standard Deviation : %.30f ms\n',std(Period)*1000);
-
+if Time ~= 0
+    fprintf('Mean Period        : %.30f ms\n',mean(Period)*1000);
+    fprintf('Standard Deviation : %.30f ms\n',std(Period)*1000);
+end
 TriggerCount
+
+end

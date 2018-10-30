@@ -25,5 +25,5 @@ run MakeTrainingDatasets.m
 fprintf('TrainingDatasets was created!\n');
 run MakeTestDatasets.m
 fprintf('TestDatasets was created!\n');
-clear all
+clearvars
 fprintf('Completed!!\n');

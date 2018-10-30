@@ -12,3 +12,5 @@ for i=1:size(Trigger,2)
         TriggerList(size(TriggerList,2)+1) = Trigger(i);
     end
 end
+
+TriggerList
