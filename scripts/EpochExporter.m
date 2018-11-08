@@ -14,13 +14,13 @@ clearvars
 TriggerSelect = [1 4];
 PlotColor = {'b','r'};
 
-Files = 1:5;              %Suffix of Files
+Files = 1:2;              %Suffix of Files
 PreFileName = '20181028_B35';
-Range = [0 0.5];         %(s s)
-EEGThreshold = [-100 100];       %min max (uV uV)
-EOGThreshold = [-300 300];       %min max (uV uV)
+Range = [0 1];         %(s s)
+EEGThreshold = [-1000 1000];       %min max (uV uV)
+EOGThreshold = [-1000 1000];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [0.1 40]; %0.1 15
+FilterRange = [0.1 15]; %0.1 15
 AlphaThreshold = 100;        %(%)
 FilterOrder = 2;
 ICAEnable = 0;
@@ -37,7 +37,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 1:7;
 
 DownsampleRate = 2;
-AveragingNum = 1;
+AveragingNum = 9;
 
 Temp.Data = [];
 Temp.Trigger = [];
@@ -91,7 +91,7 @@ for l=1:length(TriggerSelect)
    for m=1:length(Trigger)
       if Trigger(m) == TriggerSelect(l)
           count{l} = count{l}+1;
-          Average.Data{l}(:,:,count{l}) = Data(:,m+Range(1)*Fs:m+Range(2)*Fs);
+          Average.Data{l}(:,:,count{l}) = Data(:,m+floor(Range(1)*Fs):m+floor(Range(2)*Fs));
           %fprintf('Slicing Epoch Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
       end
    end
@@ -105,7 +105,7 @@ for l=1:length(TriggerSelect)
    for m=1:length(Trigger)
       if Trigger(m) == TriggerSelect(l)    
           count{l} = count{l}+1;
-          BaseLineEpoch{l}(:,:,count{l}) = Data(:,m+BaseLineRange(1)*Fs:m+BaseLineRange(2)*Fs);
+          BaseLineEpoch{l}(:,:,count{l}) = Data(:,m+floor(BaseLineRange(1)*Fs):m+floor(BaseLineRange(2)*Fs));
           %fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
       end
    end
