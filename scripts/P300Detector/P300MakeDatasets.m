@@ -5,25 +5,26 @@ clearvars
 %   Version : alpha 1
 %   Author : Simon Kojima
 %
+
 %% Preferences
 
-OpenEnable = 0;
+OpenEnable = 1;
 
 if OpenEnable == 1
-    open EpochExporter.m
+    open P300EpochExporter.m
     open KFold.m
-    open MakeTrainingDatasets.m
-    open MakeTestDatasets.m
+    open P300MakeTrainingDatasets.m
+    open P300MakeTestDatasets.m
     return
 end
 
-run EpochExporter.m
+run P300EpochExporter.m
 fprintf('EpochData was exported!\n');
 run KFold.m
 fprintf('KFold Completed!\n');
-run MakeTrainingDatasets.m
+run P300MakeTrainingDatasets.m
 fprintf('TrainingDatasets was created!\n');
-run MakeTestDatasets.m
+run P300MakeTestDatasets.m
 fprintf('TestDatasets was created!\n');
 clearvars
 fprintf('Completed!!\n');
