@@ -4,6 +4,9 @@ PlotYRange = [0 0];
 Channel = [32];
 PlotDivision = [1 1];
 PlotPosition = [1];
+Subtraction = 1;
+SubTrigger = [1 2];
+SubColor = ['g'];
 
 for l=1:length(Channel)
 
@@ -53,5 +56,6 @@ axis ij
 
 plot(xlim, [0 0], 'k');
 plot([0 0], ylim, 'k');
-end
+end    
+
 hold off

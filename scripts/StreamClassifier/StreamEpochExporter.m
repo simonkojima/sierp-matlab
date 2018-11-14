@@ -11,12 +11,13 @@ clearvars
 
 %%------------------------------------------------------------------------
 
-TriggerSelect = [1 4];
+TriggerSelect = [4 8];
 PlotColor = {'b','r'};
 
-Files = 1:2;              %Suffix of Files
-PreFileName = '20181028_B35';
-Range = [0 1];         %(s s)
+Files = 1:4;              %Suffix of Files
+PreFileName = '20181022_B35_';
+SaveFileName = './Stream1.mat';
+Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-1000 1000];       %min max (uV uV)
 EOGThreshold = [-1000 1000];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
@@ -31,13 +32,14 @@ EOGEnable = 2;
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8s
 %ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+ChannelSelection = [10 32];
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 %ChannelSelection = 1:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 2;
-AveragingNum = 9;
+DownsampleRate = 1;
+AveragingNum = 1;
 
 Temp.Data = [];
 Temp.Trigger = [];
@@ -204,4 +206,4 @@ for l=1:length(TriggerSelect)
    end
 end
 
-save('./EpochData.mat','Average','EpochTime','Fs','Label');
+save(SaveFileName,'Average','EpochTime','Fs','Label');

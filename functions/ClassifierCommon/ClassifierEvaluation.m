@@ -5,17 +5,17 @@ TN = 0;
 FP = 0;
 FN = 0;
 
-for i=1:size(PredictedLabel)
-    if PredictedLabel(i) == ActualLabel(i)
-        if PredictedLabel(i) == 1
+for l=1:size(PredictedLabel)
+    if PredictedLabel(l) == ActualLabel(l)
+        if PredictedLabel(l) == 1
             TP = TP+1;
-        elseif PredictedLabel(i) == 0
+        elseif PredictedLabel(l) == 0
             TN = TN+1;
         end
     else
-       if PredictedLabel(i) == 1
+       if PredictedLabel(l) == 1
             FP = FP+1;
-       elseif PredictedLabel(i) == 0
+       elseif PredictedLabel(l) == 0
             FN = FN +1;
        end
     end

@@ -25,39 +25,64 @@ else
 end
 
 for l=1:k
-   X{l} = []; 
-   Y{l} = [];
-end
-
-for l=1:k
-    for j=1:size(Data{l}{1},3)
-        X{l} = [X{l}; reshape(TrainedParams.H{l}'*Data{l}{1}(:,:,j),1,size(Data{l}{1},2)*size(TrainedParams.H{l},2)) FilteredVariance(TrainedParams.H{l},Data{l}{1}(:,:,j))];
-        Y{l} = [Y{l};0];
+    for m=1:2
+        X{m}{l} = [];
+        Y{m}{l} = [];
     end
 end
 
-for l=1:k
-    for j=1:size(Data{l}{2},3)
-        X{l} = [X{l}; reshape(TrainedParams.H{l}'*Data{l}{2}(:,:,j),1,size(Data{l}{2},2)*size(TrainedParams.H{l},2)) FilteredVariance(TrainedParams.H{l},Data{l}{2}(:,:,j))];
-        Y{l} = [Y{l};1];
+if isempty(TrainedParams.H) == 1
+    for l=1:k
+        for m=1:size(Data{l}{1},3)
+            X{1}{l} = [X{1}{l}; reshape(Data{l}{1}(:,:,m),1,size(Data{l}{1},2)*size(Data{l}{1},1))];
+            Y{1}{l} = [Y{1}{l};0];
+        end
     end
+    
+    for l=1:k
+        for m=1:size(Data{l}{2},3)
+            X{2}{l} = [X{2}{l}; reshape(Data{l}{2}(:,:,m),1,size(Data{l}{2},2)*size(Data{l}{2},1))];
+            Y{2}{l} = [Y{2}{l};1];
+        end
+    end
+    
+else
+    
+    for l=1:k
+        for m=1:size(Data{l}{1},3)
+            X{1}{l} = [X{1}{l}; reshape(TrainedParams.H{l}'*Data{l}{1}(:,:,m),1,size(Data{l}{1},2)*size(TrainedParams.H{l},2))];
+            Y{1}{l} = [Y{1}{l};0];
+        end
+    end
+    
+    for l=1:k
+        for m=1:size(Data{l}{2},3)
+            X{2}{l} = [X{2}{l}; reshape(TrainedParams.H{l}'*Data{l}{2}(:,:,m),1,size(Data{l}{2},2)*size(TrainedParams.H{l},2))];
+            Y{2}{l} = [Y{2}{l};1];
+        end
+    end
+    
 end
 
 for l=1:k
-    X{l} = (X{l} - TrainedParams.Standardize{l}.meanvec)./TrainedParams.Standardize{l}.stdvec;
+    for m=1:2
+        X{m}{l} = (X{m}{l} - TrainedParams.Standardize{l}.meanvec)./TrainedParams.Standardize{l}.stdvec;
+    end
 end
 
 %% Applying PCA
 
 for l=1:k
-    X{l} = X{l}*TrainedParams.PCA{l}.U(:,1:TrainedParams.PCA{l}.k);
+    for m=1:2
+%         X{m}{l} = X{m}{l}*TrainedParams.PCA{l}.U(:,1:TrainedParams.PCA{l}.k);
+    end
 end
 
 %% Add an intercept term
 
-for l=1:k
-    X{l} = [ones(size(X{l},1),1) X{l}];
-end
+% for l=1:k
+%     X{l} = [ones(size(X{l},1),1) X{l}];
+% end
 
 %% Save Data
 
