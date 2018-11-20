@@ -4,9 +4,9 @@ PlotYRange = [0 0];
 Channel = [32];
 PlotDivision = [1 1];
 PlotPosition = [1];
-Subtraction = 1;
-SubTrigger = [1 2];
-SubColor = ['g'];
+%Subtraction = 1;
+%SubTrigger = [1 2];
+%SubColor = ['g'];
 
 for l=1:length(Channel)
 
@@ -47,15 +47,18 @@ end
 
 ylim(yrange);
 xlim(Range);
-%ylabel({Label{Channel(l)},PlotYLabel});
-ylabel(Label{Channel(l)});
-%xlabel(PlotXLabel);
-%xticks(-0.1:0.1:0.5);
+ylabel({Label{Channel(l)},PlotYLabel});
+%ylabel(Label{Channel(l)});
+xlabel(PlotXLabel);
+xticks(range(1):0.1:Range(2));
 %xticklabels({'-100','0','100','200','300','400','500'});
+xticklabels({'0','100','200','300','400','500','600','700','800','900','1000'});
 axis ij
 
 plot(xlim, [0 0], 'k');
 plot([0 0], ylim, 'k');
+
+set(gca,'FontSize',14)
 end    
 
 hold off

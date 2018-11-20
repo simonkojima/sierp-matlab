@@ -65,7 +65,7 @@ for l=1:length(Files)
     Data = filtfilt(B, A, Data')';
     if DownsampleRate ~= 1
         for m=1:size(Data,1)
-            Temp.DownsampleData(m,:) = downsample(Data(m,:),DownsampleRate);
+            Temp.DownsampleData(m,:) = decimate(Data(m,:),DownsampleRate);
         end
         Data = Temp.DownsampleData;
         Trigger = TriggerDownsample(Trigger,DownsampleRate,0);
