@@ -11,17 +11,17 @@ clearvars
 
 %%------------------------------------------------------------------------
 
-TriggerSelect = [4 8];
+TriggerSelect = [2 8 32];
 PlotColor = {'b','r'};
 
-Files = 1:4;              %Suffix of Files
-PreFileName = '20181022_B35_';
-SaveFileName = './Stream1.mat';
+Files = [3 6];              %Suffix of Files
+PreFileName = '20181121_B35_Stream_';
+SaveFileName = './Stream3.mat';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-1000 1000];       %min max (uV uV)
 EOGThreshold = [-1000 1000];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [0.1 15]; %0.1 15
+FilterRange = [1 40]; %0.1 15
 AlphaThreshold = 100;        %(%)
 FilterOrder = 2;
 ICAEnable = 0;
