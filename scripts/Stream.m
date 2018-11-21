@@ -13,8 +13,6 @@ Data{2} = KFold(Average.Data,k,0);
 load('Stream3.mat')
 Data{3} = KFold(Average.Data,k,0);
 
-
-
 %% Transforming
 
 for l=1:size(Data,2)
@@ -35,8 +33,8 @@ Data = temp;
 
 for l=1:size(Data,2)
    for m=1:k
-      TrainingDataX{l}{m} = []; 
-      TrainingDataY{l}{m} = []; 
+      TrainingData.X{l}{m} = []; 
+      TrainingData.Y{l}{m} = []; 
    end
 end
 
@@ -45,21 +43,21 @@ for l=1:size(Data,2)
         for n=1:size(Data{l}{m},2)
             for o=1:k
                 if m~=o
-                    TrainingDataX{n}{m} = [TrainingDataX{n}{m}; Data{l}{o}{n}];
-                    TrainingDataY{n}{m} = [TrainingDataY{n}{m}; ones(size(Data{l}{o}{n},1),1)*l];
+                    TrainingData.X{n}{m} = [TrainingData.X{n}{m}; Data{l}{o}{n}];
+                    TrainingData.Y{n}{m} = [TrainingData.Y{n}{m}; ones(size(Data{l}{o}{n},1),1)*l];
                 end
             end
         end
     end
 end
 
-for l=1:size(TrainingDataY,2)
+for l=1:size(TrainingData.Y,2)
    for m=1:k
-       for n=1:size(TrainingDataY{l}{m},1)
-           if TrainingDataY{l}{m}(n) == l
-               TrainingDataY{l}{m}(n) = 1;
+       for n=1:size(TrainingData.Y{l}{m},1)
+           if TrainingData.Y{l}{m}(n) == l
+               TrainingData.Y{l}{m}(n) = 1;
            else
-               TrainingDataY{l}{m}(n) = 0; 
+               TrainingData.Y{l}{m}(n) = 0; 
            end
        end
    end
@@ -69,8 +67,8 @@ end
 
 for l=1:size(Data,2)
    for m=1:k
-      TestDataX{l}{m} = []; 
-      TestDataY{l}{m} = []; 
+      TestData.X{l}{m} = []; 
+      TestData.Y{l}{m} = []; 
    end
 end
 
@@ -79,37 +77,47 @@ for l=1:size(Data,2)
         for n=1:size(Data{l}{m},2)
             for o=1:k
                 if m==o
-                    TestDataX{n}{m} = [TestDataX{n}{m}; Data{l}{o}{n}];
-                    TestDataY{n}{m} = [TestDataY{n}{m}; ones(size(Data{l}{o}{n},1),1)*l];
+                    TestData.X{n}{m} = [TestData.X{n}{m}; Data{l}{o}{n}];
+                    TestData.Y{n}{m} = [TestData.Y{n}{m}; ones(size(Data{l}{o}{n},1),1)*l];
                 end
             end
         end
     end
 end
 
-for l=1:size(TestDataY,2)
+for l=1:size(TestData.Y,2)
    for m=1:k
-       for n=1:size(TestDataY{l}{m},1)
-           if TestDataY{l}{m}(n) == l
-               TestDataY{l}{m}(n) = 1;
+       for n=1:size(TestData.Y{l}{m},1)
+           if TestData.Y{l}{m}(n) == l
+               TestData.Y{l}{m}(n) = 1;
            else
-               TestDataY{l}{m}(n) = 0; 
+               TestData.Y{l}{m}(n) = 0; 
            end
        end
    end
 end
 
-%% 
+%% Designing LDA
 
+for l=1:size(TrainingData.X,2)
+    for m=1:k
+        MdlLinear{l}{m} = fitcdiscr(TrainingData.X{l}{m},TrainingData.Y{l}{m},'DiscrimType','linear');
+        Result{l}{m} = predict(MdlLinear{l}{m},TestData.X{l}{m});
+    end
+end
 
+%% Evaluation 
 
+for l=1:size(TrainingData.X,2)
+   for m=1:k
+       [MCC{l}(m),F1{l}(m),Accuracy{l}(m)] = ClassifierEvaluation(Result{l}{m},TestData.Y{l}{m},0);
+   end
+end
 
+for l=1:size(Accuracy,2)
+    MeanAccuracy(l) = mean(Accuracy{l});
+end
 
-
-
-
-
-
-
-
+MeanAccuracy
+mean(MeanAccuracy)
 

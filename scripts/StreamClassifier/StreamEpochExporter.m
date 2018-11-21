@@ -11,31 +11,48 @@ clearvars
 
 %%------------------------------------------------------------------------
 
+RepNum = 3;
+
+FileStruct{1} = [1 4];
+FileStruct{2} = [2 5];
+FileStruct{3} = [3 6];
+
+SaveFileNameStruct{1} = './Stream1.mat';
+SaveFileNameStruct{2} = './Stream2.mat';
+SaveFileNameStruct{3} = './Stream3.mat';
+
+for Repeat=1:RepNum
+
 TriggerSelect = [2 8 32];
 PlotColor = {'b','r'};
 
-Files = [3 6];              %Suffix of Files
-PreFileName = '20181121_B35_Stream_';
-SaveFileName = './Stream3.mat';
+Files = FileStruct{Repeat};
+SaveFileName = SaveFileNameStruct{Repeat};
+
+%Files = [2 5];              %Suffix of Files
+PreFileName = '20181113_B35_Stream_';
+%SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
-EEGThreshold = [-1000 1000];       %min max (uV uV)
-EOGThreshold = [-1000 1000];       %min max (uV uV)
+EEGThreshold = [-50 50];       %min max (uV uV)
+EOGThreshold = [-Inf Inf];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40]; %0.1 15
-AlphaThreshold = 100;        %(%)
+AlphaThreshold = 20;        %(%)
 FilterOrder = 2;
 ICAEnable = 0;
 
 NumChannel = 64;
-EOGEnable = 2;
+EOGEnable = 1;
 
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
-%ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8s
+%ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
 %ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+%ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 ChannelSelection = [10 32];
 
-%ChannelSelection = 1:64;
+%ChannelSelection = 8:64;
 %ChannelSelection = 1:2:64;
+%ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
 DownsampleRate = 1;
@@ -55,7 +72,7 @@ for l=1:length(Files)
     Data = filtfilt(B, A, Data')';
     if DownsampleRate ~= 1
         for m=1:size(Data,1)
-            Temp.DownsampleData(m,:) = downsample(Data(m,:),DownsampleRate);
+            Temp.DownsampleData(m,:) = decimate(Data(m,:),DownsampleRate);
         end
         Data = Temp.DownsampleData;
         Trigger = TriggerDownsample(Trigger,DownsampleRate,0);
@@ -206,4 +223,25 @@ for l=1:length(TriggerSelect)
    end
 end
 
+if EOGEnable == 1
+    for l=1:length(TriggerSelect)
+        for m=1:size(Average.Data{l},3)
+            temp.Data{l} = Average.Data{l}(1:end-2,:,:);
+            temp.AveragedEpoch{l} = Average.AveragedEpoch{l}(1:end-2,:,:);
+            temp.AllAveraged{l} = Average.AllAveraged{l}(1:end-2,:);            
+        end
+    end
+    Average = temp;
+    clear temp;
+end
+
+for l = 1:length(ChannelSelection)
+    temp(l) = Label(ChannelSelection(l));
+end
+
+Label = temp;
+clear temp;
+
 save(SaveFileName,'Average','EpochTime','Fs','Label');
+clear BaseLine Average BaseLineEpoch
+end
