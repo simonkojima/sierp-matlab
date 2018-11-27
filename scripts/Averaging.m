@@ -12,7 +12,7 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [1 2];
+TriggerSelect = [1 5];
 PlotColor = {'b','r'};
 
 %TriggerSelect = [1 2 4 8];
@@ -21,28 +21,28 @@ PlotColor = {'b','r'};
 FillingColor = [0.7 0.7 0.7]; %gray
 
 Files = [1 4];              %Suffix of Files
-PreFileName = '20181121_B35_Stream_';
-Range = [-0.1 1];         %(s s)
+PreFileName = '20180514_P300';
+Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-300 300];       %min max (uV uV)
 EOGThreshold = [-500 500];
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [0.1 40];
+FilterRange = [1 40];
 AlphaThreshold = 100;        %(%)
 
 FilterOrder = 2;
 TTestAlpha = 0.05;
 TTestEnable = 0;
-DownsampleRate = 2;
+DownsampleRate = 1;
+%
+% EOGEnable = 1;
+% NumChannel = 64;
+% PlotDivision = [9 11];
+% PlotPosition = [4 8 13 15 17 19 21 24 25 26 27 28 29 30 31 32 34 35 36 37 38 39 40 41 42 43 44 46 47 48 49 50 51 52 53 54 56 57 58 59 60 61 62 63 64 65 66 68 69 70 71 72 73 74 75 76 79 81 83 85 87 92 94 96];
 
-EOGEnable = 1;
-NumChannel = 64;
-PlotDivision = [9 11];
-PlotPosition = [4 8 13 15 17 19 21 24 25 26 27 28 29 30 31 32 34 35 36 37 38 39 40 41 42 43 44 46 47 48 49 50 51 52 53 54 56 57 58 59 60 61 62 63 64 65 66 68 69 70 71 72 73 74 75 76 79 81 83 85 87 92 94 96];
-
-% EOGEnable = 0;
-% NumChannel = 7;
-% PlotDivision = [3 3];
-% PlotPosition = [1 2 3 5 7 8 9];
+EOGEnable = 0;
+NumChannel = 7;
+PlotDivision = [3 3];
+PlotPosition = [1 2 3 5 7 8 9];
 
 
 PlotYRange = [0 0];         %ylabel Range (uV uV) [0 0] -> Auto
@@ -77,78 +77,61 @@ for l=1:length(Files)
 end
 Data = Temp.Data;
 Trigger = Temp.Trigger;
+
+if EOGEnable == 1
+    EOGData = Data(end-1:end,:);
+    Data = Data(1:end-2,:);
+end
+
+if size(Data,1) ~= NumChannel
+    fprintf('Error : NumChannel Does Not Match\n');
+    return
+end
+
 clear Temp
 
 %% Slicing Epoch Data
 fprintf('Epoching Data.....\n');
 for l=1:length(TriggerSelect)
-    count{l} = 0;
-    for m=1:length(Trigger)
-        if Trigger(m) == TriggerSelect(l)
-            count{l} = count{l}+1;
-            Average.Data{l}(:,:,count{l}) = Data(:,m+floor(Range(1)*Fs):m+floor(Range(2)*Fs));
-            %fprintf('Slicing Epoch Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
-        end
+    Average.Data{l} = Epoch(Data,Trigger,Range,TriggerSelect(l),Fs);
+    BaseLineEpoch{l} = BaseLine(Epoch(Data,Trigger,BaseLineRange,TriggerSelect(l),Fs),Range,Fs);
+    Average.Data{l} = Average.Data{l} - BaseLineEpoch{l};
+    if EOGEnable == 1
+        Average.EOGData{l} = Epoch(EOGData,Trigger,Range,TriggerSelect(l),Fs);
     end
-end
-clear count;
-
-%% Base Line
-fprintf('Epoching Base Line.....\n');
-for l=1:length(TriggerSelect)
-    count{l} = 0;
-    for m=1:length(Trigger)
-        if Trigger(m) == TriggerSelect(l)
-            count{l} = count{l}+1;
-            BaseLineEpoch{l}(:,:,count{l}) = Data(:,m+floor(BaseLineRange(1)*Fs):m+floor(BaseLineRange(2)*Fs));
-            %fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
-        end
-    end
-end
-clear count;
-
-%% Compute BaseLine
-
-fprintf('Computing Base Line.....\n');
-for l=1:length(TriggerSelect)
-    BaseLine{l} = repmat(mean(BaseLineEpoch{l},2),1,size(Average.Data{l},2));
-end
-
-for l=1:length(TriggerSelect)
-    Average.Data{l} = Average.Data{l} - BaseLine{l};
+    
 end
 
 %% Evaluate Each Epoch Data
 
 fprintf('Evaluating.....\n');
 for l=1:length(TriggerSelect)
-    if sum(abs(EEGThreshold)) ~= 0
-        for m=1:size(Average.Data{l},3)
-            temp = squeeze(Average.Data{l}(1:NumChannel,:,m));
-            AllRangeBandPower = bandpower(mean(temp,1)',Fs,FilterRange);
-            AlphaRangeBandPower = bandpower(mean(temp,1)',Fs,[8 13]);
-            PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
-            if (min(temp(:)) < EEGThreshold(1)) || (max(temp(:)) > EEGThreshold(2))
+    for m=1:size(Average.Data{l},3)
+        temp = squeeze(Average.Data{l}(:,:,m));
+        AllRangeBandPower = bandpower(mean(temp,1)',Fs,FilterRange);
+        AlphaRangeBandPower = bandpower(mean(temp,1)',Fs,[8 13]);
+        PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
+        if (min(temp(:)) < EEGThreshold(1)) || (max(temp(:)) > EEGThreshold(2))
+            Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
+            Average.Accepted{l}(m) = 0;
+        else
+            if PerPower > AlphaThreshold
                 Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
                 Average.Accepted{l}(m) = 0;
             else
-                if PerPower > AlphaThreshold
-                    Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-                    Average.Accepted{l}(m) = 0;
-                else
-                    Average.Accepted{l}(m) = 1;
-                end
+                Average.Accepted{l}(m) = 1;
             end
         end
     end
     
-    if sum(abs(EOGThreshold)) ~= 0 && EOGEnable == 1
-        temp = squeeze(Average.Data{l}(NumChannel+1:NumChannel+2,:,m));
+    if EOGEnable == 1
+        temp = squeeze(Average.EOGData{l}(:,:,m));
         if (min(temp(:)) < EOGThreshold(1)) || (max(temp(:)) > EOGThreshold(2))
             Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
             Average.Accepted{l}(m) = 0;
         end
     end
+    
     
 end
 clear temp

@@ -11,9 +11,10 @@ OpenEnable = 1;
 
 if OpenEnable == 1
     open StreamEpochExporter.m
-    open KFold.m
-    open StreamMakeTrainingDatasets.m
-    open StreamMakeTestDatasets.m
+    %open KFold.m
+    %open StreamMakeTrainingDatasets.m
+    %open StreamMakeTestDatasets.m
+    open Stream.m
     return
 end
 

@@ -84,99 +84,61 @@ for l=1:length(Files)
 end
 Data = Temp.Data;
 Trigger = Temp.Trigger;
-clear Temp
-
-Temp.Data = [];
-for l=1:length(ChannelSelection)
-    Temp.Data = [Temp.Data; Data(ChannelSelection(l),:)];
-end
-
-if ICAEnable == 1
-    Temp.Data = fastica(Temp.Data);
-end
 
 if EOGEnable == 1
-    for l=1:2
-        Temp.Data = [Temp.Data; Data(NumChannel+l,:)];
-    end
+    EOGData = Data(end-1:end,:);
+    Data = Data(1:end-2,:);
 end
 
-Data = Temp.Data;
+if size(Data,1) ~= NumChannel
+    fprintf('Error : NumChannel Does Not Match\n');
+    return
+end
+
+clear Temp
 
 %% Slicing Epoch Data
 fprintf('Epoching Data.....\n');
 for l=1:length(TriggerSelect)
-   count{l} = 0;
-   for m=1:length(Trigger)
-      if Trigger(m) == TriggerSelect(l)
-          count{l} = count{l}+1;
-          Average.Data{l}(:,:,count{l}) = Data(:,m+floor(Range(1)*Fs):m+floor(Range(2)*Fs));
-          %fprintf('Slicing Epoch Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
-      end
-   end
-end
-clear count;
-
-%% Base Line
-fprintf('Epoching Base Line.....\n');
-for l=1:length(TriggerSelect)
-    count{l} = 0;
-   for m=1:length(Trigger)
-      if Trigger(m) == TriggerSelect(l)    
-          count{l} = count{l}+1;
-          BaseLineEpoch{l}(:,:,count{l}) = Data(:,m+floor(BaseLineRange(1)*Fs):m+floor(BaseLineRange(2)*Fs));
-          %fprintf('Slicing BaseLine Data No.%.0f of Trigger No.%.0f\n',count{l},TriggerSelect(l));
-      end
-   end
-end
-clear count;
-
-%% Compute BaseLine
-
-fprintf('Computing Base Line.....\n');
-for l=1:length(TriggerSelect)
-    BaseLine{l} = repmat(mean(BaseLineEpoch{l},2),1,size(Average.Data{l},2));
-end
-
-for l=1:length(TriggerSelect)
-   Average.Data{l} = Average.Data{l} - BaseLine{l}; 
+    Average.Data{l} = Epoch(Data,Trigger,Range,TriggerSelect(l),Fs);
+    BaseLineEpoch{l} = BaseLine(Epoch(Data,Trigger,BaseLineRange,TriggerSelect(l),Fs),Range,Fs);
+    Average.Data{l} = Average.Data{l} - BaseLineEpoch{l};
+    if EOGEnable == 1
+        Average.EOGData{l} = Epoch(EOGData,Trigger,Range,TriggerSelect(l),Fs);
+    end
+    
 end
 
 %% Evaluate Each Epoch Data
 
 fprintf('Evaluating.....\n');
 for l=1:length(TriggerSelect)
-    if sum(abs(EEGThreshold)) ~= 0
-       for m=1:size(Average.Data{l},3)
-           if EOGEnable == 1
-               temp = squeeze(Average.Data{l}(1:end-2,:,m));
-           else
-               temp = squeeze(Average.Data{l}(1:end,:,m));
-           end
-           AllRangeBandPower = bandpower(mean(temp,1)',Fs,FilterRange);
-           AlphaRangeBandPower = bandpower(mean(temp,1)',Fs,[8 13]);
-           PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
-           if (min(temp(:)) < EEGThreshold(1)) || (max(temp(:)) > EEGThreshold(2))
-                    Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-                    Average.Accepted{l}(m) = 0;
-           else
-               if PerPower > AlphaThreshold
-                    Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-                    Average.Accepted{l}(m) = 0;
-               else
-                    Average.Accepted{l}(m) = 1;
-               end
-           end
-       end
+    for m=1:size(Average.Data{l},3)
+        temp = squeeze(Average.Data{l}(:,:,m));
+        AllRangeBandPower = bandpower(mean(temp,1)',Fs,FilterRange);
+        AlphaRangeBandPower = bandpower(mean(temp,1)',Fs,[8 13]);
+        PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
+        if (min(temp(:)) < EEGThreshold(1)) || (max(temp(:)) > EEGThreshold(2))
+            Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
+            Average.Accepted{l}(m) = 0;
+        else
+            if PerPower > AlphaThreshold
+                Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
+                Average.Accepted{l}(m) = 0;
+            else
+                Average.Accepted{l}(m) = 1;
+            end
+        end
     end
     
-    if sum(abs(EOGThreshold)) ~= 0 && EOGEnable == 1
-        temp = squeeze(Average.Data{l}(end-1:end,:,m));
+    if EOGEnable == 1
+        temp = squeeze(Average.EOGData{l}(:,:,m));
         if (min(temp(:)) < EOGThreshold(1)) || (max(temp(:)) > EOGThreshold(2))
             Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
             Average.Accepted{l}(m) = 0;
         end
     end
+    
     
 end
 clear temp
@@ -185,10 +147,10 @@ for l=1:size(Average.Data,2)
     count = 0;
     Average.NumAllEpoch{l} = size(Average.Data{l},3);
     for m=1:size(Average.Data{l},3)
-       if Average.Accepted{l}(m) == 1
-           count = count+1;
-           Average.Temporary{l}(:,:,count) = Average.Data{l}(:,:,m);
-       end
+        if Average.Accepted{l}(m) == 1
+            count = count+1;
+            Average.Temporary{l}(:,:,count) = Average.Data{l}(:,:,m);
+        end
     end
     Average.Accepted{l} = sum(Average.Accepted{l});
 end
@@ -200,6 +162,7 @@ Average = rmfield(Average,'Temporary');
 for l=1:length(TriggerSelect)
     fprintf('Trigger No.%.0f, Accepted Epoch Data : %.0f of %.0f\n',TriggerSelect(l),Average.Accepted{l},Average.NumAllEpoch{l});
 end
+
 %% Averaging
 
 fprintf('Averaging.....\n');
