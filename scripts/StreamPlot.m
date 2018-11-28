@@ -30,8 +30,8 @@ Stream{3} = Average;
 % StreamSelection = 2;
 % StreamPlotColor = {'b','r','b--'};
 
-% StreamSelection = 3;
-% StreamPlotColor = {'b','b--','r'};
+StreamSelection = 3;
+StreamPlotColor = {'b','b--','r'};
 
 for l=1:length(Channel)
     
@@ -78,17 +78,21 @@ for l=1:length(Channel)
     %ylim(yrange);
     xlim(Range);
     ylabel({Label{Channel(l)},PlotYLabel});
-    ylabel(Label{Channel(l)});
-    xlabel(PlotXLabel);
+    %ylabel(Label{Channel(l)});
+    xlabel({PlotXLabel,'Deviant 3'});
     xticks(Range(1):0.1:Range(2));
     xticklabels({'-100','0','100','200','300','400','500'});
-    xticklabels({'0','100','200','300','400','500','600','700','800','900','1000'});
+    %xticklabels({'0','100','200','300','400','500','600','700','800','900','1000'});
     axis ij
     
     plot(xlim, [0 0], 'k');
     plot([0 0], ylim, 'k');
     
+    legend('Stream 1','Stream 2','Stream 3');
+    
     set(gca,'FontSize',14)
+    
+    
 end
 
 hold off
