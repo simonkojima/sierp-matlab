@@ -12,7 +12,7 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [1 5];
+TriggerSelect = [4 8];
 PlotColor = {'b','r'};
 
 %TriggerSelect = [1 2 4 8];
@@ -20,8 +20,8 @@ PlotColor = {'b','r'};
 
 FillingColor = [0.7 0.7 0.7]; %gray
 
-Files = [1 4];              %Suffix of Files
-PreFileName = '20180514_P300';
+Files = [5];              %Suffix of Files
+PreFileName = '20181127_B36_Stream_';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-300 300];       %min max (uV uV)
 EOGThreshold = [-500 500];
@@ -33,16 +33,22 @@ FilterOrder = 2;
 TTestAlpha = 0.05;
 TTestEnable = 0;
 DownsampleRate = 1;
-%
-% EOGEnable = 1;
-% NumChannel = 64;
-% PlotDivision = [9 11];
-% PlotPosition = [4 8 13 15 17 19 21 24 25 26 27 28 29 30 31 32 34 35 36 37 38 39 40 41 42 43 44 46 47 48 49 50 51 52 53 54 56 57 58 59 60 61 62 63 64 65 66 68 69 70 71 72 73 74 75 76 79 81 83 85 87 92 94 96];
 
-EOGEnable = 0;
-NumChannel = 7;
-PlotDivision = [3 3];
-PlotPosition = [1 2 3 5 7 8 9];
+
+
+
+EOGEnable = 1;
+NumChannel = 64;
+PlotDivision = [9 11];
+PlotPosition = [4 8 13 15 17 19 21 24 25 26 27 28 29 30 31 32 34 35 36 37 38 39 40 41 42 43 44 46 47 48 49 50 51 52 53 54 56 57 58 59 60 61 62 63 64 65 66 68 69 70 71 72 73 74 75 76 79 81 83 85 87 92 94 96];
+
+
+
+
+% EOGEnable = 0;
+% NumChannel = 7;
+% PlotDivision = [3 3];
+% PlotPosition = [1 2 3 5 7 8 9];
 
 
 PlotYRange = [0 0];         %ylabel Range (uV uV) [0 0] -> Auto
@@ -84,7 +90,8 @@ if EOGEnable == 1
 end
 
 if size(Data,1) ~= NumChannel
-    fprintf('Error : NumChannel Does Not Match\n');
+    fprintf('Error : Number of Channel Does Not Match\n');
+    fprintf('Error : Terminated\n')
     return
 end
 

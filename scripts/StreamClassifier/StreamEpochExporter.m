@@ -14,12 +14,12 @@ clearvars
 RepNum = 3;
 
 FileStruct{1} = [1 4];
-FileStruct{2} = [2 5];
-FileStruct{3} = [3 6];
+FileStruct{2} = [2 6];
+FileStruct{3} = [3 7];
 
-SaveFileNameStruct{1} = './Stream1.mat';
-SaveFileNameStruct{2} = './Stream2.mat';
-SaveFileNameStruct{3} = './Stream3.mat';
+SaveFileNameStruct{1} = './LowStream.mat';
+SaveFileNameStruct{2} = './MidStream.mat';
+SaveFileNameStruct{3} = './HighStream.mat';
 
 for Repeat=1:RepNum
 
@@ -30,14 +30,14 @@ Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20181113_B35_Stream_';
+PreFileName = '20181127_B36_Stream_';
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-50 50];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40]; %0.1 15
-AlphaThreshold = 20;        %(%)
+AlphaThreshold = 20;
 FilterOrder = 2;
 ICAEnable = 0;
 
@@ -49,6 +49,8 @@ EOGEnable = 1;
 %ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 ChannelSelection = [10 32];
+
+%ChannelSelection = 1:64;
 
 %ChannelSelection = 8:64;
 %ChannelSelection = 1:2:64;
@@ -84,6 +86,8 @@ for l=1:length(Files)
 end
 Data = Temp.Data;
 Trigger = Temp.Trigger;
+clear Temp
+
 
 if EOGEnable == 1
     EOGData = Data(end-1:end,:);
@@ -94,6 +98,13 @@ if size(Data,1) ~= NumChannel
     fprintf('Error : NumChannel Does Not Match\n');
     return
 end
+
+Temp.Data = [];
+for l=1:length(ChannelSelection)
+    Temp.Data = [Temp.Data; Data(ChannelSelection(l),:)];
+end
+
+Data = Temp.Data;
 
 clear Temp
 
@@ -186,17 +197,17 @@ for l=1:length(TriggerSelect)
    end
 end
 
-if EOGEnable == 1
-    for l=1:length(TriggerSelect)
-        for m=1:size(Average.Data{l},3)
-            temp.Data{l} = Average.Data{l}(1:end-2,:,:);
-            temp.AveragedEpoch{l} = Average.AveragedEpoch{l}(1:end-2,:,:);
-            temp.AllAveraged{l} = Average.AllAveraged{l}(1:end-2,:);            
-        end
-    end
-    Average = temp;
-    clear temp;
-end
+% if EOGEnable == 1
+%     for l=1:length(TriggerSelect)
+%         for m=1:size(Average.Data{l},3)
+%             temp.Data{l} = Average.Data{l}(1:end-2,:,:);
+%             temp.AveragedEpoch{l} = Average.AveragedEpoch{l}(1:end-2,:,:);
+%             temp.AllAveraged{l} = Average.AllAveraged{l}(1:end-2,:);            
+%         end
+%     end
+%     Average = temp;
+%     clear temp;
+% end
 
 for l = 1:length(ChannelSelection)
     temp(l) = Label(ChannelSelection(l));

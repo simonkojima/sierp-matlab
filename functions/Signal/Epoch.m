@@ -1,11 +1,13 @@
 function EpochData = Epoch(EEGData,TriggerData,Range,SelectedTrigger,Fs)
 
 if length(Range) ~= 2
-    fprintf('Error : Range should have length of 2');
+    fprintf('Error : Range have to be a vector which has length of 2');
+    return
 end
 
 if length(SelectedTrigger) ~= 1
-    fprintf('Error : Trigger should have length of 2') ;
+    fprintf('Error : SelectedTrigger should have length of 2') ;
+    return
 end
 
 Count = 0;

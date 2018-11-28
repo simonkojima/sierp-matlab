@@ -4,13 +4,13 @@ clearvars
 
 k = 10;
 
-load('Stream1.mat')
+load('LowStream.mat')
 Data{1} = KFold(Average.Data,k,0);
 
-load('Stream2.mat')
+load('MidStream.mat')
 Data{2} = KFold(Average.Data,k,0);
 
-load('Stream3.mat')
+load('HighStream.mat')
 Data{3} = KFold(Average.Data,k,0);
 
 %% Transforming
@@ -18,11 +18,12 @@ Data{3} = KFold(Average.Data,k,0);
 for l=1:size(Data,2)
     for m=1:k
         for n=1:size(Data{l}{m},2)
-            for z = 1:size(Data{l}{m}{n},3)
-                for x = 1:size(Data{l}{m}{n},1)
-                    temp{l}{m}{n}(z,:) = [Data{l}{m}{n}(x,:,z) Data{l}{m}{n}(x,:,z)];
-                end
-            end
+            temp{l}{m}{n} = Vectorizer(Data{l}{m}{n});
+%             for z = 1:size(Data{l}{m}{n},3)
+%                 for x = 1:size(Data{l}{m}{n},1)
+%                     temp{l}{m}{n}(z,:) = [Data{l}{m}{n}(x,:,z) Data{l}{m}{n}(x,:,z)];
+%                 end
+%             end
         end
     end
 end
