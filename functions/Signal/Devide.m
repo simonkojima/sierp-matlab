@@ -1,6 +1,6 @@
 function EpochData = Devide(EEGData,SampleNum,TimeRange,Fs)
 
-if length(Range) ~= 2
+if length(TimeRange) ~= 2
     fprintf('Error : Range have to be a vector which has length of 2');
     return
 end
