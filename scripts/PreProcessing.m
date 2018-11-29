@@ -1,8 +1,8 @@
 clearvars
 
-Files = 1;
-PreFileName = '20181127_B36_Stream_';
-SaveFileName = '20181127_B36_Stream_0001_Processed.mat';
+Files = 6;
+PreFileName = '20181121_B35_Stream_';
+SaveFileName = '20181121_B35_Stream_0006_Processed.mat';
 
 FilterRange = [1 40]; %0.1 15
 FilterOrder = 2;
@@ -12,9 +12,9 @@ EOGEnable = 1;
 
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
-%ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
-ChannelSelection = [10 32];
+%ChannelSelection = [10 32];
 
 %ChannelSelection = 1:64;
 
@@ -23,7 +23,7 @@ ChannelSelection = [10 32];
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 1;
+DownsampleRate = 4;
 
 Temp.Data = [];
 Temp.Trigger = [];

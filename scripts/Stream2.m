@@ -1,6 +1,5 @@
 clearvars
 
-
 load './LowStream.mat'
 Stream{1} = Average;
 
@@ -12,8 +11,10 @@ Stream{3} = Average;
 
 clear Average;
 
-SimulatingFile = '20181127_B36_Stream_0001_Processed.mat';
+SimulatingFile = '20181121_B35_Stream_0002_Processed.mat';
 TriggerSelect = [2 8 32];
+
+CorrectClass = 2;
 
 %% Making Training Data
 
@@ -33,37 +34,76 @@ end
 %% Designing LDA
 
 for Deviant=1:size(TrainingData.X,2)
-    MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','linear');
+    MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','pseudolinear');
 end
 
 %% Simulating
 
 load(SimulatingFile);
+SimulatingRange = [0 10];
+
 for l=1:size(Trigger,2)
     if Trigger(l) ~= 0
-       FirstTrigger = l; 
+        FirstTrigger = l;
+        break
     end
 end
 
-for l=FirstTrigger:10*Fs:size(Data,2)
-    Interval = Devide(Data,l,[0 10],Fs);
-    IntervalTrigger = Devide(Trigger,l,[0 10],Fs);
+Count = 0;
+for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
+    Interval = Devide(Data,l,SimulatingRange,Fs);
+    IntervalTrigger = Devide(Trigger,l,SimulatingRange,Fs);
     for m=1:length(TriggerSelect)
-        %EpochData{m} = [];
-        %EpochData{m} = 
-        %size(TriggerSelect(m))
-        Epoch(Interval,IntervalTrigger,[-0.1 0.5],TriggerSelect(m),Fs)
+        EpochData{m} = Epoch(Interval,IntervalTrigger,[-0.1 0.5],TriggerSelect(m),Fs);
     end
-    return
+    
+    for m=1:size(MdlLinear,2)
+        if EpochData{m} ~= 0
+            Result{m} = predict(MdlLinear{m},Vectorizer(EpochData{m}));
+        else
+           Result{m} = 0; 
+        end
+    end
+    
+    Count = Count + 1;
+%     fprintf('\n');
+%     fprintf('-%dth Section-\n',Count);
+%     fprintf('\n');
+    for m=1:size(Result,2)
+        P{m} = mean(Result{m});
+%         fprintf('Class %d : %f\n',m,P{m});
+    end
+%     fprintf('\n');
+    
+    %for m=1:size(P,2)
+    Score(Count,:) = [P{1} P{2} P{3}];
+       
+    %end
+    
+    %break
 end
 
+[M,I] = max(Score,[],2);
 
+temp = sum(Score,2);
+for l=1:length(I)
+   if temp(l) == 0
+      I(l) = 0; 
+   end
+end
 
+FalseCount = 0;
+for l=1:length(I)
+    if I(l) ~= CorrectClass
+       FalseCount = FalseCount + 1; 
+    end
+end
 
+fprintf('Accuracy : %f%%\n',(1-FalseCount/length(I))*100);
 
-
-
-
+% for l=1:size(MdlLinear,2)
+%     mean(Result{l})
+% end
 
 
 

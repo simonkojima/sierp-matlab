@@ -10,6 +10,8 @@ if sum(size(SelectedTrigger)) ~= 2
     return
 end
 
+EpochData = [];
+
 Count = 0;
 for l = 1:size(TriggerData,2)
     if TriggerData(l) == SelectedTrigger
@@ -18,6 +20,10 @@ for l = 1:size(TriggerData,2)
             EpochData(:,:,Count) = EEGData(:,l+floor(Range(1)*Fs):l+floor(Range(2)*Fs));
         end
     end
+end
+
+if isempty(EpochData) == 1
+   EpochData = 0; 
 end
 
 end
