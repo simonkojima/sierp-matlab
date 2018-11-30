@@ -11,7 +11,7 @@ Stream{3} = Average;
 
 clear Average;
 
-SimulatingFile = '20181121_B35_Stream_0002_Processed.mat';
+SimulatingFile = '20181127_B36_Stream_0006_Processed.mat';
 TriggerSelect = [2 8 32];
 
 CorrectClass = 2;
@@ -40,7 +40,7 @@ end
 %% Simulating
 
 load(SimulatingFile);
-SimulatingRange = [0 10];
+SimulatingRange = [0 15];
 
 for l=1:size(Trigger,2)
     if Trigger(l) ~= 0
@@ -98,6 +98,8 @@ for l=1:length(I)
        FalseCount = FalseCount + 1; 
     end
 end
+
+I
 
 fprintf('Accuracy : %f%%\n',(1-FalseCount/length(I))*100);
 

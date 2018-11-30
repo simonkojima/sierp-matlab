@@ -13,9 +13,9 @@ clearvars
 
 RepNum = 3;
 
-FileStruct{1} = [1 4];
-FileStruct{2} = [2 5];
-FileStruct{3} = [3 6];
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
 
 SaveFileNameStruct{1} = './LowStream.mat';
 SaveFileNameStruct{2} = './MidStream.mat';
@@ -24,13 +24,12 @@ SaveFileNameStruct{3} = './HighStream.mat';
 for Repeat=1:RepNum
 
 TriggerSelect = [2 8 32];
-PlotColor = {'b','r'};
 
 Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20181121_B35_Stream_';
+PreFileName = '20181127_B36_Stream_';
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-Inf Inf];       %min max (uV uV)
@@ -47,6 +46,7 @@ EOGEnable = 1;
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
 ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+%ChannelSelection = [32 49 52 55]; % Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
@@ -57,7 +57,7 @@ ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 2;
 AveragingNum = 1;
 
 Temp.Data = [];

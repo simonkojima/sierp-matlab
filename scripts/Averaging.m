@@ -20,8 +20,8 @@ PlotColor = {'b','r'};
 
 FillingColor = [0.7 0.7 0.7]; %gray
 
-Files = [5];              %Suffix of Files
-PreFileName = '20181127_B36_Stream_';
+Files = [2 4 6];              %Suffix of Files
+PreFileName = '20181129_B36_Stream_';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-300 300];       %min max (uV uV)
 EOGThreshold = [-500 500];

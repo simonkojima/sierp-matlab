@@ -1,8 +1,8 @@
 clearvars
 
-Files = 6;
-PreFileName = '20181121_B35_Stream_';
-SaveFileName = '20181121_B35_Stream_0006_Processed.mat';
+Files = [4 6 7];
+PreFileName = '20181127_B36_Stream_';
+SaveFileSuffix = '_Processed';
 
 FilterRange = [1 40]; %0.1 15
 FilterOrder = 2;
@@ -13,6 +13,7 @@ EOGEnable = 1;
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
 ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+%ChannelSelection = [32 49 52 55]; % Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
@@ -23,7 +24,7 @@ ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 2;
 
 Temp.Data = [];
 Temp.Trigger = [];
@@ -33,7 +34,7 @@ for l=1:length(Files)
     for m=1:4-strlength(FileNumberString)
         FileNumberString = strcat(num2str(0),FileNumberString);
     end
-    FileName = sprintf(strcat(strcat(PreFileName,FileNumberString),'.mat'))
+    FileName = sprintf(strcat(PreFileName,FileNumberString))
     load(FileName);
     [B, A] = butter(FilterOrder, FilterRange/(Fs/2), 'bandpass');
     Data = filtfilt(B, A, Data')';
@@ -46,31 +47,33 @@ for l=1:length(Files)
         Fs = Fs/DownsampleRate;
     end
     
-    Temp.Data = [Temp.Data Data];
-    Temp.Trigger = [Temp.Trigger Trigger];
+    %Temp.Data = [Temp.Data Data];
+    %Temp.Trigger = [Temp.Trigger Trigger];
+    
+%     Data = Temp.Data;
+%     Trigger = Temp.Trigger;
+    clear Temp
+    
+    if EOGEnable == 1
+        EOGData = Data(end-1:end,:);
+        Data = Data(1:end-2,:);
+    end
+    
+    if size(Data,1) ~= NumChannel
+        fprintf('Error : NumChannel Does Not Match\n');
+        return
+    end
+    
+    Temp.Data = [];
+    for m=1:length(ChannelSelection)
+        Temp.Data = [Temp.Data; Data(ChannelSelection(m),:)];
+    end
+    
+    Data = Temp.Data;
+    
+    clear Temp
+    
+    SaveFileName = sprintf(strcat(PreFileName,FileNumberString,SaveFileSuffix,'.mat'))
+    save(SaveFileName,'Data','Fs','Label','Time','Trigger');
+    
 end
-Data = Temp.Data;
-Trigger = Temp.Trigger;
-clear Temp
-
-
-if EOGEnable == 1
-    EOGData = Data(end-1:end,:);
-    Data = Data(1:end-2,:);
-end
-
-if size(Data,1) ~= NumChannel
-    fprintf('Error : NumChannel Does Not Match\n');
-    return
-end
-
-Temp.Data = [];
-for l=1:length(ChannelSelection)
-    Temp.Data = [Temp.Data; Data(ChannelSelection(l),:)];
-end
-
-Data = Temp.Data;
-
-clear Temp
-
-save(SaveFileName,'Data','Fs','Label','Time','Trigger');
