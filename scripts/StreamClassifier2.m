@@ -9,12 +9,14 @@ Stream{2} = Average;
 load './HighStream.mat'
 Stream{3} = Average;
 
-clear Average;
+clear Average
 
-SimulatingFile = '20181127_B36_Stream_0006_Processed.mat';
+SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
 TriggerSelect = [2 8 32];
 
-CorrectClass = 2;
+RetainingVariance = 99;
+
+CorrectClass = 3;
 
 %% Making Training Data
 
@@ -31,6 +33,19 @@ for Deviant=1:size(Stream,2)
     end
 end
 
+%% Standardize
+for l=1:size(TrainingData.X,2)
+    [TrainingData.X{l},Standardize{l}.meanvec,Standardize{l}.stdvec] = Standardization(TrainingData.X{l});
+end
+
+%% Applying PCA
+
+for l=1:size(TrainingData.X,2)
+    [pca{l}.U,pca{l}.S,pca{l}.V] = PCA(TrainingData.X{l});
+    pca{l}.k = DetDimension(pca{l}.S,RetainingVariance);
+    TrainingData.X{l} = TrainingData.X{l}*pca{l}.U(:,1:pca{l}.k);
+end
+
 %% Designing LDA
 
 for Deviant=1:size(TrainingData.X,2)
@@ -40,7 +55,7 @@ end
 %% Simulating
 
 load(SimulatingFile);
-SimulatingRange = [0 15];
+SimulatingRange = [0 10];
 
 for l=1:size(Trigger,2)
     if Trigger(l) ~= 0
@@ -59,7 +74,13 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     
     for m=1:size(MdlLinear,2)
         if EpochData{m} ~= 0
-            Result{m} = predict(MdlLinear{m},Vectorizer(EpochData{m}));
+            
+            FeatureVector = Vectorizer(EpochData{m});
+            
+            FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
+            FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
+            
+            Result{m} = predict(MdlLinear{m},FeatureVector);
         else
            Result{m} = 0; 
         end

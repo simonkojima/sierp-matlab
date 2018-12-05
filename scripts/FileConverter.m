@@ -8,7 +8,7 @@ clearvars
 %   Settings
 
 EEGFileName = '20181121_B35_Stream_';
-FileNumber = 6;
+FileNumber = 7;
 
 %--------------------------------------------------------------------------
 

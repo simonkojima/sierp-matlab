@@ -1,6 +1,6 @@
 clearvars
 
-Files = [4 6 7];
+Files = 1:3;
 PreFileName = '20181127_B36_Stream_';
 SaveFileSuffix = '_Processed';
 

@@ -13,9 +13,9 @@ clearvars
 
 RepNum = 3;
 
-FileStruct{1} = [1];
-FileStruct{2} = [2];
-FileStruct{3} = [3];
+FileStruct{1} = [4];
+FileStruct{2} = [6];
+FileStruct{3} = [7];
 
 SaveFileNameStruct{1} = './LowStream.mat';
 SaveFileNameStruct{2} = './MidStream.mat';

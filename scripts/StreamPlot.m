@@ -30,8 +30,8 @@ Stream{3} = Average;
 % StreamSelection = 2;
 % StreamPlotColor = {'b','r','b--'};
 
-StreamSelection = 3;
-StreamPlotColor = {'b','b--','r'};
+StreamSelection = 1;
+StreamPlotColor = {'r','b','b--'};
 
 for l=1:length(Channel)
     
