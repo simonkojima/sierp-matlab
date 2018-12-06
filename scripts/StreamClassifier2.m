@@ -14,9 +14,13 @@ clear Average
 SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
 TriggerSelect = [2 8 32];
 
-RetainingVariance = 99;
+EpochRange = [-0.1 0.5];
 
 CorrectClass = 3;
+
+StandardizeEnable = 1;
+PCAEnable = 1;
+RetainingVariance = 99;
 
 %% Making Training Data
 
@@ -34,16 +38,20 @@ for Deviant=1:size(Stream,2)
 end
 
 %% Standardize
-for l=1:size(TrainingData.X,2)
-    [TrainingData.X{l},Standardize{l}.meanvec,Standardize{l}.stdvec] = Standardization(TrainingData.X{l});
+if Standardize == 1
+    for l=1:size(TrainingData.X,2)
+        [TrainingData.X{l},Standardize{l}.meanvec,Standardize{l}.stdvec] = Standardization(TrainingData.X{l});
+    end
 end
 
 %% Applying PCA
 
-for l=1:size(TrainingData.X,2)
-    [pca{l}.U,pca{l}.S,pca{l}.V] = PCA(TrainingData.X{l});
-    pca{l}.k = DetDimension(pca{l}.S,RetainingVariance);
-    TrainingData.X{l} = TrainingData.X{l}*pca{l}.U(:,1:pca{l}.k);
+if PCAEnable == 1
+    for l=1:size(TrainingData.X,2)
+        [pca{l}.U,pca{l}.S,pca{l}.V] = PCA(TrainingData.X{l});
+        pca{l}.k = DetDimension(pca{l}.S,RetainingVariance);
+        TrainingData.X{l} = TrainingData.X{l}*pca{l}.U(:,1:pca{l}.k);
+    end
 end
 
 %% Designing LDA
@@ -66,10 +74,12 @@ end
 
 Count = 0;
 for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
-    Interval = Devide(Data,l,SimulatingRange,Fs);
+    
+    IntervalData = Devide(Data,l,SimulatingRange,Fs);
     IntervalTrigger = Devide(Trigger,l,SimulatingRange,Fs);
+    
     for m=1:length(TriggerSelect)
-        EpochData{m} = Epoch(Interval,IntervalTrigger,[-0.1 0.5],TriggerSelect(m),Fs);
+        EpochData{m} = Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs);
     end
     
     for m=1:size(MdlLinear,2)
@@ -77,28 +87,33 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             
             FeatureVector = Vectorizer(EpochData{m});
             
-            FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
-            FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
+            if Standardize == 1
+                FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
+            end
+            
+            if PCAEnable == 1
+                FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
+            end
             
             Result{m} = predict(MdlLinear{m},FeatureVector);
         else
-           Result{m} = 0; 
+            Result{m} = 0;
         end
     end
     
     Count = Count + 1;
-%     fprintf('\n');
-%     fprintf('-%dth Section-\n',Count);
-%     fprintf('\n');
+    %     fprintf('\n');
+    %     fprintf('-%dth Section-\n',Count);
+    %     fprintf('\n');
     for m=1:size(Result,2)
         P{m} = mean(Result{m});
-%         fprintf('Class %d : %f\n',m,P{m});
+        %         fprintf('Class %d : %f\n',m,P{m});
     end
-%     fprintf('\n');
+    %     fprintf('\n');
     
     %for m=1:size(P,2)
     Score(Count,:) = [P{1} P{2} P{3}];
-       
+    
     %end
     
     %break
@@ -108,15 +123,15 @@ end
 
 temp = sum(Score,2);
 for l=1:length(I)
-   if temp(l) == 0
-      I(l) = 0; 
-   end
+    if temp(l) == 0
+        I(l) = 0;
+    end
 end
 
 FalseCount = 0;
 for l=1:length(I)
     if I(l) ~= CorrectClass
-       FalseCount = FalseCount + 1; 
+        FalseCount = FalseCount + 1;
     end
 end
 

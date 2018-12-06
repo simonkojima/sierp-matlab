@@ -20,14 +20,14 @@ PlotColor = {'b','r'};
 
 FillingColor = [0.7 0.7 0.7]; %gray
 
-Files = [2 4 6];              %Suffix of Files
-PreFileName = '20181129_B36_Stream_';
+Files = [1 4];              %Suffix of Files
+PreFileName = '20181206_B33_Stream_';
 Range = [-0.1 0.5];         %(s s)
-EEGThreshold = [-300 300];       %min max (uV uV)
-EOGThreshold = [-500 500];
+EEGThreshold = [-50 50];       %min max (uV uV)
+EOGThreshold = [-200 200];
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40];
-AlphaThreshold = 100;        %(%)
+AlphaThreshold = 20;
 
 FilterOrder = 2;
 TTestAlpha = 0.05;
@@ -114,45 +114,30 @@ end
 fprintf('Evaluating.....\n');
 for l=1:length(TriggerSelect)
     for m=1:size(Average.Data{l},3)
-        temp = squeeze(Average.Data{l}(:,:,m));
-        AllRangeBandPower = bandpower(mean(temp,1)',Fs,FilterRange);
-        AlphaRangeBandPower = bandpower(mean(temp,1)',Fs,[8 13]);
-        PerPower = 100*(AlphaRangeBandPower/AllRangeBandPower);
-        if (min(temp(:)) < EEGThreshold(1)) || (max(temp(:)) > EEGThreshold(2))
-            Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-            Average.Accepted{l}(m) = 0;
-        else
-            if PerPower > AlphaThreshold
-                Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-                Average.Accepted{l}(m) = 0;
-            else
-                Average.Accepted{l}(m) = 1;
-            end
+        EEGAcception{l}(m,1) = Acceptor(Average.Data{l}(:,:,m),EEGThreshold);
+        AlphaAcception{l}(m,1) = AlphaAcceptor(Average.Data{l}(:,:,m),AlphaThreshold,FilterRange,Fs);
+        if EOGEnable == 1
+            EOGAcception{l}(m,1) = Acceptor(Average.EOGData{l}(:,:,m),EOGThreshold);
         end
     end
     
     if EOGEnable == 1
-        temp = squeeze(Average.EOGData{l}(:,:,m));
-        if (min(temp(:)) < EOGThreshold(1)) || (max(temp(:)) > EOGThreshold(2))
-            Average.Data{l}(:,:,m) = zeros(size(Average.Data{l},1),size(Average.Data{l},2));
-            Average.Accepted{l}(m) = 0;
-        end
+        Acception{l} = and(and(EEGAcception{l},EOGAcception{l}),AlphaAcception{l});
+    else
+        Acception{l} = and(EEGAccecption{l},AlphaAcception{l});
     end
-    
-    
 end
-clear temp
 
 for l=1:size(Average.Data,2)
     count = 0;
-    Average.NumAllEpoch{l} = size(Average.Data{l},3);
-    for m=1:size(Average.Data{l},3)
-        if Average.Accepted{l}(m) == 1
+    Average.NumAllEpoch{l} = length(Acception{l});
+    for m=1:Average.NumAllEpoch{l}
+        if Acception{l}(m) == 1
             count = count+1;
             Average.Temporary{l}(:,:,count) = Average.Data{l}(:,:,m);
         end
     end
-    Average.Accepted{l} = sum(Average.Accepted{l});
+    Average.Accepted{l} = sum(Acception{l});
 end
 clear count;
 
@@ -162,7 +147,6 @@ Average = rmfield(Average,'Temporary');
 for l=1:length(TriggerSelect)
     fprintf('Trigger No.%.0f, Accepted Epoch Data : %.0f of %.0f\n',TriggerSelect(l),Average.Accepted{l},Average.NumAllEpoch{l});
 end
-
 
 %% Averaging
 fprintf('Averaging.....\n');

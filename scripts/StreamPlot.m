@@ -24,14 +24,14 @@ Stream{2} = Average;
 load 'HighStream.mat'
 Stream{3} = Average;
 
-% StreamSelection = 1;
-% StreamPlotColor = {'r','b','b--'};
+StreamSelection = 1;
+StreamPlotColor = {'r','b','b--'};
 
 % StreamSelection = 2;
 % StreamPlotColor = {'b','r','b--'};
 
-StreamSelection = 1;
-StreamPlotColor = {'r','b','b--'};
+% StreamSelection = 3;
+% StreamPlotColor = {'b','b--','r'};
 
 for l=1:length(Channel)
     
