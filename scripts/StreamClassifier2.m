@@ -11,15 +11,17 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
+SimulatingFile = '20181206_B33_Stream_0003_Processed.mat';
 TriggerSelect = [2 8 32];
 
 EpochRange = [-0.1 0.5];
 
+SimulatingRange = [0 10];
+
 CorrectClass = 3;
 
-StandardizeEnable = 1;
-PCAEnable = 1;
+StandardizeEnable = 0;
+PCAEnable = 0;
 RetainingVariance = 99;
 
 %% Making Training Data
@@ -38,7 +40,7 @@ for Deviant=1:size(Stream,2)
 end
 
 %% Standardize
-if Standardize == 1
+if StandardizeEnable == 1
     for l=1:size(TrainingData.X,2)
         [TrainingData.X{l},Standardize{l}.meanvec,Standardize{l}.stdvec] = Standardization(TrainingData.X{l});
     end
@@ -63,7 +65,6 @@ end
 %% Simulating
 
 load(SimulatingFile);
-SimulatingRange = [0 10];
 
 for l=1:size(Trigger,2)
     if Trigger(l) ~= 0
@@ -87,7 +88,7 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             
             FeatureVector = Vectorizer(EpochData{m});
             
-            if Standardize == 1
+            if StandardizeEnable == 1
                 FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
             end
             
@@ -95,38 +96,40 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
                 FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
             end
             
-            Result{m} = predict(MdlLinear{m},FeatureVector);
+            [Res{m} S{m}] = predict(MdlLinear{m},FeatureVector);
         else
-            Result{m} = 0;
+            Res{m} = 0;
         end
     end
     
     Count = Count + 1;
-    %     fprintf('\n');
-    %     fprintf('-%dth Section-\n',Count);
-    %     fprintf('\n');
-    for m=1:size(Result,2)
-        P{m} = mean(Result{m});
-        %         fprintf('Class %d : %f\n',m,P{m});
+    %fprintf('\n');
+    %fprintf('-%dth Section-\n',Count);
+    %fprintf('\n');
+    for m=1:size(Res,2)
+        P{m} = mean(Res{m});
+        %fprintf('Class %d : %f\n',m,P{m});
     end
-    %     fprintf('\n');
+    %fprintf('\n');
     
     %for m=1:size(P,2)
-    Score(Count,:) = [P{1} P{2} P{3}];
+    
+    Score(Count,:) = [mean(S{1}(:,2)) mean(S{2}(:,2)) mean(S{3}(:,2))];
+    PScore(Count,:) = [P{1} P{2} P{3}];
+    
+    [M(Count,:),I(Count,:)] = max(mean(Score));
     
     %end
     
     %break
 end
 
-[M,I] = max(Score,[],2);
-
-temp = sum(Score,2);
-for l=1:length(I)
-    if temp(l) == 0
-        I(l) = 0;
-    end
-end
+%temp = sum(PScore,2);
+% for l=1:length(I)
+%     if temp(l) == 0
+%         I(l) = 0;
+%     end
+% end
 
 FalseCount = 0;
 for l=1:length(I)

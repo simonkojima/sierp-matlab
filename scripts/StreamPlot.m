@@ -24,14 +24,10 @@ Stream{2} = Average;
 load 'HighStream.mat'
 Stream{3} = Average;
 
-StreamSelection = 1;
-StreamPlotColor = {'r','b','b--'};
-
-% StreamSelection = 2;
-% StreamPlotColor = {'b','r','b--'};
-
-% StreamSelection = 3;
-% StreamPlotColor = {'b','b--','r'};
+StreamSelection = 3;
+StreamPlotColor{1} = {'r','b','b--'};
+StreamPlotColor{2} = {'b','r','b--'};
+StreamPlotColor{3} = {'b','b--','r'};
 
 for l=1:length(Channel)
     
@@ -69,7 +65,7 @@ for l=1:length(Channel)
     for m=1:3
     %plot(EpochTime,Average.Data{m}(Channel(l),:),PlotColor{m});
     hold on
-    plot(EpochTime,Stream{m}.AllAveraged{StreamSelection}(Channel(l),:),StreamPlotColor{m})
+    plot(EpochTime,Stream{m}.AllAveraged{StreamSelection}(Channel(l),:),StreamPlotColor{StreamSelection}{m})
     end
 %     flag = 1;
     
@@ -77,9 +73,16 @@ for l=1:length(Channel)
     
     %ylim(yrange);
     xlim(Range);
-    ylabel({Label{Channel(l)},PlotYLabel});
+    %ylabel({Label{Channel(l)},PlotYLabel});
+    ylabel(PlotYLabel);
     %ylabel(Label{Channel(l)});
-    xlabel({PlotXLabel,'Deviant 3'});
+    
+    
+    %xlabel({PlotXLabel,'Deviant 3'});
+    xlabel({PlotXLabel});
+    
+    
+    
     xticks(Range(1):0.1:Range(2));
     xticklabels({'-100','0','100','200','300','400','500'});
     %xticklabels({'0','100','200','300','400','500','600','700','800','900','1000'});
@@ -88,9 +91,9 @@ for l=1:length(Channel)
     plot(xlim, [0 0], 'k');
     plot([0 0], ylim, 'k');
     
-    legend('Stream 1','Stream 2','Stream 3');
+    %legend('Stream 1','Stream 2','Stream 3');
     
-    set(gca,'FontSize',14)
+    set(gca,'FontSize',20)
     
     
 end
