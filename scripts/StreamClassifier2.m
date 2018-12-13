@@ -11,7 +11,7 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181206_B33_Stream_0003_Processed.mat';
+SimulatingFile = '20181206_B33_Stream_0006_Processed.mat';
 TriggerSelect = [2 8 32];
 
 EpochRange = [-0.1 0.5];
@@ -20,8 +20,8 @@ SimulatingRange = [0 10];
 
 CorrectClass = 3;
 
-StandardizeEnable = 0;
-PCAEnable = 0;
+StandardizeEnable = 1;
+PCAEnable = 1;
 RetainingVariance = 99;
 
 %% Making Training Data
