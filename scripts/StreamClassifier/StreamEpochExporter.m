@@ -11,8 +11,6 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-RepNum = 3;
-
 FileStruct{1} = [1 4];
 FileStruct{2} = [2 5];
 FileStruct{3} = [3 6];
@@ -21,7 +19,13 @@ SaveFileNameStruct{1} = './LowStream.mat';
 SaveFileNameStruct{2} = './MidStream.mat';
 SaveFileNameStruct{3} = './HighStream.mat';
 
-for Repeat=1:RepNum
+% FileStruct{1} = [1 3 5];
+% FileStruct{2} = [2 4 6];
+% 
+% SaveFileNameStruct{1} = 'Tone.mat';
+% SaveFileNameStruct{2} = 'Piano.mat';
+
+for Repeat=1:size(FileStruct,2)
 
 TriggerSelect = [2 8 32];
 

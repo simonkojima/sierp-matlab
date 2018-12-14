@@ -12,7 +12,7 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [1 2];
+TriggerSelect = [4 8];
 PlotColor = {'b','r'};
 
 %TriggerSelect = [1 2 4 8];
@@ -20,8 +20,8 @@ PlotColor = {'b','r'};
 
 FillingColor = [0.7 0.7 0.7]; %gray
 
-Files = [1 4];              %Suffix of Files
-PreFileName = '20181206_B33_Stream_';
+Files = [2 4 6];              %Suffix of Files
+PreFileName = '20181213_B32_Stream_';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-100 100];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];
@@ -32,7 +32,7 @@ AlphaThreshold = 100;
 FilterOrder = 2;
 TTestAlpha = 0.05;
 TTestEnable = 0;
-DownsampleRate = 2;
+DownsampleRate = 1;
 
 
 

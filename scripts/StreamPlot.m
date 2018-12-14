@@ -24,9 +24,13 @@ load 'HighStream.mat'
 Stream{3} = Average;
 
 StreamSelection = 3;
-StreamPlotColor{1} = {'r','b','b--'};
-StreamPlotColor{2} = {'b','r','b--'};
-StreamPlotColor{3} = {'b','b--','r'};
+% StreamPlotColor{1} = {'r','b','b--'};
+% StreamPlotColor{2} = {'b','r','b--'};
+% StreamPlotColor{3} = {'b','b--','r'};
+
+for l=1:3
+   StreamPlotColor{l}  = {'r','g','b'};
+end
 
 for l=1:length(Channel)
     
@@ -108,7 +112,7 @@ for l=1:length(Channel)
     plot([0 0], ylim, 'k');
     
     % 1: 0.37
-    plot([0.31 0.31],ylim,'k--','LineWidth',1.2);
+    plot([0.3 0.3],ylim,'k--','LineWidth',1.2);
     
     for m=1:3
         plot(EpochTime,Stream{m}.AllAveraged{StreamSelection}(Channel(l),:),StreamPlotColor{StreamSelection}{m},'LineWidth',2)
