@@ -27,7 +27,7 @@ EEGThreshold = [-100 100];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40];
-AlphaThreshold = 100;
+AlphaThreshold = 50;
 
 FilterOrder = 2;
 TTestAlpha = 0.05;

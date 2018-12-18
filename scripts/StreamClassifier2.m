@@ -21,7 +21,7 @@ SimulatingRange = [0 10];
 CorrectClass = 3;
 
 StandardizeEnable = 1;
-PCAEnable = 1;
+PCAEnable = 0;
 RetainingVariance = 99;
 
 %% Making Training Data
