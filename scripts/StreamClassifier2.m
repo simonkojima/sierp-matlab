@@ -11,17 +11,17 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181206_B33_Stream_0006_Processed.mat';
+SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
+CorrectClass = 3;
+
 TriggerSelect = [2 8 32];
 
 EpochRange = [-0.1 0.5];
 
 SimulatingRange = [0 10];
 
-CorrectClass = 3;
-
 StandardizeEnable = 1;
-PCAEnable = 0;
+PCAEnable = 1;
 RetainingVariance = 99;
 
 %% Making Training Data
@@ -99,8 +99,18 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             [Res{m} S{m}] = predict(MdlLinear{m},FeatureVector);
         else
             Res{m} = 0;
+            S{m} = 0;
         end
     end
+    
+    NullCheck = 0;
+    for m=1:3
+        if sum(S{m}) == 0
+            NullCheck = 1;
+        end
+    end
+    
+    if NullCheck == 0
     
     Count = Count + 1;
     %fprintf('\n');
@@ -118,7 +128,7 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     PScore(Count,:) = [P{1} P{2} P{3}];
     
     [M(Count,:),I(Count,:)] = max(mean(Score));
-    
+    end
     %end
     
     %break
