@@ -43,7 +43,6 @@ for l=1:FileNumber
     
     [Row Column] = size(Data);
     
-    %Time = 0:1/Fs:(Column-1)/Fs;
     Time = 1/Fs:1/Fs:Column/Fs;
     
     save(strcat(strcat(EEGFileName,FileNumberString),'.mat'),'Data','Trigger','Time','Fs','Label');

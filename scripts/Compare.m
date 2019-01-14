@@ -9,6 +9,20 @@ Tone = Average;
 load ./Piano.mat
 Piano = Average;
 
+DifferenceEnable = 1;
+
+if DifferenceEnable == 1
+    
+    for l=1:size(Tone.AllAveraged{1},1)
+        Tone.AllAveraged{2}(l,:) = Tone.AllAveraged{2}(l,:) - Tone.AllAveraged{1}(l,:);
+    end
+    
+    for l=1:size(Piano.AllAveraged{1},1)
+        Piano.AllAveraged{2}(l,:) = Piano.AllAveraged{2}(l,:) - Piano.AllAveraged{1}(l,:);
+    end
+    
+end
+
 figure('Name','Result','NumberTitle','off');
 
 Range = [-0.1 0.5];
