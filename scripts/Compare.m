@@ -9,7 +9,10 @@ Tone = Average;
 load ./Piano.mat
 Piano = Average;
 
-DifferenceEnable = 1;
+DifferenceEnable = 0;
+StimulusSelect = 1;
+
+
 
 if DifferenceEnable == 1
     
@@ -47,7 +50,7 @@ for l=1:length(Channel)
     
     subplot(PlotDivision(1),PlotDivision(2),PlotPosition(l));
     
-    yrange = [-13 10];
+    yrange = [-8 8];
     
     if TTestEnable == 1
         
@@ -56,7 +59,7 @@ for l=1:length(Channel)
         
         %[h,p,ci,stats] = ttest2(permute(Stream{DeviantSelection}.Data{DeviantSelection}(Channel(l),:,:),[3 2 1]),permute(cat(3,Stream{forcat(DeviantSelection+1)}.Data{DeviantSelection}(Channel(l),:,:),Stream{forcat(DeviantSelection+2)}.Data{DeviantSelection}(Channel(l),:,:)),[3 2 1]),'Alpha',TTestAlpha);
         
-        [h,p,ci,stats] = ttest2(permute(Tone.Data{2}(Channel(l),:,:),[3 2 1]),permute(Piano.Data{2}(Channel(l),:,:),[3 2 1]),'Alpha',TTestAlpha);
+        [h,p,ci,stats] = ttest2(permute(Tone.Data{StimulusSelect}(Channel(l),:,:),[3 2 1]),permute(Piano.Data{StimulusSelect}(Channel(l),:,:),[3 2 1]),'Alpha',TTestAlpha);
         
         TTest.h(l,:) = h;
         TTest.p(l,:) = p;
@@ -70,8 +73,8 @@ for l=1:length(Channel)
     end
     
     hold on
-    plot(EpochTime,Tone.AllAveraged{2}(l,:),'b','LineWidth',5);
-    plot(EpochTime,Piano.AllAveraged{2}(l,:),'r','LineWidth',5);
+    plot(EpochTime,Tone.AllAveraged{StimulusSelect}(l,:),'b','LineWidth',5);
+    plot(EpochTime,Piano.AllAveraged{StimulusSelect}(l,:),'r','LineWidth',5);
     
     axis ij
     
