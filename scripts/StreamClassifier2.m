@@ -11,14 +11,14 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
+SimulatingFile = '20181121_B35_Stream_0006_Processed.mat';
 CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
 
 EpochRange = [-0.1 0.5];
 
-SimulatingRange = [0 10];
+SimulatingRange = [0 20];
 
 StandardizeEnable = 1;
 PCAEnable = 1;

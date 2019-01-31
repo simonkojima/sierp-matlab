@@ -7,8 +7,8 @@ clearvars
 %--------------------------------------------------------------------------
 %   Settings
 
-EEGFileName = '20181213_B32_Stream_';
-FileNumber = 6;
+EEGFileName = '20181127_B36_Stream_';
+FileNumber = 7;
 
 %--------------------------------------------------------------------------
 
@@ -50,4 +50,5 @@ for l=1:FileNumber
 end
 
 clearvars
-fprintf('Completed !!\n');
+%fprintf('Completed !!\n');
+Done();

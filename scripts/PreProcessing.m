@@ -1,7 +1,7 @@
 clearvars
 
-Files = 1:7;
-PreFileName = '20181127_B36_Stream_';
+Files = 1:6;
+PreFileName = '20181121_B35_Stream_';
 SaveFileSuffix = '_Processed';
 
 FilterRange = [1 40]; %0.1 15
@@ -77,3 +77,5 @@ for l=1:length(Files)
     save(SaveFileName,'Data','Fs','Label','Time','Trigger');
     
 end
+
+Done();

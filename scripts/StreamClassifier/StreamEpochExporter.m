@@ -12,32 +12,36 @@ clearvars
 %%-------------------------------------------------------------------------
 
 % FileStruct{1} = [1 4];
-% FileStruct{2} = [2 6];
-% FileStruct{3} = [3 7];
+% FileStruct{2} = [2 5];
+% FileStruct{3} = [3 6];
+
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
+
+SaveFileNameStruct{1} = './LowStream.mat';
+SaveFileNameStruct{2} = './MidStream.mat';
+SaveFileNameStruct{3} = './HighStream.mat';
+
+% FileStruct{1} = [1 3 5];
+% FileStruct{2} = [2 4 6];
 % 
-% SaveFileNameStruct{1} = './LowStream.mat';
-% SaveFileNameStruct{2} = './MidStream.mat';
-% SaveFileNameStruct{3} = './HighStream.mat';
-
-FileStruct{1} = [1 3 5];
-FileStruct{2} = [2 4 6];
-
-SaveFileNameStruct{1} = 'Tone.mat';
-SaveFileNameStruct{2} = 'Piano.mat';
+% SaveFileNameStruct{1} = 'Tone.mat';
+% SaveFileNameStruct{2} = 'Piano.mat';
 
 for Repeat=1:size(FileStruct,2)
 
-%TriggerSelect = [2 8 32];
-TriggerSelect = [4 8];
+TriggerSelect = [2 8 32];
+% TriggerSelect = [4 8];
 
 Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20181129_B36_Stream_';
+PreFileName = '20181121_B35_Stream_';
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
-EEGThreshold = [-100 100];       %min max (uV uV)
+EEGThreshold = [-Inf Inf];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40]; %0.1 15
@@ -50,19 +54,21 @@ EOGEnable = 1;
 
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
-%ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+
+ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+
 %ChannelSelection = [32 49 52 55]; % Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 
 %ChannelSelection = 8:64;
 %ChannelSelection = 1:2:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 1;
+DownsampleRate = 2;
 AveragingNum = 1;
 
 Temp.Data = [];
@@ -197,3 +203,5 @@ clear temp;
 save(SaveFileName,'Average','EpochTime','Fs','Label');
 clear BaseLine Average BaseLineEpoch EEGAcception EOGAcception AlphaAcception Acception
 end
+
+Done();

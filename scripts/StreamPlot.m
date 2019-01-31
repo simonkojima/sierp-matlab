@@ -10,7 +10,7 @@ Channel = 1:64;
 % PlotPosition = [1];
 Range = [-0.1 0.5];
 PlotYLabel = 'Potential (\muV)';
-PlotXLabel = 'Time (ms)';
+PlotXLabel = 'Time (s)';
 %Subtraction = 1;
 %SubTrigger = [1 2];
 %SubColor = ['g'];
@@ -156,6 +156,8 @@ for l=1:length(Channel)
     end
     
 end
+
+Done();
 
 return
 
