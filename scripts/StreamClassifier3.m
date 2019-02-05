@@ -11,7 +11,7 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20190205_B35_Stream_0006_Processed.mat';
+SimulatingFile = '20190205_B35_Stream_0003_Processed.mat';
 CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
@@ -20,9 +20,29 @@ EpochRange = [-0.1 0.5];
 
 SimulatingRange = [0 10];
 
-StandardizeEnable = 1;
-PCAEnable = 1;
+StandardizeEnable = 0;
+PCAEnable = 0;
 RetainingVariance = 99;
+
+%% Applying CSP
+
+temp = [1 2 3 1 2];
+
+for Deviant=1:size(Stream,2)
+    [Ht,Hnt] = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
+    H{Deviant} = [Ht Hnt];
+end
+
+clear temp;
+
+for Attended = 1:size(Stream,2)
+    for Deviant = 1:size(Stream,2)
+        Stream{Attended}.CSP{Deviant} = [];
+        for l=1:size(Stream{Attended}.Data{Deviant},3)
+            Stream{Attended}.CSP{Deviant} = cat(3,Stream{Attended}.CSP{Deviant},H{Deviant}'*Stream{Attended}.Data{Deviant}(:,:,l));
+        end
+    end
+end
 
 %% Making Training Data
 
@@ -30,11 +50,11 @@ for Deviant=1:size(Stream,2)
     TrainingData.X{Deviant} = [];
     TrainingData.Y{Deviant} = [];
     for Attended=1:size(Stream,2)
-        TrainingData.X{Deviant} = vertcat(TrainingData.X{Deviant},Vectorizer(Stream{Attended}.Data{Deviant}));
+        TrainingData.X{Deviant} = vertcat(TrainingData.X{Deviant},Vectorizer(Stream{Attended}.CSP{Deviant}));
         if Deviant == Attended
-            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; ones(size(Vectorizer(Stream{Attended}.Data{Deviant}),1),1)];
+            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; ones(size(Vectorizer(Stream{Attended}.CSP{Deviant}),1),1)];
         else
-            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; zeros(size(Vectorizer(Stream{Attended}.Data{Deviant}),1),1)];
+            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; zeros(size(Vectorizer(Stream{Attended}.CSP{Deviant}),1),1)];
         end
     end
 end
@@ -86,8 +106,13 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     for m=1:size(MdlLinear,2)
         if EpochData{m} ~= 0
             
-            FeatureVector = Vectorizer(EpochData{m});
-            
+            FilteredEpochData{m} = [];
+            for n = 1:size(EpochData{m},3)
+                FilteredEpochData{m} = cat(3,FilteredEpochData{m},H{m}'*EpochData{m}(:,:,n));
+            end
+
+            FeatureVector = Vectorizer(FilteredEpochData{m});
+
             if StandardizeEnable == 1
                 FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
             end
