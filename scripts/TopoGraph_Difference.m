@@ -10,7 +10,7 @@ Stream{2} = Average;
 load 'HighStream.mat'
 Stream{3} = Average;
 
-DeviantSelection = 3;
+DeviantSelection = 1;
 
 Range = [-0.1 0.4];
 
@@ -36,10 +36,10 @@ for m = 1:3
         [M,I] = min(abs(EpochTime-Time(l)));
         
         if m==1
-            topoplot(Stream{m}.AllAveraged{DeviantSelection}(:,I),'64ch.ced','maplimits',TopoPlotRange,'whitebk','on');
+            topoplot(Stream{m}.AllAveraged{2*DeviantSelection}(:,I)-Stream{m}.AllAveraged{2*DeviantSelection-1}(:,I),'64ch.ced','maplimits',TopoPlotRange,'whitebk','on');
             title(TimeLabel{l},'FontWeight','normal','FontSize',PlotFontSize);
         else
-            topoplot(Stream{m}.AllAveraged{DeviantSelection}(:,I),'64ch.ced','maplimits',TopoPlotRange,'whitebk','on');
+            topoplot(Stream{m}.AllAveraged{2*DeviantSelection}(:,I)-Stream{m}.AllAveraged{2*DeviantSelection-1}(:,I),'64ch.ced','maplimits',TopoPlotRange,'whitebk','on');
         end
     end
     

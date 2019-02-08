@@ -1,21 +1,16 @@
 clearvars
 close all
 
-% TriggerSelect = [1 5];
-% PlotColor = {'b','r'};
-PlotYRange = [0 0];
-%Channel = [32];
+
+PlotYRange = [-10 10]; % -> B33,B36 : 10, B35 : 12
 Channel = 1:64;
-% PlotDivision = [1 1];
-% PlotPosition = [1];
 Range = [-0.1 0.5];
 PlotYLabel = 'Potential (\muV)';
 PlotXLabel = 'Time (s)';
-%Subtraction = 1;
-%SubTrigger = [1 2];
-%SubColor = ['g'];
-
 FillingColor = [0.7 0.7 0.7];
+
+PlotLineWidth = 1.5; %5 %1.5
+PlotFontSize = 8; %40 %8
 
 TTestEnable = 1;
 TTestAlpha = 0.01;
@@ -30,6 +25,7 @@ load 'HighStream.mat'
 Stream{3} = Average;
 
 DeviantSelection = 3;
+
 % StreamPlotColor{1} = {'r','b','b--'};
 % StreamPlotColor{2} = {'b','r','b--'};
 % StreamPlotColor{3} = {'b','b--','r'};
@@ -40,8 +36,8 @@ end
 
 figure('Name','Result','NumberTitle','off');
 
-PlotDivision = [9 11];
-PlotPosition = [4 8 13 15 17 19 21 24 25 26 27 28 29 30 31 32 34 35 36 37 38 39 40 41 42 43 44 46 47 48 49 50 51 52 53 54 56 57 58 59 60 61 62 63 64 65 66 68 69 70 71 72 73 74 75 76 79 81 83 85 87 92 94 96];
+PlotChannelFileName = 'Plot64ch.mat';
+load(PlotChannelFileName);
 
 
 for l=1:length(Channel)
@@ -99,12 +95,12 @@ for l=1:length(Channel)
     for m=1:3
         %plot(EpochTime,Average.Data{m}(Channel(l),:),PlotColor{m});
         hold on
-        plot(EpochTime,Stream{m}.AllAveraged{DeviantSelection}(Channel(l),:),StreamPlotColor{DeviantSelection}{m},'LineWidth',5)
+        plot(EpochTime,Stream{m}.AllAveraged{DeviantSelection}(Channel(l),:),StreamPlotColor{DeviantSelection}{m},'LineWidth',PlotLineWidth)
     end
     %     flag = 1;
     
     %yrange = [-5 5];
-    yrange = [-10 10];
+    yrange = PlotYRange;
     
 %     for m=1:length(Channel)
         for m=1:length(EpochTime)
@@ -136,46 +132,46 @@ for l=1:length(Channel)
     %xticklabels({'-0.1','0','0.1','0.2','0.3','0.4','0.5'});
     %xticklabels({'0','100','200','300','400','500','600','700','800','900','1000'});
     
-    xticks([-0.1 0.1 0.3 0.5 ]);
+    xticks([-0.1 0.1 0.3 0.5]);
     xticklabels({'-0.1','0.1','0.3','0.5'});
     
     axis ij
     
     %legend('Stream 1','Stream 2','Stream 3');
     
-    set(gca,'FontSize',40)
+    set(gca,'FontSize',PlotFontSize,'LineWidth',PlotLineWidth)
     
-    plot(xlim, [0 0], 'k');
-    plot([0 0], ylim, 'k');
+    plot(xlim, [0 0], 'k','LineWidth',PlotLineWidth);
+    plot([0 0], ylim, 'k','LineWidth',PlotLineWidth);
     
     % 1: 0.37
 %     plot([0.3 0.3],ylim,'k--','LineWidth',1.2);
 %     
     for m=1:3
-        plot(EpochTime,Stream{m}.AllAveraged{DeviantSelection}(Channel(l),:),StreamPlotColor{DeviantSelection}{m},'LineWidth',5)
+        plot(EpochTime,Stream{m}.AllAveraged{DeviantSelection}(Channel(l),:),StreamPlotColor{DeviantSelection}{m},'LineWidth',PlotLineWidth)
     end
     
 end
 
-Done();
+%Done();
 
-return
-
-pause
-DevSel = 3;
-StreamSel = 2;
-for m=1:size(Stream{StreamSel}.Data{DevSel},3)
-    %close all;
-    hold off
-    plot(EpochTime,Stream{StreamSel}.Data{DevSel}(32,:,m));
-    hold on
-    ylim([-50 50])
-    plot(xlim, [0 0], 'k');
-    plot([0 0], ylim, 'k');
-    axis ij
-    fprintf('%d of %d\n',m,size(Stream{StreamSel}.Data{DevSel},3));
-    pause
-end
-
-close all
-%hold off
+% return
+% 
+% pause
+% DevSel = 3;
+% StreamSel = 2;
+% for m=1:size(Stream{StreamSel}.Data{DevSel},3)
+%     %close all;
+%     hold off
+%     plot(EpochTime,Stream{StreamSel}.Data{DevSel}(32,:,m));
+%     hold on
+%     ylim([-50 50])
+%     plot(xlim, [0 0], 'k');
+%     plot([0 0], ylim, 'k');
+%     axis ij
+%     fprintf('%d of %d\n',m,size(Stream{StreamSel}.Data{DevSel},3));
+%     pause
+% end
+% 
+% close all
+% %hold off
