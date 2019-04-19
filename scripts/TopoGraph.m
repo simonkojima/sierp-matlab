@@ -31,8 +31,8 @@ for m = 1:3
     for l=1:size(Time,2)
         Count = Count + 1;
         FigureName = strcat('Resposes_to_Deviant_',num2str(DeviantSelection),'_Attended_to_Stream_',num2str(m),'_',num2str(Time(l)*1000),'ms');
-        figure('Name',FigureName,'NumberTitle','off');
-        %subplot(PlotDivision(1),PlotDivision(2),Count);
+        %figure('Name',FigureName,'NumberTitle','off');
+        subplot(PlotDivision(1),PlotDivision(2),Count);
         %hold on
         %topoplot(Stream{DeviantSelection}.AllAveraged{DeviantSelection},'maplimits',TopoPlotRange)
         [M,I] = min(abs(EpochTime-Time(l)));
@@ -44,11 +44,17 @@ for m = 1:3
             topoplot(Stream{m}.AllAveraged{DeviantSelection}(:,I),'64ch.ced','maplimits',TopoPlotRange,'whitebk','on');
         end
         
-        saveas(gcf,FigureName,'meta');
+        %saveas(gcf,FigureName,'meta');
 
     end
     
 end
+
+fig = gcf;
+fig.PaperUnits = 'inches';
+fig.PaperPosition = [0 0 100 20];
+
+print(num2str(DeviantSelection),'-dbmp','-r0');
 
 return
 
