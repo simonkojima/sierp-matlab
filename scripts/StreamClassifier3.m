@@ -16,7 +16,7 @@ CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
 
-EpochRange = [-0.1 0.5];
+EpochRange = [0 0.5];
 
 SimulatingRange = [0 10];
 
@@ -29,8 +29,7 @@ RetainingVariance = 99;
 temp = [1 2 3 1 2];
 
 for Deviant=1:size(Stream,2)
-    [Ht,Hnt] = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
-    H{Deviant} = [Ht Hnt];
+    H{Deviant} = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
 end
 
 clear temp;

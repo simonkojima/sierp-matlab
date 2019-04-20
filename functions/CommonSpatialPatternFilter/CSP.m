@@ -1,4 +1,4 @@
-function [Ht,Hnt,H] = CSP(Vt,Vnt)
+function [H] = CSP(Vt,Vnt)
 
 %
 % Common Spatial Pattern Filter
@@ -32,15 +32,35 @@ Rb = mean(Rb,3);
 Rc = Ra + Rb;
 
 [Bc,lambda] = eig(Rc);
+[lambda,ind]=sort(diag(lambda),'descend');
+Bc=Bc(:,ind);
+lambda = diag(lambda);
 
 W = sqrt(inv(lambda))*Bc';
 
 Sa = W*Ra*W';
 Sb = W*Rb*W';
 
-[U,S] = svd(Sa);
-Ht = (U(:,1)'*W)';
-Hnt = (U(:,end)'*W)';
+[V,D] = eig(Sa,Sb);
+[D,ind]=sort(diag(D));
+V=V(:,ind);
 
-H = (U'*W)';
+H = (V'*W)';
 
+%%
+% 
+% Rc = Ra + Rb;
+% 
+% [Bc,lambda] = eig(Rc);
+% 
+% W = sqrt(inv(lambda))*Bc';
+% 
+% Sa = W*Ra*W';
+% Sb = W*Rb*W';
+% 
+% [U,S] = svd(Sa);
+% Ht = (U(:,1)'*W)';
+% Hnt = (U(:,end)'*W)';
+% 
+% H = (U'*W)';
+% 
