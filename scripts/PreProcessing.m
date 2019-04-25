@@ -1,7 +1,7 @@
 clearvars
 
 Files = 1:6;
-PreFileName = '20190205_B35_Stream_';
+PreFileName = '20181127_B36_Stream_';
 SaveFileSuffix = '_Processed';
 
 FilterRange = [1 40]; %0.1 15

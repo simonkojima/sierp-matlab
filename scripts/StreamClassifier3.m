@@ -11,12 +11,12 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20190205_B35_Stream_0003_Processed.mat';
+SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
 CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
 
-EpochRange = [0 0.5];
+EpochRange = [-0.1 0.5];
 
 SimulatingRange = [0 10];
 
@@ -30,6 +30,12 @@ temp = [1 2 3 1 2];
 
 for Deviant=1:size(Stream,2)
     H{Deviant} = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
+    
+%     for l=1:size(H{Deviant},1)
+%         H{Deviant}(l,:) = H{Deviant}(l,:)./(norm(H{Deviant}(l,:)));
+%     end
+    
+    %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
 end
 
 clear temp;
@@ -38,7 +44,7 @@ for Attended = 1:size(Stream,2)
     for Deviant = 1:size(Stream,2)
         Stream{Attended}.CSP{Deviant} = [];
         for l=1:size(Stream{Attended}.Data{Deviant},3)
-            Stream{Attended}.CSP{Deviant} = cat(3,Stream{Attended}.CSP{Deviant},H{Deviant}'*Stream{Attended}.Data{Deviant}(:,:,l));
+            Stream{Attended}.CSP{Deviant} = cat(3,Stream{Attended}.CSP{Deviant},H{Deviant}*Stream{Attended}.Data{Deviant}(:,:,l));
         end
     end
 end
@@ -100,6 +106,8 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     
     for m=1:length(TriggerSelect)
         EpochData{m} = Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs);
+        BaseLineEpoch{m} = BaseLine(Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs),EpochRange,Fs);
+        EpochData{m} = EpochData{m} - BaseLineEpoch{m};
     end
     
     for m=1:size(MdlLinear,2)
@@ -107,7 +115,7 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             
             FilteredEpochData{m} = [];
             for n = 1:size(EpochData{m},3)
-                FilteredEpochData{m} = cat(3,FilteredEpochData{m},H{m}'*EpochData{m}(:,:,n));
+                FilteredEpochData{m} = cat(3,FilteredEpochData{m},H{m}*EpochData{m}(:,:,n));
             end
 
             FeatureVector = Vectorizer(FilteredEpochData{m});
@@ -121,6 +129,7 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             end
             
             [Res{m} S{m}] = predict(MdlLinear{m},FeatureVector);
+            
         else
             Res{m} = 0;
             S{m} = 0;

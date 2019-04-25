@@ -45,7 +45,7 @@ Sb = W*Rb*W';
 [D,ind]=sort(diag(D));
 V=V(:,ind);
 
-H = (V'*W)';
+H = V'*W;
 
 %%
 % 

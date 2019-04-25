@@ -40,12 +40,13 @@ Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20190205_B35_Stream_';
+PreFileName = '20181127_B36_Stream_';
 %SaveFileName = './Stream2.mat';
-Range = [0 0.5];         %(s s)
+Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-Inf Inf];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
-BaseLineRange = [-0.05 0];  %(s s)
+%BaseLineRange = [-0.05 0];  %(s s)
+BaseLineRange = [-0.1 0.5];
 FilterRange = [1 40]; %0.1 15
 AlphaThreshold = 100;
 FilterOrder = 2;
@@ -130,7 +131,6 @@ for l=1:length(TriggerSelect)
     if EOGEnable == 1
         Average.EOGData{l} = Epoch(EOGData,Trigger,Range,TriggerSelect(l),Fs);
     end
-    
 end
 
 %% Evaluate Each Epoch Data
@@ -203,7 +203,7 @@ Label = temp;
 clear temp;
 
 save(SaveFileName,'Average','EpochTime','Fs','Label');
-clear BaseLine Average BaseLineEpoch EEGAcception EOGAcception AlphaAcception Acception
+clear Average BaseLineEpoch EEGAcception EOGAcception AlphaAcception Acception
 end
 
 %Done();
