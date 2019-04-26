@@ -16,12 +16,12 @@ function [H] = CSP(Vt,Vnt)
 
 %% Making Normalized Covariance Matrices
 
-for i=1:size(Vt,3)
-    Ra(:,:,i) = (Vt(:,:,i)*Vt(:,:,i)')./trace(Vt(:,:,i)*Vt(:,:,i)');
+for l=1:size(Vt,3)
+    Ra(:,:,l) = (Vt(:,:,l)*Vt(:,:,l)')./trace(Vt(:,:,l)*Vt(:,:,l)');
 end
 
-for i=1:size(Vnt,3)
-    Rb(:,:,i) = (Vnt(:,:,i)*Vnt(:,:,i)')./trace(Vnt(:,:,i)*Vnt(:,:,i)');
+for l=1:size(Vnt,3)
+    Rb(:,:,l) = (Vnt(:,:,l)*Vnt(:,:,l)')./trace(Vnt(:,:,l)*Vnt(:,:,l)');
 end
 
 Ra = mean(Ra,3);
@@ -29,38 +29,36 @@ Rb = mean(Rb,3);
 
 %%
 
-Rc = Ra + Rb;
-
-[Bc,lambda] = eig(Rc);
-[lambda,ind]=sort(diag(lambda),'descend');
-Bc=Bc(:,ind);
-lambda = diag(lambda);
-
-W = sqrt(inv(lambda))*Bc';
-
-Sa = W*Ra*W';
-Sb = W*Rb*W';
-
-[V,D] = eig(Sa,Sb);
-[D,ind]=sort(diag(D));
-V=V(:,ind);
-
-H = V'*W;
-
-%%
-% 
 % Rc = Ra + Rb;
 % 
 % [Bc,lambda] = eig(Rc);
+% [lambda,ind]=sort(diag(lambda),'descend');
+% Bc=Bc(:,ind);
+% lambda = diag(lambda);
 % 
 % W = sqrt(inv(lambda))*Bc';
 % 
 % Sa = W*Ra*W';
 % Sb = W*Rb*W';
 % 
-% [U,S] = svd(Sa);
-% Ht = (U(:,1)'*W)';
-% Hnt = (U(:,end)'*W)';
+% [V,D] = eig(Sa,Sb);
+% [D,ind]=sort(diag(D));
+% V=V(:,ind);
 % 
-% H = (U'*W)';
+% H = V'*W;
+
+%%
+
+Rc = Ra + Rb;
+
+[Bc,lambda] = eig(Rc);
+
+W = sqrt(inv(lambda))*Bc';
+
+Sa = W*Ra*W';
+Sb = W*Rb*W';
+
+[~,~,U] = svd(Sa);
+
+H = U'*W;
 % 
