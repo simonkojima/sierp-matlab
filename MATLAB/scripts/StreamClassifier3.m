@@ -11,7 +11,7 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20190205_B35_Stream_0006_Processed.mat';
+SimulatingFile = '20190508_B46_Stream_0003_Processed.mat';
 CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
