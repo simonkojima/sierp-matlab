@@ -1,5 +1,5 @@
 close all
-clearvars
+clear all
 %--------------------------------------------------------------------------
 %   EEG to MAT File Converter
 %   Author : Simon Kojima
@@ -16,9 +16,11 @@ for l=1:FileNumber
    
     FileNumberString = num2str(l);
     
-    for m=1:4-strlength(FileNumberString)
+    for m=1:4-length(FileNumberString)
         FileNumberString = strcat(num2str(0),FileNumberString);
     end
+    
+    printf(FileNumberString)
     
     Data = bva_loadeeg(strcat(strcat(EEGFileName,FileNumberString),'.vhdr'));
     Trigger = bva_readmarker(strcat(strcat(EEGFileName,FileNumberString),'.vmrk'));
@@ -39,10 +41,8 @@ for l=1:FileNumber
     
     Time = 1/Fs:1/Fs:size(Data,2)/Fs;
     
-    save(strcat(strcat(EEGFileName,FileNumberString),'.mat'),'Data','Trigger','Time','Fs','Label');
+    save(strcat(strcat(EEGFileName,FileNumberString),'.mat'),'Data','Trigger','Time','Fs','Label','-v7');
     
 end
 
-clearvars
-%fprintf('Completed !!\n');
-Done();
+fprintf('Completed !!\n');
