@@ -7,8 +7,8 @@ clearvars
 %--------------------------------------------------------------------------
 %   Settings
 
-EEGFileName = '20181127_B36_Stream_';
-FileNumber = 7;
+EEGFileName = '20181129_B36_Stream_';
+FileNumber = 6;
 
 %--------------------------------------------------------------------------
 
@@ -45,4 +45,4 @@ end
 
 clearvars
 %fprintf('Completed !!\n');
-Done();
+%Done();

@@ -13,10 +13,9 @@ from BCIToolBox import trigger_downsample
 #   Time : NumSample x 1
 #   Trigger : NumSample x 1
 #
-
-PreFileName = "./20181129_B36_Stream/20181129_B36_Stream_"
+Directory = "/home/simon/Documents/MATLAB/20181129_B36_Stream_/"
+PreFileName = Directory + "20181129_B36_Stream_"
 Files = np.array([1, 3, 5])
-#Files = np.array([1])
 SelectedTrigger = np.array([4, 8])
 
 Filter = np.array([1, 40])
@@ -30,9 +29,6 @@ DownsampleRate = 2
 EOGEnable = True
 NumChannel = 64
 
-#PlotDivision = np.array([3, 3])
-#PlotPosition = np.array([1, 2, 3, 5, 7, 8, 9])
-
 PlotDivision = np.array([9, 11])
 PlotPosition = np.array(
     [4, 8, 13, 15, 17, 19, 21, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 47,
@@ -40,8 +36,6 @@ PlotPosition = np.array(
      83, 85, 87, 92, 94, 96])
 
 for i in range(Files.shape[0]):
-
-    #print(i+1)
 
     filename = PreFileName + '{:0=4}'.format(Files[i])
 
@@ -57,8 +51,7 @@ for i in range(Files.shape[0]):
     b, a = signal.butter(Filterorder, Filter/nyq, 'bandpass')
     Data_ = signal.filtfilt(b, a, Data_)
 
-    c, r = Data_.shape
-    print("Dimention : " + str(c) + "x" + str(r) + "\n")
+    print("Dimention : " + str(Data_.shape[0]) + "x" + str(Data_.shape[1]) + "\n")
 
     if DownsampleRate != 1:
         Data_ = signal.decimate(Data_, DownsampleRate, axis=1)
@@ -77,7 +70,6 @@ for i in range(Files.shape[0]):
 nTrigger = [0]*SelectedTrigger.shape[0]
 for i in range(SelectedTrigger.shape[0]):
     nTrigger[i] = np.sum(Trigger == SelectedTrigger[i])
-    #print(SelectedTrigger[i])
 
 
 Time = matdata["Time"]
@@ -87,7 +79,6 @@ BaseLineData = [0]*SelectedTrigger.shape[0]
 AveragedData = [0]*SelectedTrigger.shape[0]
 
 if EOGEnable == True:
-    #print(Data.shape[-2:])
     EOGData = Data[-2:] # EOG Channel
     Data = Data[:-2] # EEG Channel
 
@@ -111,30 +102,12 @@ for i in range(SelectedTrigger.shape[0]):
 
 NumAllEpoch = [0]*SelectedTrigger.shape[0]
 for i in range(SelectedTrigger.shape[0]):
-    #a = np.abs(((EpochData[i]).max(axis=0)).max(axis=0))
     max = ((EpochData[i]).max(axis=0)).max(axis=0)
     min = ((EpochData[i]).min(axis=0)).min(axis=0)
     NumAllEpoch[i] = EpochData[i].shape[2]
     EpochData[i] = np.delete(EpochData[i], np.where((min < EEGThreshold[0]) | (max > EEGThreshold[1])), axis=2)
     print("Trigger No." + str(SelectedTrigger[i]) + ", Accepted Epoch Data : " + str(EpochData[i].shape[2]) + " of " + str(NumAllEpoch[i]))
-    #print(EpochData[i].shape)
-    #print(a.shape)
-    #print(np.where((min < EEGThreshold[0]) | (max > EEGThreshold[1]))[0])
-    #print(len(np.where((min < EEGThreshold[0]) | (max > EEGThreshold[1]))[0]))
-    #print(EpochData[i].shape)
     AveragedData[i] = (EpochData[i]).mean(axis=2)
-
-SaveMatFile = {}
-SaveMatFile["AveragedData"] = AveragedData
-io.savemat("AveragedData.mat", SaveMatFile)
-
-#print(len(EpochData))
-#print(EpochData[0].shape)
-#print(EpochData[0][0].shape)
-
-#print(AveragedData[0].shape)
-
-#exit()
 
 for i in range(NumChannel):
     plt.subplot(PlotDivision[0], PlotDivision[1], PlotPosition[i])
