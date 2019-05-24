@@ -1,5 +1,6 @@
 from scipy import io
 from scipy import signal
+import pickle
 import numpy as np
 import bcipy as bci
 
@@ -15,11 +16,12 @@ import bcipy as bci
 
 Directory = "/home/simon/Documents/MATLAB/20181206_B33_Stream/"
 PreFileName = Directory + "20181206_B33_Stream_"
-Files = np.array([[1,4],[2,5],[3,6]])
-
+#Files = np.array([[1,4],[2,5],[3,6]])
+Files = np.array([[1],[2],[3]])
+#Files = np.array([[4],[5],[6]])
 SaveFileName = ["LowStream","MidStream","HighStream"]
 
-SelectedTrigger = np.array([4, 8])
+SelectedTrigger = np.array([2, 4, 8])
 
 Filter = np.array([1, 40])
 Filterorder = 2
@@ -117,11 +119,12 @@ for Repeat in range(Files.shape[0]):
     
     EpochTime = np.arange(TimeRange[0],TimeRange[1],1/Fs)
     
-    SaveMatFile = {}
-    SaveMatFile["AveragedData"] = AveragedData
-    SaveMatFile["EpochTime"] = EpochTime
-    SaveMatFile["Fs"] = Fs
-    SaveMatFile["Label"] = Label
+    SaveData = {}
+    SaveData["EpochData"] = EpochData
+    SaveData["EpochTime"] = EpochTime
+    SaveData["Fs"] = Fs
+    SaveData["Label"] = Label
     print(SaveFileName[Repeat] + ".mat is saving to" + Directory)
-    io.savemat(Directory + SaveFileName[Repeat], SaveMatFile)
-    del AveragedData
+    #io.savemat(Directory + SaveFileName[Repeat], SaveFile)
+    with open(Directory+SaveFileName[Repeat],'wb') as web:
+        pickle.dump(SaveData,web)

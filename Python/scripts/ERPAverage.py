@@ -2,7 +2,7 @@ from scipy import io
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
-from BCIToolBox import trigger_downsample
+import bcipy as bci
 
 #
 #   ERPAverage
@@ -55,7 +55,7 @@ for i in range(Files.shape[0]):
 
     if DownsampleRate != 1:
         Data_ = signal.decimate(Data_, DownsampleRate, axis=1)
-        Trigger_ = trigger_downsample(Trigger_, DownsampleRate, 0)
+        Trigger_ = bci.trigger_downsample(Trigger_, DownsampleRate, 0)
         Fs = Fs/DownsampleRate
 
     if i == 0:

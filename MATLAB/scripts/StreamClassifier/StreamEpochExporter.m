@@ -13,13 +13,13 @@ clearvars
 % FileStruct{2} = [2 5];
 % FileStruct{3} = [3 6];
 
-% FileStruct{1} = [1];
-% FileStruct{2} = [2];
-% FileStruct{3} = [3];
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
 
-FileStruct{1} = [4];
-FileStruct{2} = [5];
-FileStruct{3} = [6];
+% FileStruct{1} = [4];
+% FileStruct{2} = [5];
+% FileStruct{3} = [6];
 
 SaveFileNameStruct{1} = './LowStream.mat';
 SaveFileNameStruct{2} = './MidStream.mat';
@@ -40,7 +40,7 @@ Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20190508_B46_Stream_';
+PreFileName = '20181206_B33_Stream_';
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-Inf Inf];       %min max (uV uV)
@@ -71,7 +71,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 2;
 AveragingNum = 1;
 
 Temp.Data = [];
