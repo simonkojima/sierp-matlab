@@ -52,3 +52,34 @@ for Attended in range(NumStream):
         for i in range(Stream[Attended][Deviant].shape[2]):
             CSPData[Attended][Deviant][:,:,i] = np.dot(H[Deviant],Stream[Attended][Deviant][:,:,i])
 
+for Deviant in range(NumStream):
+    TrainingDataX = bci.Vectorizer(CSPData[0][0])
+    for Attended in range(NumStream):
+        #TrainingDataX = bci.Vectorizer(CSPData[Attended][Deviant])
+        TrainingDataX = np.vstack((TrainingDataX,bci.Vectorizer(CSPData[Attended][Deviant])))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

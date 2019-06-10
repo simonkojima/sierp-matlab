@@ -34,3 +34,15 @@ def CSP(Vt,Vnt):
     H = np.dot(V.transpose(),W)
     
     return H
+
+def Vectorizer(Data):
+    temp = [0]*Data.shape[2]
+    for i in range(Data.shape[2]):
+        temp[i] = np.array([]);
+        for j in range(Data.shape[0]):
+            temp[i] = np.append(temp[i],Data[j,:,i])
+            
+    vec = temp[0]
+    for i in range(1,Data.shape[2]):
+        vec = np.vstack((vec,temp[i]));
+    return vec
