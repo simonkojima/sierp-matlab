@@ -46,3 +46,54 @@ def Vectorizer(Data):
     for i in range(1,Data.shape[2]):
         vec = np.vstack((vec,temp[i]));
     return vec
+
+def Epoch(Data,Trigger,Range,SelectedTrigger,Fs):
+    Count = 0
+    NumChannel = Data.shape[0]
+    nTrigger = np.sum(Trigger == SelectedTrigger)
+    EpochData = np.zeros((NumChannel, ((Range[1]-Range[0])*Fs).astype(np.int32), nTrigger))
+    #BaseLineSingleTriggerEpochData = np.zeros((NumChannel, 1, nTrigger))
+    for j in range(Trigger.shape[0]):
+        if Trigger[j] == SelectedTrigger:
+            EpochData[:, :, Count] = Data[:, j+(np.floor(Range[0]*Fs)).astype(np.int32):j+(np.floor(Range[1]*Fs)).astype(np.int32)]
+            #BaseLineSingleTriggerEpochData[:, :, Count] = np.reshape((Data[:, j+(np.floor(BaseLineRange[0]*Fs)).astype(np.int32):j+(np.floor(BaseLineRange[1]*Fs)).astype(np.int32)]).mean(axis=1), (NumChannel, 1))
+            Count += 1
+        #EpochData = SingleTriggerEpochData
+        #BaseLineData[i] = BaseLineSingleTriggerEpochData 
+    return EpochData
+    
+def BaseLine(Data,Trigger,Range,SelectedTrigger,Fs):
+    Count = 0
+    NumChannel = Data.shape[0]
+    nTrigger = np.sum(Trigger == SelectedTrigger)
+    #SingleTriggerEpochData = np.zeros((NumChannel, ((Range[1]-Range[0])*Fs).astype(np.int32), nTrigger))
+    BaseLineSingleTriggerEpochData = np.zeros((NumChannel, 1, nTrigger))
+    for j in range(Trigger.shape[0]):
+        if Trigger[j] == SelectedTrigger:
+            #SingleTriggerEpochData[:, :, Count] = Data[:, j+(np.floor(Range[0]*Fs)).astype(np.int32):j+(np.floor(Range[1]*Fs)).astype(np.int32)]
+            BaseLineSingleTriggerEpochData[:, :, Count] = np.reshape((Data[:, j+(np.floor(Range[0]*Fs)).astype(np.int32):j+(np.floor(Range[1]*Fs)).astype(np.int32)]).mean(axis=1), (NumChannel, 1))
+            Count += 1
+        #EpochData = SingleTriggerEpochData
+        BaseLineData = BaseLineSingleTriggerEpochData
+    return BaseLineData
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

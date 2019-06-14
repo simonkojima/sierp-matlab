@@ -21,7 +21,7 @@ Files = np.array([[1],[2],[3]])
 #Files = np.array([[4],[5],[6]])
 SaveFileName = ["LowStream","MidStream","HighStream"]
 
-SelectedTrigger = np.array([2, 4, 8])
+SelectedTrigger = np.array([2, 8, 32])
 
 Filter = np.array([1, 40])
 Filterorder = 2
