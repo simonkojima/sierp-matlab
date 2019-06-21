@@ -27,7 +27,8 @@ Filter = np.array([1, 40])
 Filterorder = 2
 TimeRange = np.array([-0.1, 0.5])
 BaseLineRange = np.array([-0.05, 0])
-EEGThreshold = np.array([-100, 100])
+#EEGThreshold = np.array([-100, 100])
+EEGThreshold = np.array([-float('inf'), float('inf')])
 
 DownsampleRate = 2
 

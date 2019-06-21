@@ -37,11 +37,13 @@ def CSP(Vt,Vnt):
 
 def Vectorizer(Data):
     temp = [0]*Data.shape[2]
+    if Data.shape[2] == 0:
+        return np.zeros(Data.shape[0]*Data.shape[1])
     for i in range(Data.shape[2]):
         temp[i] = np.array([]);
         for j in range(Data.shape[0]):
             temp[i] = np.append(temp[i],Data[j,:,i])
-            
+    #print(len(temp))
     vec = temp[0]
     for i in range(1,Data.shape[2]):
         vec = np.vstack((vec,temp[i]));
