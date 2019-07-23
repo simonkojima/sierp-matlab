@@ -1,7 +1,7 @@
 clearvars
 
-Files = 1:7;
-PreFileName = '20190603_B44_Stream_';
+Files = 1:6;
+PreFileName = '20190717_B35_Stream_';
 SaveFileSuffix = '_Processed';
 
 FilterRange = [1 40]; %0.1 15
@@ -26,7 +26,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 2;
+DownsampleRate = 4;
 
 Temp.Data = [];
 Temp.Trigger = [];

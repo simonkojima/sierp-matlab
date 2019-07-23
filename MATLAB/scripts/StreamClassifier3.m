@@ -11,7 +11,7 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20190603_B44_Stream_0003_Processed.mat';
+SimulatingFile = '20190717_B35_Stream_0006_Processed.mat';
 CorrectClass = 3;
 
 TriggerSelect = [2 8 32];
@@ -102,15 +102,15 @@ end
 Count = 0;
 for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     
-    IntervalData = Devide(Data,l,SimulatingRange,Fs);
-    IntervalTrigger = Devide(Trigger,l,SimulatingRange,Fs);
+    IntervalData = Devide(Data,l,[SimulatingRange(1)-1 SimulatingRange(2)+1],Fs);
+    IntervalTrigger = [zeros(1,Fs) Devide(Trigger,l,SimulatingRange,Fs) zeros(1,Fs)];
     
     for m=1:length(TriggerSelect)
         EpochData{m} = Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs);
         BaseLineEpoch{m} = BaseLine(Epoch(IntervalData,IntervalTrigger,BaseLineRange,TriggerSelect(m),Fs),EpochRange,Fs);
         EpochData{m} = EpochData{m} - BaseLineEpoch{m};
     end
-    
+
     for m=1:size(MdlLinear,2)
         if EpochData{m} ~= 0
             
