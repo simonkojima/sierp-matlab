@@ -42,11 +42,11 @@ SaveFileName = SaveFileNameStruct{Repeat};
 %Files = [2 5];              %Suffix of Files
 PreFileName = '20181206_B33_Stream_';
 %SaveFileName = './Stream2.mat';
-Range = [-0.1 0.5];         %(s s)
+Range = [0 0.5];
+BaseLineRange = [-0.1 0];
 EEGThreshold = [-Inf Inf];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
 %BaseLineRange = [-0.05 0];  %(s s)
-BaseLineRange = [-0.1 0.5];
 FilterRange = [1 40]; %0.1 15
 AlphaThreshold = 100;
 FilterOrder = 2;
@@ -71,7 +71,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 2;
+DownsampleRate = 4;
 AveragingNum = 1;
 
 Temp.Data = [];

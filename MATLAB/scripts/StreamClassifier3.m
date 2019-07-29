@@ -16,8 +16,8 @@ CorrectClass = 1;
 
 TriggerSelect = [2 8 32];
 
-EpochRange = [-0.1 0.5];
-BaseLineRange = [-0.1 0.5];
+EpochRange = [0 0.5];
+BaseLineRange = [-0.1 0];
 
 SimulatingRange = [0 10];
 
@@ -37,6 +37,23 @@ for Deviant=1:size(Stream,2)
 %     end
     
     %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
+end
+
+clear temp;
+
+for Attended = 1:size(Stream,2)
+    for Deviant = 1:size(Stream,2)
+        Stream{Attended}.CSP{Deviant} = [];
+        for l=1:size(Stream{Attended}.Data{Deviant},3)
+            Stream{Attended}.CSP{Deviant} = cat(3,Stream{Attended}.CSP{Deviant},H{Deviant}*Stream{Attended}.Data{Deviant}(:,:,l));
+        end
+    end
+end
+
+%% Applying Spacial Filter
+
+for Deviant=1:size(Stream,2)
+    H{Deviant} = spatialfilter(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
 end
 
 clear temp;

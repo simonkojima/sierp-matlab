@@ -26,7 +26,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 2;
+DownsampleRate = 4;
 
 Temp.Data = [];
 Temp.Trigger = [];
