@@ -40,7 +40,7 @@ Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20190717_B35_Stream_';
+PreFileName = '20190520_B41_Stream_';
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-Inf Inf];       %min max (uV uV)
@@ -71,7 +71,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 2;
 AveragingNum = 1;
 
 Temp.Data = [];

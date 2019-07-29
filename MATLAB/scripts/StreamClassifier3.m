@@ -11,8 +11,8 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20190717_B35_Stream_0006_Processed.mat';
-CorrectClass = 3;
+SimulatingFile = '20190520_B41_Stream_0005_Processed.mat';
+CorrectClass = 2;
 
 TriggerSelect = [2 8 32];
 
@@ -85,7 +85,7 @@ end
 %% Designing LDA
 
 for Deviant=1:size(TrainingData.X,2)
-    MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','pseudolinear');
+    MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','linear');
 end
 
 %% Simulating
