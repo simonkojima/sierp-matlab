@@ -1,7 +1,9 @@
 clearvars
 
 Files = 1:6;
-PreFileName = '20181206_B33_Stream_';
+%PreFileName = '20181206_B33_Stream_';
+[~,FolderName] = fileparts(pwd);
+PreFileName = strcat(FolderName,"_");
 SaveFileSuffix = '_Processed';
 
 FilterRange = [1 40]; %0.1 15
@@ -26,7 +28,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 10;
 
 Temp.Data = [];
 Temp.Trigger = [];

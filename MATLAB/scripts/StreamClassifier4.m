@@ -11,8 +11,20 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
-CorrectClass = 1;
+[~,FolderName] = fileparts(pwd);
+PreFileName = strcat(FolderName,"_");
+FileSuffix = '_Processed.mat';
+%SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
+
+SimulatingFileNumber = 6;
+CorrectClass = 3;
+
+FileNumberString = num2str(SimulatingFileNumber);
+for m=1:4-strlength(FileNumberString)
+    FileNumberString = strcat(num2str(0),FileNumberString);
+end
+
+SimulatingFile = strcat(PreFileName,FileNumberString,FileSuffix);
 
 TriggerSelect = [2 8 32];
 
@@ -25,27 +37,33 @@ StandardizeEnable = 0;
 PCAEnable = 0;
 RetainingVariance = 99;
 
-%% Applying CSP
+%% Applying Spacial Filter
 
 temp = [1 2 3 1 2];
 
-for Deviant=1:size(Stream,2)
-    H{Deviant} = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
-    
-%     for l=1:size(H{Deviant},1)
-%         H{Deviant}(l,:) = H{Deviant}(l,:)./(norm(H{Deviant}(l,:)));
-%     end
-    
-    %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
+for l=1:size(Stream,2)
+    data{l}{1} = Stream{l}.Data{l};
+    data{l}{2} = cat(3,Stream{temp(l+1)}.Data{l},Stream{temp(l+2)}.Data{l});
 end
 
-clear temp;
+for Deviant=1:size(Stream,2)
+    f_{Deviant} = [];
+    f{Deviant} = spatialfilter(data{Deviant},[1/3 2/3]);
+    for l = 1:10
+       f_{Deviant} = [f_{Deviant} f{Deviant}(:,l)];
+    end
+    %f{Deviant} = [f{Deviant}(:,1) f{Deviant}(:,2) f{Deviant}(:,3) f{Deviant}(:,4) f{Deviant}(:,5) f{Deviant}(:,6) f{Deviant}(:,7) f{Deviant}(:,8) f{Deviant}(:,9) f{Deviant}(:,10)];
+end
+
+f = f_;
+
+clear temp data f_;
 
 for Attended = 1:size(Stream,2)
     for Deviant = 1:size(Stream,2)
-        Stream{Attended}.CSP{Deviant} = [];
+        Stream{Attended}.F{Deviant} = [];
         for l=1:size(Stream{Attended}.Data{Deviant},3)
-            Stream{Attended}.CSP{Deviant} = cat(3,Stream{Attended}.CSP{Deviant},H{Deviant}*Stream{Attended}.Data{Deviant}(:,:,l));
+            Stream{Attended}.F{Deviant} = cat(3,Stream{Attended}.F{Deviant},f{Deviant}'*Stream{Attended}.Data{Deviant}(:,:,l));
         end
     end
 end
@@ -56,11 +74,11 @@ for Deviant=1:size(Stream,2)
     TrainingData.X{Deviant} = [];
     TrainingData.Y{Deviant} = [];
     for Attended=1:size(Stream,2)
-        TrainingData.X{Deviant} = vertcat(TrainingData.X{Deviant},Vectorizer(Stream{Attended}.CSP{Deviant}));
+        TrainingData.X{Deviant} = vertcat(TrainingData.X{Deviant},Vectorizer(Stream{Attended}.F{Deviant}));
         if Deviant == Attended
-            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; ones(size(Vectorizer(Stream{Attended}.CSP{Deviant}),1),1)];
+            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; ones(size(Vectorizer(Stream{Attended}.F{Deviant}),1),1)];
         else
-            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; zeros(size(Vectorizer(Stream{Attended}.CSP{Deviant}),1),1)];
+            TrainingData.Y{Deviant} = [TrainingData.Y{Deviant}; zeros(size(Vectorizer(Stream{Attended}.F{Deviant}),1),1)];
         end
     end
 end
@@ -116,7 +134,7 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
             
             FilteredEpochData{m} = [];
             for n = 1:size(EpochData{m},3)
-                FilteredEpochData{m} = cat(3,FilteredEpochData{m},H{m}*EpochData{m}(:,:,n));
+                FilteredEpochData{m} = cat(3,FilteredEpochData{m},f{m}'*EpochData{m}(:,:,n));
             end
 
             FeatureVector = Vectorizer(FilteredEpochData{m});
@@ -158,10 +176,14 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     
     %for m=1:size(P,2)
     
-    Score(Count,:) = [mean(S{1}(:,2)) mean(S{2}(:,2)) mean(S{3}(:,2))];
+    Score(Count,:) = [mean(S{1}(:,2),1) mean(S{2}(:,2),1) mean(S{3}(:,2),1)];
     PScore(Count,:) = [P{1} P{2} P{3}];
     
-    [M(Count,:),I(Count,:)] = max(mean(Score));
+    if sum(mean(Score,1)) == 0
+        I(Count,:) = 0;
+    else
+        [M(Count,:),I(Count,:)] = max(mean(Score,1));
+    end
     end
     %end
     

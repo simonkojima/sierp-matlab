@@ -2,8 +2,8 @@ function f = spatialfilter(E,pk)
 
 K = length(E);
 
-if pk ~= K
-   fprintf("Error : Dimention of pk is wrong.")
+if length(pk) ~= K
+   fprintf("Error : Dimention of pk is wrong.\n");
    return 
 end
 
@@ -15,19 +15,26 @@ end
 
 %% Calculate Sb
 
+fprintf("Calculating Sb : ");
+
 count = 0;
 for t = 1:T
+    fprintf("#");
     for k = 1:K
         count = count + 1;
-        Sb(:,:,count) = pk(k)*(ekt(E,k,t)-et(E,t))*(ekt(E,k,t)-et(E,t))';
+        Sb(:,:,count) = pk(k).*((ekt(E,k,t)-et(E,t))*(ekt(E,k,t)-et(E,t))');
     end
 end
 Sb = sum(Sb,3);
+fprintf("\n");
 
 %% Calculate Sw
 
+fprintf("Calculating Sw : ");
+
 count = 0;
 for t = 1:T
+    fprintf("#");
     for k = 1:K
         for i = 1:size(E{k},3)
             count = count + 1;
@@ -35,13 +42,16 @@ for t = 1:T
         end
     end
 end
-Sw = mean(Sw,3);
+Sw = sum(Sw,3)./N;
+fprintf("\n");
 
 %% solving a generalized eigenvalue problem
 
-[Vec,lambda] = eig(Sb,Sw);
-[lambda,ind]=sort(diag(lambda),'descend');
-Vec=Vec(:,ind);
+fprintf("Solving a generalized eigenvalue problem.\n");
+
+[vec,lambda] = eig(Sb,Sw);
+[~,ind]=sort(diag(lambda),'descend');
+vec=vec(:,ind);
 
 f = vec;
 

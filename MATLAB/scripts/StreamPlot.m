@@ -1,10 +1,9 @@
 clearvars
 close all
 
-
 PlotYRange = [-8 8]; % -> B33,B36 : 10, B35 : 12
-Channel = 1:64;
-Range = [-0.1 0.5];
+
+Range = [0 0.5];
 PlotYLabel = 'Potential (\muV)';
 PlotXLabel = 'Time (s)';
 FillingColor = [0.7 0.7 0.7];
@@ -24,22 +23,31 @@ Stream{2} = Average;
 load 'HighStream.mat'
 Stream{3} = Average;
 
-DeviantSelection = 3;
+%DeviantSelection = 1:3;
 
 % StreamPlotColor{1} = {'r','b','b--'};
 % StreamPlotColor{2} = {'b','r','b--'};
 % StreamPlotColor{3} = {'b','b--','r'};
 
+for DeviantSelection = 1:3
+
 for l=1:3
     StreamPlotColor{l}  = {'r','g','b'};
 end
 
-figure('Name','Result','NumberTitle','off');
+FigureTitle = strcat("Result of ",num2str(DeviantSelection));
 
-PlotChannelFileName = 'Plot64ch.mat';
+%figure('Name','Result','NumberTitle','off');
+figure('Name',FigureTitle,'NumberTitle','off');
+
+%Channel = 1:64;
+%PlotChannelFileName = 'Plot64ch.mat';
+
+Channel = 32;
+PlotChannelFileName = 'PlotMonoCh.mat';
+
+
 load(PlotChannelFileName);
-
-
 for l=1:length(Channel)
     
     subplot(PlotDivision(1),PlotDivision(2),PlotPosition(l));
@@ -152,6 +160,8 @@ for l=1:length(Channel)
         plot(EpochTime,Stream{m}.AllAveraged{DeviantSelection}(Channel(l),:),StreamPlotColor{DeviantSelection}{m},'LineWidth',PlotLineWidth)
     end
     
+end
+
 end
 
 %Done();

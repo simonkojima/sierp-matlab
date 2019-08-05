@@ -7,7 +7,9 @@ clearvars
 %--------------------------------------------------------------------------
 %   Settings
 
-EEGFileName = '20190717_B35_Stream_';
+[Path,FolderName] = fileparts(pwd);
+EEGFileName = strcat(Path,'/',FolderName,'/',FolderName,'_');
+%EEGFileName = '20190717_B35_Stream_';
 FileNumber = 6;
 
 %--------------------------------------------------------------------------

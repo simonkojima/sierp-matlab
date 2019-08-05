@@ -9,13 +9,13 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-% FileStruct{1} = [1 4];
-% FileStruct{2} = [2 5];
-% FileStruct{3} = [3 6];
+FileStruct{1} = [1 4];
+FileStruct{2} = [2 5];
+FileStruct{3} = [3 6];
 
-FileStruct{1} = [1];
-FileStruct{2} = [2];
-FileStruct{3} = [3];
+% FileStruct{1} = [1];
+% FileStruct{2} = [2];
+% FileStruct{3} = [3];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
@@ -40,7 +40,9 @@ Files = FileStruct{Repeat};
 SaveFileName = SaveFileNameStruct{Repeat};
 
 %Files = [2 5];              %Suffix of Files
-PreFileName = '20181206_B33_Stream_';
+[~,FolderName] = fileparts(pwd);
+%PreFileName = '20181206_B33_Stream_';
+PreFileName = strcat(FolderName,"_");
 %SaveFileName = './Stream2.mat';
 Range = [0 0.5];
 BaseLineRange = [-0.1 0];
