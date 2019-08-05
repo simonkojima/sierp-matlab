@@ -13,9 +13,9 @@ FileStruct{1} = [1 4];
 FileStruct{2} = [2 5];
 FileStruct{3} = [3 6];
 
-% FileStruct{1} = [1];
-% FileStruct{2} = [2];
-% FileStruct{3} = [3];
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
@@ -73,7 +73,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 20;
 AveragingNum = 1;
 
 Temp.Data = [];
@@ -141,16 +141,17 @@ fprintf('Evaluating.....\n');
 for l=1:length(TriggerSelect)
     for m=1:size(Average.Data{l},3)
         EEGAcception{l}(m,1) = Acceptor(Average.Data{l}(:,:,m),EEGThreshold);
-        AlphaAcception{l}(m,1) = AlphaAcceptor(Average.Data{l}(:,:,m),AlphaThreshold,FilterRange,Fs);
+        %AlphaAcception{l}(m,1) = AlphaAcceptor(Average.Data{l}(:,:,m),AlphaThreshold,FilterRange,Fs);
         if EOGEnable == 1
             EOGAcception{l}(m,1) = Acceptor(Average.EOGData{l}(:,:,m),EOGThreshold);
         end
     end
 
     if EOGEnable == 1
-        Acception{l} = and(and(EEGAcception{l},EOGAcception{l}),AlphaAcception{l});
+        %Acception{l} = and(and(EEGAcception{l},EOGAcception{l}),AlphaAcception{l});
+        Acception{l} = and(EEGAcception{l},EOGAcception{l});
     else
-        Acception{l} = and(EEGAccecption{l},AlphaAcception{l});
+        Acception{l} = EEGAccecption{l};
     end
 end
 

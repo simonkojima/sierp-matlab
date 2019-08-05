@@ -49,7 +49,7 @@ end
 for Deviant=1:size(Stream,2)
     f_{Deviant} = [];
     f{Deviant} = spatialfilter(data{Deviant},[1/3 2/3]);
-    for l = 1:10
+    for l = 1:64
        f_{Deviant} = [f_{Deviant} f{Deviant}(:,l)];
     end
     %f{Deviant} = [f{Deviant}(:,1) f{Deviant}(:,2) f{Deviant}(:,3) f{Deviant}(:,4) f{Deviant}(:,5) f{Deviant}(:,6) f{Deviant}(:,7) f{Deviant}(:,8) f{Deviant}(:,9) f{Deviant}(:,10)];
