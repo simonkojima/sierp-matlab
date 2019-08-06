@@ -1,4 +1,5 @@
-from scipy import io
+#from scipy import io
+from mne.io import read_raw_brainvision
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,8 +14,9 @@ import bcipy as bci
 #   Time : NumSample x 1
 #   Trigger : NumSample x 1
 #
-Directory = "/home/simon/Documents/MATLAB/20181129_B36_Stream_/"
-PreFileName = Directory + "20181129_B36_Stream_"
+
+Directory = "c:/Users/KOJIMA/Documents/MATLAB/20181206_B33_Stream/"
+PreFileName = Directory + "20181206_B33_Stream_"
 Files = np.array([1, 3, 5])
 SelectedTrigger = np.array([4, 8])
 
@@ -37,15 +39,24 @@ PlotPosition = np.array(
 
 for i in range(Files.shape[0]):
 
-    filename = PreFileName + '{:0=4}'.format(Files[i])
+    filename = PreFileName + '{:0=4}'.format(Files[i]) + ".vhdr"
 
-    print("Loading File : " + filename + ".mat")
+    print("Loading File : " + filename)
 
-    matdata = io.loadmat(filename, squeeze_me=True)
-
-    Data_ = matdata["Data"]
-    Fs = matdata["Fs"]
-    Trigger_ = matdata["Trigger"]
+    #matdata = io.loadmat(filename, squeeze_me=True)
+    
+    raw = read_raw_brainvision(filename)    
+    Label = raw.ch_names
+    Ns = raw.n_times
+    Time = raw.times
+    Fs = raw.info['sfreq']
+    Data_ = raw.get_data()*(10**6)
+    
+    Trigger_ = bci.getTrig(raw,Data_.shape[1])
+    
+    #Data_ = matdata["Data"]
+    #Fs = matdata["Fs"]
+    #Trigger_ = matdata["Trigger"]
     nyq = Fs/2
 
     b, a = signal.butter(Filterorder, Filter/nyq, 'bandpass')
@@ -72,7 +83,7 @@ for i in range(SelectedTrigger.shape[0]):
     nTrigger[i] = np.sum(Trigger == SelectedTrigger[i])
 
 
-Time = matdata["Time"]
+
 print("Fs : " + str(Fs) + "Hz\n")
 EpochData = [0]*SelectedTrigger.shape[0]
 BaseLineData = [0]*SelectedTrigger.shape[0]

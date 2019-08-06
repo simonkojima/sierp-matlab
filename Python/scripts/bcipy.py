@@ -1,4 +1,5 @@
 import numpy as np
+import mne
 
 def trigger_downsample(x, r, phase):
     for i in range(phase + r, len(x), r):
@@ -80,22 +81,10 @@ def BaseLine(Data,Trigger,Range,SelectedTrigger,Fs):
     return BaseLineData
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+def getTrig(raw,Ns):
+    events = mne.events_from_annotations(raw)[0]
+    events = events[1:-1,:]
+    Trigger = np.zeros(Ns)
+    for i in range(events.shape[0]):
+        Trigger[events[i,0]] = events[i,2]
+    return Trigger

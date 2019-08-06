@@ -133,7 +133,7 @@ for i in range((FirstTrigger-Fs)[0],Data.shape[1],(SimulatingRange*Fs)[0]):
     Score = [0]*NumStream
     for j in range(NumStream):
         FilteredEpochData[j] = np.zeros(EpochData[j].shape)
-        FilteredEpochData[j] np.zeros([H[Deviant].shape[0],EpochData[j].shape[1],EpochData[j].shape[2]])
+        FilteredEpochData[j] = np.zeros([H[Deviant].shape[0],EpochData[j].shape[1],EpochData[j].shape[2]])
         for k in range(EpochData[j].shape[2]):
             FilteredEpochData[j][:,:,k] = np.dot(H[j],EpochData[j][:,:,k])
             

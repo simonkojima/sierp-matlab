@@ -1,4 +1,4 @@
-from scipy import io
+from mne.io import read_raw_brainvision
 from scipy import signal
 import pickle
 import numpy as np
@@ -14,7 +14,9 @@ import bcipy as bci
 #   Trigger : NumSample x 1
 #
 
-Directory = "/home/simon/Documents/MATLAB/20181206_B33_Stream/"
+#Directory = "/home/simon/Documents/MATLAB/20181206_B33_Stream/"
+#PreFileName = Directory + "20181206_B33_Stream_"
+Directory = "c:/Users/KOJIMA/Documents/MATLAB/20181206_B33_Stream/"
 PreFileName = Directory + "20181206_B33_Stream_"
 #Files = np.array([[1,4],[2,5],[3,6]])
 Files = np.array([[1],[2],[3]])
@@ -30,7 +32,7 @@ BaseLineRange = np.array([-0.05, 0])
 #EEGThreshold = np.array([-100, 100])
 EEGThreshold = np.array([-float('inf'), float('inf')])
 
-DownsampleRate = 2
+DownsampleRate = 1
 
 EOGEnable = True
 NumChannel = 64
@@ -45,16 +47,24 @@ for Repeat in range(Files.shape[0]):
     
     for i in range(Files[Repeat].shape[0]):
     
-        filename = PreFileName + '{:0=4}'.format(Files[Repeat][i])
+        filename = PreFileName + '{:0=4}'.format(Files[Repeat][i]) + ".vhdr"
+
+        print("Loading File : " + filename)
     
-        print("Loading File : " + filename + ".mat")
-    
-        matdata = io.loadmat(filename, squeeze_me=True)
-    
-        Data_ = matdata["Data"]
-        Fs = matdata["Fs"]
-        Trigger_ = matdata["Trigger"]
-        Label = matdata["Label"]
+        #matdata = io.loadmat(filename, squeeze_me=True)
+        
+        raw = read_raw_brainvision(filename)    
+        Label = raw.ch_names
+        Ns = raw.n_times
+        Time = raw.times
+        Fs = raw.info['sfreq']
+        Data_ = raw.get_data()*(10**6)
+        
+        Trigger_ = bci.getTrig(raw,Data_.shape[1])
+        
+        #Data_ = matdata["Data"]
+        #Fs = matdata["Fs"]
+        #Trigger_ = matdata["Trigger"]
         nyq = Fs/2
     
         b, a = signal.butter(Filterorder, Filter/nyq, 'bandpass')
@@ -81,7 +91,6 @@ for Repeat in range(Files.shape[0]):
         nTrigger[i] = np.sum(Trigger == SelectedTrigger[i])
     
     
-    Time = matdata["Time"]
     print("Fs : " + str(Fs) + "Hz\n")
     EpochData = [0]*SelectedTrigger.shape[0]
     BaseLineData = [0]*SelectedTrigger.shape[0]
@@ -125,7 +134,7 @@ for Repeat in range(Files.shape[0]):
     SaveData["EpochTime"] = EpochTime
     SaveData["Fs"] = Fs
     SaveData["Label"] = Label
-    print(SaveFileName[Repeat] + ".mat is saving to" + Directory)
+    print(SaveFileName[Repeat] + " is saved to " + Directory)
     #io.savemat(Directory + SaveFileName[Repeat], SaveFile)
     with open(Directory+SaveFileName[Repeat],'wb') as web:
         pickle.dump(SaveData,web)
