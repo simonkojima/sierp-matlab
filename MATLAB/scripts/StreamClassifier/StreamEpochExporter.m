@@ -13,9 +13,9 @@ FileStruct{1} = [1 4];
 FileStruct{2} = [2 5];
 FileStruct{3} = [3 6];
 
-FileStruct{1} = [1];
-FileStruct{2} = [2];
-FileStruct{3} = [3];
+% FileStruct{1} = [1];
+% FileStruct{2} = [2];
+% FileStruct{3} = [3];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
@@ -73,7 +73,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 20;
+DownsampleRate = 1;
 AveragingNum = 1;
 
 Temp.Data = [];
