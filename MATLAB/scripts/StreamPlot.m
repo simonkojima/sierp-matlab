@@ -1,15 +1,18 @@
 clearvars
 close all
 
-PlotYRange = [-8 8]; % -> B33,B36 : 10, B35 : 12
+PlotYRange = [-13 13]; % -> B33,B36 : 10, B35 : 12
 
-Range = [0 0.5];
-PlotYLabel = 'Potential (\muV)';
-PlotXLabel = 'Time (s)';
+Range = [-0.1 0.5];
+PlotYLabel = 'Potential [\muV]';
+PlotXLabel = 'Time [s]';
 FillingColor = [0.7 0.7 0.7];
 
-PlotLineWidth = 1.5; %5 %1.5
-PlotFontSize = 8; %40 %8
+PlotLineWidth = 8; %5 %1.5
+AxisLineWidth = 8;
+PlotFontSize = 50; %40 %8
+
+TitleEnable = 0;
 
 TTestEnable = 1;
 TTestAlpha = 0.01;
@@ -114,7 +117,8 @@ for l=1:length(Channel)
 %     for m=1:length(Channel)
         for m=1:length(EpochTime)
             if TTest.h(l,m) == 1
-                rectangle('Position',[(m-1)/Fs+Range(1) yrange(1) 1/Fs (yrange(2)-yrange(1))],'FaceColor',FillingColor,'EdgeColor',FillingColor);
+                rectangle('Position',[(m-1)/Fs+Range(1) yrange(1) 1/Fs (yrange(2)-yrange(1))],'FaceColor',FillingColor,'EdgeColor',FillingColor,'LineStyle','none');
+                %plot([EpochTime(m) EpochTime(m)], yrange, 'Color',FillingColor,'MarkerEdgeColor',FillingColor);
             end
         end
 %     end
@@ -134,7 +138,9 @@ for l=1:length(Channel)
         xlabel({PlotXLabel});
     %end
     
-    title(Label{Channel(l)},'FontWeight','normal');
+    if TitleEnable == 1
+        title(Label{Channel(l)},'FontWeight','normal');
+    end
     
     %xticks(Range(1):0.1:Range(2));
     %xticklabels({'-100','0','100','200','300','400','500'});
@@ -150,8 +156,11 @@ for l=1:length(Channel)
     
     set(gca,'FontSize',PlotFontSize,'LineWidth',PlotLineWidth)
     
-    plot(xlim, [0 0], 'k','LineWidth',PlotLineWidth);
-    plot([0 0], ylim, 'k','LineWidth',PlotLineWidth);
+    plot(xlim, [0 0], 'k','LineWidth',AxisLineWidth);
+    plot([0 0], ylim, 'k--','LineWidth',AxisLineWidth);
+    
+    ax = gca;
+    ax.LineWidth = AxisLineWidth;
     
     % 1: 0.37
 %     plot([0.3 0.3],ylim,'k--','LineWidth',1.2);
