@@ -9,13 +9,13 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-FileStruct{1} = [1 4];
-FileStruct{2} = [2 5];
-FileStruct{3} = [3 6];
+% FileStruct{1} = [1 4];
+% FileStruct{2} = [2 5];
+% FileStruct{3} = [3 6];
 
-% FileStruct{1} = [1];
-% FileStruct{2} = [2];
-% FileStruct{3} = [3];
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
@@ -45,7 +45,7 @@ SaveFileName = SaveFileNameStruct{Repeat};
 PreFileName = strcat(FolderName,"_");
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];
-BaseLineRange = [-0.1 0];
+BaseLineRange = [-0.05 0];
 EEGThreshold = [-100 100];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
 %BaseLineRange = [-0.05 0];  %(s s)
@@ -73,7 +73,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 1;
+DownsampleRate = 4;
 AveragingNum = 1;
 
 Temp.Data = [];

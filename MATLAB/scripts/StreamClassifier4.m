@@ -16,8 +16,8 @@ PreFileName = strcat(FolderName,"_");
 FileSuffix = '_Processed.mat';
 %SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
 
-SimulatingFileNumber = 6;
-CorrectClass = 3;
+SimulatingFileNumber = 4;
+CorrectClass = 1;
 
 FileNumberString = num2str(SimulatingFileNumber);
 for m=1:4-strlength(FileNumberString)
@@ -28,8 +28,8 @@ SimulatingFile = strcat(PreFileName,FileNumberString,FileSuffix);
 
 TriggerSelect = [2 8 32];
 
-EpochRange = [0 0.5];
-BaseLineRange = [-0.1 0];
+EpochRange = [-0.1 0.5];
+BaseLineRange = [-0.05 0];
 
 SimulatingRange = [0 10];
 
