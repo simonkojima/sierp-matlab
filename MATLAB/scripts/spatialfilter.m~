@@ -1,8 +1,11 @@
 % References
 %
 % Spatial filters for the classification of event-related potentials
-% Urich Hoffmann, Jean-Marc Vesin and Touradj Ebrahimi
+% Urich Hoffmann, Jean-Marc Vesin a
 %
+%
+%
+
 
 function f = spatialfilter(E,pk)
 
