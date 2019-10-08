@@ -16,8 +16,8 @@ PreFileName = strcat(FolderName,"_");
 FileSuffix = '_Processed.mat';
 %SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
 
-SimulatingFileNumber = 4;
-CorrectClass = 1;
+SimulatingFileNumber = 2;
+CorrectClass = 2;
 
 FileNumberString = num2str(SimulatingFileNumber);
 for m=1:4-strlength(FileNumberString)
@@ -43,12 +43,10 @@ temp = [1 2 3 1 2];
 
 for Deviant=1:size(Stream,2)
     H{Deviant} = CSP(Stream{Deviant}.Data{Deviant},cat(3,Stream{temp(Deviant+1)}.Data{Deviant},Stream{temp(Deviant+2)}.Data{Deviant}));
-    
 %     for l=1:size(H{Deviant},1)
 %         H{Deviant}(l,:) = H{Deviant}(l,:)./(norm(H{Deviant}(l,:)));
 %     end
-    
-    H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
+    %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
     %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(2,:);H{Deviant}(3,:);H{Deviant}(end-2,:);H{Deviant}(end-1,:);H{Deviant}(end,:)];
     %H{Deviant} = [H{Deviant}(1,:);H{Deviant}(end,:)];
     

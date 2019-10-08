@@ -16,15 +16,15 @@ PreFileName = strcat(FolderName,"_");
 FileSuffix = '_Processed.mat';
 %SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
 
-SimulatingFileNumber = 4;
-CorrectClass = 1;
+SimulatingFileNumber = 6;
+CorrectClass = 3;
 
 FileNumberString = num2str(SimulatingFileNumber);
 for m=1:4-strlength(FileNumberString)
     FileNumberString = strcat(num2str(0),FileNumberString);
 end
 
-SimulatingFile = strcat(PreFileName,FileNumberString,FileSuffix);
+SimulatingFile = strcat(PreFileName,FileNumberString,FileSuffix)
 
 TriggerSelect = [2 8 32];
 
@@ -39,25 +39,32 @@ RetainingVariance = 99;
 
 %% Applying Spacial Filter
 
-temp = [1 2 3 1 2];
-
-for l=1:size(Stream,2)
-    data{l}{1} = Stream{l}.Data{l};
-    data{l}{2} = cat(3,Stream{temp(l+1)}.Data{l},Stream{temp(l+2)}.Data{l});
-end
-
-for Deviant=1:size(Stream,2)
-    f_{Deviant} = [];
-    f{Deviant} = spatialfilter(data{Deviant},[1/3 2/3]);
-    for l = 1:64
-       f_{Deviant} = [f_{Deviant} f{Deviant}(:,l)];
+if exist("f.mat") == 0
+    
+    temp = [1 2 3 1 2];
+    
+    for l=1:size(Stream,2)
+        data{l}{1} = Stream{l}.Data{l};
+        data{l}{2} = cat(3,Stream{temp(l+1)}.Data{l},Stream{temp(l+2)}.Data{l});
     end
-    %f{Deviant} = [f{Deviant}(:,1) f{Deviant}(:,2) f{Deviant}(:,3) f{Deviant}(:,4) f{Deviant}(:,5) f{Deviant}(:,6) f{Deviant}(:,7) f{Deviant}(:,8) f{Deviant}(:,9) f{Deviant}(:,10)];
+    
+    for Deviant=1:size(Stream,2)
+        f_{Deviant} = [];
+        f{Deviant} = spatialfilter(data{Deviant},[1/3 2/3]);
+        for l = 1:64
+            f_{Deviant} = [f_{Deviant} f{Deviant}(:,l)];
+        end
+        %f{Deviant} = [f{Deviant}(:,1) f{Deviant}(:,2) f{Deviant}(:,3) f{Deviant}(:,4) f{Deviant}(:,5) f{Deviant}(:,6) f{Deviant}(:,7) f{Deviant}(:,8) f{Deviant}(:,9) f{Deviant}(:,10)];
+    end
+    
+    f = f_;
+    clear temp data f_;
+    save("f.mat","f")
+else
+    load ./f.mat
 end
 
-f = f_;
 
-clear temp data f_;
 
 for Attended = 1:size(Stream,2)
     for Deviant = 1:size(Stream,2)

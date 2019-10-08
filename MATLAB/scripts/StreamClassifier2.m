@@ -11,8 +11,8 @@ Stream{3} = Average;
 
 clear Average
 
-SimulatingFile = '20181127_B36_Stream_0003_Processed.mat';
-CorrectClass = 3;
+SimulatingFile = '20181127_B36_Stream_0004_Processed.mat';
+CorrectClass = 1;
 
 TriggerSelect = [2 8 32];
 
@@ -61,6 +61,110 @@ end
 for Deviant=1:size(TrainingData.X,2)
     MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','pseudolinear');
 end
+
+%% Simulating
+
+load(SimulatingFile);
+
+for l=1:size(Trigger,2)
+    if Trigger(l) ~= 0
+        FirstTrigger = l;
+        break
+    end
+end
+
+Count = 0;
+for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
+    
+    IntervalData = Devide(Data,l,[SimulatingRange(1)-1 SimulatingRange(2)+1],Fs);
+    IntervalTrigger = [zeros(1,Fs) Devide(Trigger,l,SimulatingRange,Fs) zeros(1,Fs)];
+    
+    for m=1:length(TriggerSelect)
+        EpochData{m} = Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs);
+        BaseLineEpoch{m} = BaseLine(Epoch(IntervalData,IntervalTrigger,BaseLineRange,TriggerSelect(m),Fs),EpochRange,Fs);
+        EpochData{m} = EpochData{m} - BaseLineEpoch{m};
+    end
+
+    for m=1:size(MdlLinear,2)
+        if EpochData{m} ~= 0
+            
+
+            FeatureVector = Vectorizer(EpochData{m});
+
+            if StandardizeEnable == 1
+                FeatureVector = (FeatureVector - Standardize{m}.meanvec)./Standardize{m}.stdvec;
+            end
+            
+            if PCAEnable == 1
+                FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
+            end
+            
+            [Res{m} S{m}] = predict(MdlLinear{m},FeatureVector);
+            
+        else
+            Res{m} = 0;
+            S{m} = 0;
+        end
+    end
+    
+    NullCheck = 0;
+    for m=1:3
+        if sum(S{m}) == 0
+            NullCheck = 1;
+        end
+    end
+    
+    if NullCheck == 0
+    
+    Count = Count + 1;
+    %fprintf('\n');
+    %fprintf('-%dth Section-\n',Count);
+    %fprintf('\n');
+    for m=1:size(Res,2)
+        P{m} = mean(Res{m});
+        %fprintf('Class %d : %f\n',m,P{m});
+    end
+    %fprintf('\n');
+    
+    %for m=1:size(P,2)
+    
+    Score(Count,:) = [mean(S{1}(:,2),1) mean(S{2}(:,2),1) mean(S{3}(:,2),1)];
+    PScore(Count,:) = [P{1} P{2} P{3}];
+    
+    if sum(mean(Score,1)) == 0
+        I(Count,:) = 0;
+    else
+        [M(Count,:),I(Count,:)] = max(mean(Score,1));
+    end
+    end
+    %end
+    
+    %break
+end
+
+%temp = sum(PScore,2);
+% for l=1:length(I)
+%     if temp(l) == 0
+%         I(l) = 0;
+%     end
+% end
+
+FalseCount = 0;
+for l=1:length(I)
+    if I(l) ~= CorrectClass
+        FalseCount = FalseCount + 1;
+    end
+end
+
+I
+
+fprintf('Accuracy : %f%%\n',(1-FalseCount/length(I))*100);
+
+% for l=1:size(MdlLinear,2)
+%     mean(Result{l})
+% end
+
+return
 
 %% Simulating
 
