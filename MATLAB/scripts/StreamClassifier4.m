@@ -16,7 +16,7 @@ PreFileName = strcat(FolderName,"_");
 FileSuffix = '_Processed.mat';
 %SimulatingFile = '20181206_B33_Stream_0004_Processed.mat';
 
-SimulatingFileNumber = 6;
+SimulatingFileNumber = 3;
 CorrectClass = 3;
 
 FileNumberString = num2str(SimulatingFileNumber);

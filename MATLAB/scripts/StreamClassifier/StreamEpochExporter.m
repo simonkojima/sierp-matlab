@@ -13,13 +13,13 @@ clearvars
 % FileStruct{2} = [2 5];
 % FileStruct{3} = [3 6];
 
-FileStruct{1} = [1];
-FileStruct{2} = [2];
-FileStruct{3} = [3];
+% FileStruct{1} = [1];
+% FileStruct{2} = [2];
+% FileStruct{3} = [3];
 
-% FileStruct{1} = [4];
-% FileStruct{2} = [5];
-% FileStruct{3} = [6];
+FileStruct{1} = [4];
+FileStruct{2} = [5];
+FileStruct{3} = [6];
 
 SaveFileNameStruct{1} = './LowStream.mat';
 SaveFileNameStruct{2} = './MidStream.mat';
@@ -73,7 +73,7 @@ ChannelSelection = 1:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 10;
 AveragingNum = 1;
 
 Temp.Data = [];
