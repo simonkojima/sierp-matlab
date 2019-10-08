@@ -8,9 +8,13 @@ PlotYLabel = 'Potential [\muV]';
 PlotXLabel = 'Time [s]';
 FillingColor = [0.7 0.7 0.7];
 
-PlotLineWidth = 8; %5 %1.5
-AxisLineWidth = 8;
-PlotFontSize = 50; %40 %8
+% PlotLineWidth = 8; %5 %1.5
+% AxisLineWidth = 8;
+% PlotFontSize = 50; %40 %8
+
+PlotLineWidth = 1; %5 %1.5
+AxisLineWidth = 1;
+PlotFontSize = 8; %40 %8
 
 TitleEnable = 0;
 
