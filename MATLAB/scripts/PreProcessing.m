@@ -15,13 +15,13 @@ EOGEnable = 1;
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
 
-%ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 
 %ChannelSelection = [32 49 52 55]; % Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 
 %ChannelSelection = 8:64;
 %ChannelSelection = 1:2:64;
