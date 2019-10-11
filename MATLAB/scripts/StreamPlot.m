@@ -1,7 +1,8 @@
 clearvars
 close all
 
-PlotYRange = [-13 13]; % -> B33,B36 : 10, B35 : 12
+PlotYRange = [-5 5]; % -> B33,B36 : 10, B35 : 12
+% -13 13
 
 Range = [-0.1 0.5];
 PlotYLabel = 'Potential [\muV]';

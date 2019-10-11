@@ -9,13 +9,13 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-FileStruct{1} = [1 4];
-FileStruct{2} = [2 5];
-FileStruct{3} = [3 6];
+% FileStruct{1} = [1 4];
+% FileStruct{2} = [2 5];
+% FileStruct{3} = [3 6];
 
-% FileStruct{1} = [1];
-% FileStruct{2} = [2];
-% FileStruct{3} = [3];
+FileStruct{1} = [1];
+FileStruct{2} = [2];
+FileStruct{3} = [3];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
@@ -46,7 +46,7 @@ PreFileName = strcat(FolderName,"_");
 %SaveFileName = './Stream2.mat';
 Range = [-0.1 0.5];
 BaseLineRange = [-0.05 0];
-EEGThreshold = [-100 100];       %min max (uV uV)
+EEGThreshold = [-Inf Inf];       %min max (uV uV)
 EOGThreshold = [-Inf Inf];       %min max (uV uV)
 %BaseLineRange = [-0.05 0];  %(s s)
 FilterRange = [1 40]; %0.1 15
@@ -60,20 +60,20 @@ EOGEnable = 1;
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8
 
-%ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
+ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 
 %ChannelSelection = [32 49 52 55]; % Cz P5 Pz P6
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 
 %ChannelSelection = 8:64;
 %ChannelSelection = 1:2:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 4;
+DownsampleRate = 10;
 AveragingNum = 1;
 
 Temp.Data = [];

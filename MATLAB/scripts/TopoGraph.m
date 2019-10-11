@@ -10,7 +10,7 @@ Stream{2} = Average;
 load 'HighStream.mat'
 Stream{3} = Average;
 
-DeviantSelection = 3;
+DeviantSelection = 1;
 
 Range = [0.1 0.5];
 
@@ -32,8 +32,8 @@ for m = 1:3
         Count = Count + 1;
         FigureName = strcat('Resposes_to_Deviant_',num2str(DeviantSelection),'_Attended_to_Stream_',num2str(m),'_',num2str(Time(l)*1000),'ms');
         figure('Name',FigureName,'NumberTitle','off');
-        %subplot(PlotDivision(1),PlotDivision(2),Count);
-        %hold on
+        subplot(PlotDivision(1),PlotDivision(2),Count);
+        hold on
         %topoplot(Stream{DeviantSelection}.AllAveraged{DeviantSelection},'maplimits',TopoPlotRange)
         [M,I] = min(abs(EpochTime-Time(l)));
         
