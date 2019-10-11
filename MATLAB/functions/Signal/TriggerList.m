@@ -49,6 +49,10 @@ end
 
 Temp = TriggerCount;
 
+if isempty(Temp)
+   return
+end
+
 [B,I] = sort(Temp(1,:));
 TriggerCount = B;
 
