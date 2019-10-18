@@ -11,22 +11,22 @@ clearvars
 
 %%------------------------------------------------------------------------
 
-TriggerSelect = [1 5];
+TriggerSelect = [1 4];
 PlotColor = {'b','r'};
 
 Files = 1:3;              %Suffix of Files
 PreFileName = '20190508_B46_MMN_';
-Range = [-0.1 0.5];         %(s s)
+Range = [0 1];         %(s s)
 EEGThreshold = [-100 100];       %min max (uV uV)
-EOGThreshold = [Inf Inf];       %min max (uV uV)
+EOGThreshold = [Inf I];       %min max (uV uV)
 BaseLineRange = [-0.05 0];  %(s s)
-FilterRange = [1 40]; %0.1 15
+FilterRange = [0.1 15]; %0.1 15
 AlphaThreshold = 100;        %(%)
 FilterOrder = 2;
 ICAEnable = 0;
 
 NumChannel = 64;
-EOGEnable = 0;
+EOGEnable = 2;
 
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8s
@@ -36,8 +36,8 @@ ChannelSelection = 1:64;
 %ChannelSelection = 1:2:64;
 %ChannelSelection = 1:7;
 
-DownsampleRate = 1;
-AveragingNum = 1;
+DownsampleRate = 2;
+AveragingNum = 9;
 
 Temp.Data = [];
 Temp.Trigger = [];
