@@ -1,4 +1,4 @@
-function TriggerList(Trigger,Time)
+function TriggerCount = TriggerList(Trigger,Time)
 
 if Time == 0
    Time = zeros(size(Trigger)) ;
@@ -64,6 +64,6 @@ if Time ~= 0
     fprintf('Mean Period        : %.30f ms\n',mean(Period)*1000);
     fprintf('Standard Deviation : %.30f ms\n',std(Period)*1000);
 end
-TriggerCount
+%TriggerCount
 
 end
