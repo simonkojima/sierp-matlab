@@ -111,6 +111,8 @@ end
 
 for Deviant=1:size(TrainingData.X,2)
     MdlLinear{Deviant} = fitcdiscr(TrainingData.X{Deviant},TrainingData.Y{Deviant},'DiscrimType','linear');
+    InitialTheta{Deviant} = zeros(size(TrainingData.X{Deviant},2),1);
+    [MinTheta{Deviant},MinCost{Deviant}] = fminunc(@(t)LogisticCost(TrainingData.X{Deviant},TrainingData.Y{Deviant},t,500),InitialTheta{Deviant},optimset('GradObj', 'on', 'MaxIter', Inf,'Display','notify'));
 end
 
 %% Simulating
@@ -154,7 +156,11 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
                 FeatureVector = FeatureVector*pca{m}.U(:,1:pca{m}.k);
             end
             
+            
+            
             [Res{m} S{m}] = predict(MdlLinear{m},FeatureVector);
+            
+            S{m} = logsig(FeatureVector*MinTheta{m});
             
         else
             Res{m} = 0;
@@ -176,15 +182,16 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     %fprintf('-%dth Section-\n',Count);
     %fprintf('\n');
     for m=1:size(Res,2)
-        P{m} = mean(Res{m});
+        %P{m} = mean(Res{m});
         %fprintf('Class %d : %f\n',m,P{m});
     end
     %fprintf('\n');
     
     %for m=1:size(P,2)
     
-    Score(Count,:) = [mean(S{1}(:,2),1) mean(S{2}(:,2),1) mean(S{3}(:,2),1)];
-    PScore(Count,:) = [P{1} P{2} P{3}];
+    %Score(Count,:) = [mean(S{1}(:,2),1) mean(S{2}(:,2),1) mean(S{3}(:,2),1)];
+    Score(Count,:) = [mean(S{1},1) mean(S{2},1) mean(S{3},1)];
+    %PScore(Count,:) = [P{1} P{2} P{3}];
     
     if sum(mean(Score,1)) == 0
         I(Count,:) = 0;
@@ -195,6 +202,8 @@ for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
     %end
     
     %break
+    
+    %return
 end
 
 %temp = sum(PScore,2);

@@ -5,7 +5,8 @@ classdef EPOCH < handle
     properties (SetAccess = private)
         range
         baseLineRange
-        objData
+        objeeg
+        objeog
         trig
         nclass
         epochData
@@ -17,9 +18,9 @@ classdef EPOCH < handle
     end
     
     methods
-        function obj = EPOCH(objData)
-            if isequal(class(objData),'DATA')
-                obj.objData = objData;
+        function obj = EPOCH(objeeg)
+            if isequal(class(objeeg),'DATA')
+                obj.objeeg = objeeg;
             else
                 error('Argument');
             end
@@ -31,6 +32,10 @@ classdef EPOCH < handle
             else
                 error('Argument');
             end
+        end
+        
+        function setEOGData(obj,eog)
+           obj.objeog = eog; 
         end
         
         function setBaseLineRange(obj,range)
@@ -47,7 +52,7 @@ classdef EPOCH < handle
                 obj.trig.name = trigname;
                 obj.nclass = length(trignum);
                 
-                r = obj.objData.getTriggerList();
+                r = obj.objeeg.getTriggerList();
                 for l = 1:obj.nclass
                     for m = 1:size(r,2)
                         if r(1,m) == obj.trig.num(l)
@@ -79,7 +84,7 @@ classdef EPOCH < handle
             end
             
             clear temp;
-            
+                        
             for l=1:obj.nclass
                 count = 0;
                 %Average.NumAllEpoch{l} = length(Acception{l});
@@ -104,18 +109,18 @@ classdef EPOCH < handle
         
         function start(obj)
             obj.epochData = [];
-            OriginalData = obj.objData.getData();
-            TriggerData = obj.objData.getTrigger();
-            Fs = obj.objData.getFs();
-            obj.epochTime = obj.range(1):1/obj.objData.fs:obj.range(2);
-            %TriggerList = objData.getTriggerList();
+            OriginalData = obj.objeeg.getData();
+            TriggerData = obj.objeeg.getTrigger();
+            Fs = obj.objeeg.getFs();
+            obj.epochTime = obj.range(1):1/obj.objeeg.fs:obj.range(2);
+            %TriggerList = objeeg.getTriggerList();
             
             for l = 1:obj.nclass
                 Count = 0;
-                for m = 1:obj.objData.getLength()
+                for m = 1:obj.objeeg.getLength()
                     
                     if TriggerData(m) == obj.trig.num(l)
-                        if (m+floor(obj.range(1)*Fs) > 0) && (m+floor(obj.range(2)*Fs) <= obj.objData.getLength())
+                        if (m+floor(obj.range(1)*Fs) > 0) && (m+floor(obj.range(2)*Fs) <= obj.objeeg.getLength())
                             Count = Count + 1;
                             obj.epochData{l}(:,:,Count) = OriginalData(:,m+floor(obj.range(1)*Fs):(m+floor(obj.range(2)*Fs)));
                         end
@@ -128,17 +133,17 @@ classdef EPOCH < handle
         
         function fixBaseLine(obj)
             
-            OriginalData = obj.objData.getData();
-            TriggerData = obj.objData.getTrigger();
-            Fs = obj.objData.getFs();
+            OriginalData = obj.objeeg.getData();
+            TriggerData = obj.objeeg.getTrigger();
+            Fs = obj.objeeg.getFs();
             
             temp = [];
             for l = 1:obj.nclass
                 Count = 0;
-                for m = 1:obj.objData.getLength()
+                for m = 1:obj.objeeg.getLength()
                     
                     if TriggerData(m) == obj.trig.num(l)
-                        if (m+floor(obj.baseLineRange(1)*Fs) > 0) && (m+floor(obj.baseLineRange(2)*Fs) <= obj.objData.getLength())
+                        if (m+floor(obj.baseLineRange(1)*Fs) > 0) && (m+floor(obj.baseLineRange(2)*Fs) <= obj.objeeg.getLength())
                             Count = Count + 1;
                             temp{l}(:,:,Count) = OriginalData(:,m+floor(obj.baseLineRange(1)*Fs):(m+floor(obj.baseLineRange(2)*Fs)));
                         end
@@ -160,9 +165,9 @@ classdef EPOCH < handle
         end
         
         function r = getChIndex(obj,ch)
-            ChLabel = obj.objData.getChLabel();
+            ChLabel = obj.objeeg.getChLabel();
             if istext(ch)
-                for l = 1:obj.objData.getNumChannel()
+                for l = 1:obj.objeeg.getNumChannel()
                     if isequal(ChLabel{l},ch)
                         r = l;
                     end

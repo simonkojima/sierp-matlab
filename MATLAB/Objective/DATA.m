@@ -103,10 +103,10 @@ classdef DATA < handle
         function setCh(obj,chnum)
             if isnumeric(chnum)
                 count = 0;
-                for ch = 1:length(chnum)
+                for l = 1:length(chnum)
                     count = count+1;
-                    temp.data(count,:) = obj.data(ch,:);
-                    temp.chLabel{count} = obj.chLabel{ch};
+                    temp.data(count,:) = obj.data(chnum(l),:);
+                    temp.chLabel{count} = obj.chLabel{chnum(l)};
                 end
                 obj.data = temp.data;
                 obj.chLabel = temp.chLabel;
