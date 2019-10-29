@@ -1,9 +1,7 @@
-function M = Riemannian(X,target,MaxIteration)
+clearvars
+close all
 
-% clearvars
-% close all
-%
-% load ./EpochData.mat
+load ./EpochData.mat
 
 %
 % X <- C x N
@@ -11,16 +9,16 @@ function M = Riemannian(X,target,MaxIteration)
 % N : Time
 %
 
-%X = Average.Data;
+X = Average.Data;
 
 % for l=1:2
 %    for m = 1:size(X{l},3)
 %        X{l}(:,:,m) = X{l}(:,:,m) - mean(X{l}(:,:,m),2);
-%    end
+%    end    
 % end
 
 
-P1 = mean(X{target},3);
+P1 = mean(X{2},3);
 
 Nc = size(X,2);
 for l = 1:Nc
@@ -40,7 +38,7 @@ end
 % Geometric Mean M of K SPD matricies
 % Sb = Ck
 
-%MaxIteration = 50;
+MaxIteration = 50;
 
 for Class = 1:Nc
     K = size(Sb{Class},3);
@@ -68,34 +66,33 @@ for Class = 1:Nc
         
     end
     
-    %     figure();
-    %     image(M{Class},'CDataMapping','scaled')
-    %     colorbar
+    figure();
+    image(M{Class},'CDataMapping','scaled')
+    colorbar
     
 end
 
-    function r = root(C)
-        [vec,lam] = eig(C);
-        lam = sqrt(diag(lam));
-        lam = diag(lam);
-        r = vec*lam*vec';
-    end
+function r = root(C)
+[vec,lam] = eig(C);
+lam = sqrt(diag(lam));
+lam = diag(lam);
+r = vec*lam*vec';
+end
 
-    function r = negroot(C)
-        [vec,lam] = eig(C);
-        lam = inv(sqrt(lam));
-        r = vec*lam*vec';
-    end
+function r = negroot(C)
+[vec,lam] = eig(C);
+lam = inv(sqrt(lam));
+r = vec*lam*vec';
+end
 
-    function r = ln_spd(C)
-        [vec,lam] = eig(C);
-        lam = logm(lam);
-        r = vec*lam*vec';
-    end
+function r = ln_spd(C)
+[vec,lam] = eig(C);
+lam = logm(lam);
+r = vec*lam*vec';
+end
 
-    function r = exp_spd(C)
-        [vec,lam] = eig(C);
-        lam = expm(lam);
-        r = vec*lam*vec';
-    end
+function r = exp_spd(C)
+[vec,lam] = eig(C);
+lam = expm(lam);
+r = vec*lam*vec';
 end

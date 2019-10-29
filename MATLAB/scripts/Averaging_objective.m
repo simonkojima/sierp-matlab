@@ -7,6 +7,9 @@ bandpass = FILTER('bandpass');
 bandpass.setCutoff([1 40]);
 bandpass.setOrder(2);
 
+downsample = FILTER('downsample');
+downsample.setRate(2);
+
 Data.eeg = DATA();
 Data.eog = DATA();
 
@@ -27,15 +30,14 @@ for l= [1 4]
     temp.eog.setCh(65:66);
 
     bandpass.apply(temp.eeg);
+    downsample.apply(temp.eeg);
     Data.eeg.concatenate(temp.eeg);
     Data.eog.concatenate(temp.eog);
 end
 
 Epoch = EPOCH(Data.eeg);
 Epoch.setEOGData(Data.eog);
-
 Epoch.setRange([-0.1 0.5]);
-
 Epoch.setTrigger([1,2],{'non-target','target'});
 Epoch.start();
 
@@ -44,8 +46,9 @@ Epoch.fixBaseLine();
 
 
 Epoch.setTh('EEG',[-100 100]);
-%return
-Epoch.applyTh
+Epoch.setTh('EOG',[-Inf Inf],Data.eog);
+
+Epoch.applyTh();
 
 Epoch.averaging();
 

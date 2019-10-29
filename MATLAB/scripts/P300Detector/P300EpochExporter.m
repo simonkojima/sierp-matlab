@@ -14,8 +14,11 @@ clearvars
 TriggerSelect = [1 5];
 PlotColor = {'b','r'};
 
-Files = 1:3;              %Suffix of Files
-PreFileName = '20190508_B46_MMN_';
+Files = 1:4;              %Suffix of Files
+[~,FolderName] = fileparts(pwd);
+%PreFileName = '20181206_B33_Stream_';
+PreFileName = strcat(FolderName,"_");
+%PreFileName = '20190508_B46_MMN_';
 Range = [-0.1 0.5];         %(s s)
 EEGThreshold = [-100 100];       %min max (uV uV)
 EOGThreshold = [Inf Inf];       %min max (uV uV)
@@ -25,16 +28,16 @@ AlphaThreshold = 100;        %(%)
 FilterOrder = 2;
 ICAEnable = 0;
 
-NumChannel = 64;
+NumChannel = 7;
 EOGEnable = 0;
 
 %ChannelSelection = [12 30 32 34 50 52 54 57 61 63]; % Fz C3 Cz C4 P3 Pz P4 PO7 PO8 Oz
 %ChannelSelection = [12 30 32 34 52 57 61]; % Fz C3 Cz C4 Pz PO7 PO8s
 %ChannelSelection = [10 12 14 32 49 52 55]; % F3 Fz F4 Cz P5 Pz P6
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 %ChannelSelection = 1:2:64;
-%ChannelSelection = 1:7;
+ChannelSelection = 1:7;
 
 DownsampleRate = 1;
 AveragingNum = 1;

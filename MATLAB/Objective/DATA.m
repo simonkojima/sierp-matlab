@@ -92,6 +92,14 @@ classdef DATA < handle
             obj.data = data;
         end
         
+        function setTriggerData(obj,data)
+           obj.trigger = data; 
+        end
+        
+        function setFs(obj,fs)
+           obj.fs = fs; 
+        end
+        
         function setName(obj,name)
            if istext(name)
                obj.name = name;

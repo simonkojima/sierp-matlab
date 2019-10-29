@@ -10,6 +10,7 @@ classdef EPOCH < handle
         trig
         nclass
         epochData
+        eogEpochData
         averaged
         epochTime
         th
@@ -73,10 +74,10 @@ classdef EPOCH < handle
             if istext(dtype)
                 if strcmpi(dtype,'EEG')
                     epoch = obj.epochData;
+                elseif strcmpi(dtype,'EOG')
+                    epoch = obj.eogEpochData;
                 else
-                    epoch = varargin{1};
-                    epoch
-                    return
+                    error('Argument');
                 end
             else
                error('Argument') ;
@@ -97,15 +98,13 @@ classdef EPOCH < handle
                 obj.accepted{l} = obj.accepted{l} & r{l};
             end
             
-            %obj.accepted = logical(obj.accepted) & logical(r);
-            
         end
         
         function applyTh(obj)
                         
             for l=1:obj.nclass
                 count = 0;
-                for m=1:size(obj.epochData{l},3)
+                for m=1:obj.numAll(l)
                     if obj.accepted{l}(m) == 1
                         count = count+1;
                         temp{l}(:,:,count) = obj.epochData{l}(:,:,m);
@@ -125,24 +124,40 @@ classdef EPOCH < handle
         end
         
         function start(obj)
-            obj.epochData = [];
+            %obj.epochData = [];
             OriginalData = obj.objeeg.getData();
             TriggerData = obj.objeeg.getTrigger();
             Fs = obj.objeeg.getFs();
             obj.epochTime = obj.range(1):1/obj.objeeg.fs:obj.range(2);
-            %TriggerList = objeeg.getTriggerList();
             
             for l = 1:obj.nclass
                 Count = 0;
                 for m = 1:obj.objeeg.getLength()
-                    
                     if TriggerData(m) == obj.trig.num(l)
-                        if (m+floor(obj.range(1)*Fs) > 0) && (m+floor(obj.range(2)*Fs) <= obj.objeeg.getLength())
+                        %if (m+floor(obj.range(1)*Fs) > 0) && (m+floor(obj.range(2)*Fs) <= obj.objeeg.getLength())
                             Count = Count + 1;
                             obj.epochData{l}(:,:,Count) = OriginalData(:,m+floor(obj.range(1)*Fs):(m+floor(obj.range(2)*Fs)));
+                        %end
+                    end
+                end
+            end
+            
+            if ~isempty(obj.objeog)
+                
+                OriginalData = obj.objeog.getData();
+                TriggerData = obj.objeog.getTrigger();
+                Fs = obj.objeog.getFs();
+                %obj.epochTime = obj.range(1):1/obj.objeog.fs:obj.range(2);
+                for l = 1:obj.nclass
+                    Count = 0;
+                    for m = 1:obj.objeog.getLength()
+                        if TriggerData(m) == obj.trig.num(l)
+                            %if (m+floor(obj.range(1)*Fs) > 0) && (m+floor(obj.range(2)*Fs) <= obj.objeeg.getLength())
+                            Count = Count + 1;
+                            obj.eogEpochData{l}(:,:,Count) = OriginalData(:,m+floor(obj.range(1)*Fs):(m+floor(obj.range(2)*Fs)));
+                            %end
                         end
                     end
-                    
                 end
             end
             

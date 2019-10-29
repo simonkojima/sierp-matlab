@@ -1,16 +1,4 @@
 function y = TriggerDownsample(x,r,phase)
-% clc
-% close all
-% clearvars
-% r=2;
-% phase=0;
-% 
-% 
-% load('20180514_P3000001.mat');
-
-%x = [0 1 0 0 1 0 1 0 1 0 1  0 1 0 1 0 0 0 1 0 0 0 1 0 0 0 1];
-
-% x = Trigger;
 
 
 y=[];
