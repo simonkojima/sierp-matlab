@@ -15,6 +15,7 @@ classdef EPOCH < handle
         th
         numAll
         numAccepted
+        accepted
     end
     
     methods
@@ -59,6 +60,7 @@ classdef EPOCH < handle
                             obj.numAll(l) = r(2,m);
                         end
                     end
+                    obj.accepted{l} = ones(1,obj.numAll(l));
                 end
                 
             else
@@ -66,35 +68,50 @@ classdef EPOCH < handle
             end
         end
         
-        function setTh(obj,th)
+        function setTh(obj,dtype,th,varargin)
+            
+            if istext(dtype)
+                if strcmpi(dtype,'EEG')
+                    epoch = obj.epochData;
+                else
+                    epoch = varargin{1};
+                    epoch
+                    return
+                end
+            else
+               error('Argument') ;
+            end
+            
+            
             obj.th = th;
+            
+            
+            for l = 1:obj.nclass
+                r{l} = ones(1,obj.numAll(l));
+                for m=1:size(epoch{l},3)
+                    temp = squeeze(epoch{l}(:,:,m));
+                    if min(temp(:)) < obj.th(1) || max(temp(:)) > obj.th(2)
+                        r{l}(m) = 0;
+                    end
+                end
+                obj.accepted{l} = obj.accepted{l} & r{l};
+            end
+            
+            %obj.accepted = logical(obj.accepted) & logical(r);
+            
         end
         
         function applyTh(obj)
-           
-            for l = 1:obj.nclass
-                for m=1:size(obj.epochData{l},3)
-                    temp = squeeze(obj.epochData{l}(:,:,m));
-                    if min(temp(:)) < obj.th(1) || max(temp(:)) > obj.th(2)
-                        r{l}(m) = 0;
-                    else
-                        r{l}(m) = 1;
-                    end
-                end
-            end
-            
-            clear temp;
                         
             for l=1:obj.nclass
                 count = 0;
-                %Average.NumAllEpoch{l} = length(Acception{l});
                 for m=1:size(obj.epochData{l},3)
-                    if r{l}(m) == 1
+                    if obj.accepted{l}(m) == 1
                         count = count+1;
                         temp{l}(:,:,count) = obj.epochData{l}(:,:,m);
                     end
                 end
-                obj.numAccepted(l) = sum(r{l});
+                obj.numAccepted(l) = sum(obj.accepted{l});
             end
             
             obj.epochData = temp;

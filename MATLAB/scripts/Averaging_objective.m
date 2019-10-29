@@ -43,7 +43,8 @@ Epoch.setBaseLineRange([-0.05 0]);
 Epoch.fixBaseLine();
 
 
-Epoch.setTh([-100 100]);
+Epoch.setTh('EEG',[-100 100]);
+%return
 Epoch.applyTh
 
 Epoch.averaging();
