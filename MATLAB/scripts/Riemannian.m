@@ -1,4 +1,4 @@
-function M = Riemannian(X,target,MaxIteration)
+function [M,P1] = Riemannian(X,target,MaxIteration)
 
 % clearvars
 % close all
@@ -23,17 +23,17 @@ function M = Riemannian(X,target,MaxIteration)
 P1 = mean(X{target},3);
 
 Nc = size(X,2);
-for l = 1:Nc
-    [C,N,I] = size(X{l});
-    for m = 1:I
-        Xb{l}(:,:,m) = [P1; X{l}(:,:,m)];
-    end
-end
+% for l = 1:Nc
+%     [C,N,I] = size(X{l});
+%     for m = 1:I
+%         Xb{l}(:,:,m) = [P1; X{l}(:,:,m)];
+%     end
+% end
 
 for l=1:Nc
     [C,N,I] = size(X{l});
     for m = 1:I
-        Sb{l}(:,:,m) = (1/(N-1))*(Xb{l}(:,:,m)*Xb{l}(:,:,m)');
+        Sb{l}(:,:,m) = covariance(X{l}(:,:,m),P1);
     end
 end
 
