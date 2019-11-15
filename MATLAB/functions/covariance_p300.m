@@ -1,4 +1,4 @@
-function Sb = covariance(X,prototype)
+function Sb = covariance_p300(X,prototype)
 
 [~,N] = size(X);
 

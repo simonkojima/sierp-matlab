@@ -33,7 +33,7 @@ Nc = size(X,2);
 for l=1:Nc
     [C,N,I] = size(X{l});
     for m = 1:I
-        Sb{l}(:,:,m) = covariance(X{l}(:,:,m),P1);
+        Sb{l}(:,:,m) = covariance_p300(X{l}(:,:,m),P1);
     end
 end
 
@@ -90,12 +90,14 @@ end
     function r = ln_spd(C)
         [vec,lam] = eig(C);
         lam = logm(lam);
+        %lam = diag(log(diag(lam)));
         r = vec*lam*vec';
     end
 
     function r = exp_spd(C)
         [vec,lam] = eig(C);
         lam = expm(lam);
+        %lam = diag(exp(diag(lam)));
         r = vec*lam*vec';
     end
 end
