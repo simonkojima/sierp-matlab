@@ -21,10 +21,10 @@ EOGEnable = 1;
 %ChannelSelection = [10 12 14 32]; % F3 Fz F4 Cz
 %ChannelSelection = [10 32];
 
-ChannelSelection = 1:64;
+%ChannelSelection = 1:64;
 
 %ChannelSelection = 8:64;
-%ChannelSelection = 1:2:64;
+ChannelSelection = 1:2:64;
 %ChannelSelection = 2:2:64;
 %ChannelSelection = 1:7;
 

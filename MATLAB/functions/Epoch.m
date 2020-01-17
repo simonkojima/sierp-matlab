@@ -15,10 +15,10 @@ EpochData = [];
 Count = 0;
 for l = 1:size(TriggerData,2)
     if TriggerData(l) == SelectedTrigger
-        if (l+floor(Range(1)*Fs) > 0) && (l+floor(Range(2)*Fs) <= size(EEGData,2))
+        %if (l+floor(Range(1)*Fs) > 0) && (l+floor(Range(2)*Fs) <= size(EEGData,2))
             Count = Count + 1;
             EpochData(:,:,Count) = EEGData(:,l+floor(Range(1)*Fs):(l+floor(Range(2)*Fs)));
-        end
+        %end
     end
 end
 

@@ -36,7 +36,14 @@ SimulatingRange = [0 10];
 %% Calculate Mean Covariance Matrix
 
 for Deviant=1:size(Stream,2)
-    [MeanCov{Deviant},prototype{Deviant}] = Riemannian(Stream{Deviant}.Data,Deviant,50);
+    prototype{Deviant} = mean(Stream{Deviant}.Data{Deviant},3);
+    MeanCov{Deviant} = Riemannian(Stream{Deviant}.Data{Deviant},prototype{Deviant},15);
+%     temp{Deviant} = [];
+%     for l = 1:size(Stream{Deviant}.Data{Deviant},3)
+%         temp{Deviant}(:,:,l) = covariance_p300(Stream{Deviant}.Data{Deviant}(:,:,m),prototype{Deviant});
+%     end
+%     comp{Deviant} = riemann_mean(temp{Deviant});
+%     MeanCov{Deviant} = comp{Deviant};
 end
 
 %% Simulating
@@ -50,36 +57,42 @@ for l=1:size(Trigger,2)
     end
 end
 
+for l=size(Trigger,2):-1:1
+    if Trigger(l) ~= 0
+        LastTrigger = l;
+        break;
+    end
+end
+
 Count = 0;
-for l=(FirstTrigger-Fs):SimulatingRange(2)*Fs:size(Data,2)
+for l=FirstTrigger:SimulatingRange(2)*Fs:(LastTrigger-SimulatingRange(2)*Fs)
     
-    IntervalData = Devide(Data,l,[SimulatingRange(1)-EpochRange(1) SimulatingRange(2)+EpochRange(2)],Fs);
-    IntervalTrigger = [zeros(1,Fs) Devide(Trigger,l,SimulatingRange,Fs) zeros(1,Fs)];
+    IntervalData = Devide(Data,l,[SimulatingRange(1)+EpochRange(1) SimulatingRange(2)+EpochRange(2)],Fs);
+    IntervalTrigger = [zeros(1,Fs*abs(EpochRange(1))) Devide(Trigger,l,SimulatingRange,Fs) zeros(1,Fs*abs(EpochRange(2)))];
     
     for m=1:length(TriggerSelect)
         EpochData{m} = Epoch(IntervalData,IntervalTrigger,EpochRange,TriggerSelect(m),Fs);
         BaseLineEpoch{m} = BaseLine(Epoch(IntervalData,IntervalTrigger,BaseLineRange,TriggerSelect(m),Fs),EpochRange,Fs);
         EpochData{m} = EpochData{m} - BaseLineEpoch{m};
+        EpochData{m} = mean(EpochData{m},3);
     end
     
     for m=1:size(Stream,2)
         Distance{m} = [];
         for n = 1:size(EpochData{m},3)
             tmp = covariance_p300(EpochData{m}(:,:,n),prototype{m});
-            Distance{m} = [Distance{m}; RiemannianDistance(MeanCov{1}{m},tmp) RiemannianDistance(MeanCov{2}{m},tmp) RiemannianDistance(MeanCov{3}{m},tmp)];
+            Distance{m} = [Distance{m}; RiemannianDistance(MeanCov{m},tmp)];
         end
     end
     
+    Score = [];
     for m=1:size(Stream,2)
-        Distance{m} = mean(Distance{m},1);
-    end
-    return
-    if sum(mean(Score,1)) == 0
-        I(Count,:) = 0;
-    else
-        [M(Count,:),I(Count,:)] = max(mean(Score,1));
+        Score(m,:) = mean(Distance{m});
     end
     
+    Count = Count + 1; 
+    [~,I(Count,:)] = min(Score);
+        
 end
 
 FalseCount = 0;
@@ -92,6 +105,3 @@ end
 I
 
 fprintf('Accuracy : %f%%\n',(1-FalseCount/length(I))*100);
-
-
-

@@ -10,7 +10,7 @@ clearvars
 
 %% ------------------------------------------------------------------------
 
-TriggerSelect = [4 8];
+TriggerSelect = [1 3];
 PlotColor = {'b','r'};
 
 %TriggerSelect = [1 2 4 8];
@@ -35,7 +35,7 @@ DownsampleRate = 1;
 
 PlotChannelFileName = 'Plot64ch.mat';
 
-EOGEnable = 1;
+EOGEnable = 0;
 NumChannel = 64;
 
 load(PlotChannelFileName);
