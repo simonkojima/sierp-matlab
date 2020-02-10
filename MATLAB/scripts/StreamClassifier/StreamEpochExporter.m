@@ -19,11 +19,11 @@ FileStruct{3} = [3 6];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
-% FileStruct{3} = [6];
+% FileStruct{3} = [6];　
 
-SaveFileNameStruct{1} = './LowStream.mat';
-SaveFileNameStruct{2} = './MidStream.mat';
-SaveFileNameStruct{3} = './HighStream.mat';
+SaveFileNameStruct{1} = './AttendedtoLow.mat';
+SaveFileNameStruct{2} = './AttendedtoMid.mat';
+SaveFileNameStruct{3} = './AttendedtoHigh.mat';
 
 % FileStruct{1} = [1 3 5];
 % FileStruct{2} = [2 4 6];
@@ -205,18 +205,39 @@ end
 Label = temp;
 clear temp;
 
+%return
 save(SaveFileName,'Average','EpochTime','Fs','Label');
 clear Average BaseLineEpoch EEGAcception EOGAcception AlphaAcception Acception
+
 end
 
-%clearvars
-load('LowStream.mat')
-eeg.low = Average.Data;
-load('MidStream.mat')
-eeg.mid = Average.Data;
-load('HighStream.mat')
-eeg.high = Average.Data;
+load('AttendedtoLow.mat')
+epochs.att{1}.dev{1} = Average.Data{1};
+epochs.att{1}.dev{2} = Average.Data{2};
+epochs.att{1}.dev{3} = Average.Data{3};
 
-save(FolderName,'eeg','EpochTime','Fs','Label','FileStruct');
+av.att{1}.dev{1} = Average.AllAveraged{1};
+av.att{1}.dev{2} = Average.AllAveraged{2};
+av.att{1}.dev{3} = Average.AllAveraged{3};
+
+load('AttendedtoMid.mat')
+epochs.att{2}.dev{1} = Average.Data{1};
+epochs.att{2}.dev{2} = Average.Data{2};
+epochs.att{2}.dev{3} = Average.Data{3};
+
+av.att{2}.dev{1} = Average.AllAveraged{1};
+av.att{2}.dev{2} = Average.AllAveraged{2};
+av.att{2}.dev{3} = Average.AllAveraged{3};
+
+load('AttendedtoHigh.mat')
+epochs.att{3}.dev{1} = Average.Data{1};
+epochs.att{3}.dev{2} = Average.Data{2};
+epochs.att{3}.dev{3} = Average.Data{3};
+
+av.att{3}.dev{1} = Average.AllAveraged{1};
+av.att{3}.dev{2} = Average.AllAveraged{2};
+av.att{3}.dev{3} = Average.AllAveraged{3};
+
+save(FolderName,'epochs','av','EpochTime','Fs','Label','FileStruct');
 
 %Done();
