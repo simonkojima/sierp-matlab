@@ -55,6 +55,10 @@ classdef EEG
             r = obj.data(ch,:);
         end
         
+        function r = getchNdata(obj,ch,N)
+            r = obj.data(ch,N);
+        end
+        
         function r = getNdata(obj,N)
             r = obj.data(:,N);
         end
