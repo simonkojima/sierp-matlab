@@ -1,4 +1,4 @@
-function [H] = CSP(Vt,Vnt)
+dfunction [H] = CSP(Vt,Vnt)
 
 %
 % Common Spatial Pattern Filter

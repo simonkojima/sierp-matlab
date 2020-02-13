@@ -63,6 +63,10 @@ classdef EEG
             r = obj.data(:,N);
         end
         
+        function r = getNumch(obj)
+            r = size(obj.data,1);
+        end
+        
         function r = getcolor(obj)
             r=0;
             if isfield(obj.var,'color')
