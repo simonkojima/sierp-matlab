@@ -74,6 +74,10 @@ classdef EEG
             end
         end
         
+        function obj = setcolor(obj,val)
+            obj.var.color = val;
+        end
+        
         function r = gettype(obj)
             r=0;
             if isfield(obj.var,'type')
