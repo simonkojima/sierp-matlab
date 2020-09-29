@@ -23,13 +23,9 @@ clearvars
 
 FileStruct{1} = [1];
 FileStruct{2} = [2];
-FileStruct{3} = [3];
-FileStruct{4} = [4];
 
-SaveFileNameStruct{1} = './AttendedtoLL.mat';
-SaveFileNameStruct{2} = './AttendedtoLH.mat';
-SaveFileNameStruct{3} = './AttendedtoHL.mat';
-SaveFileNameStruct{4} = './AttendedtoHH.mat';
+SaveFileNameStruct{1} = './LStd.mat';
+SaveFileNameStruct{2} = './HStd.mat';
 
 % FileStruct{1} = [1 3 5];
 % FileStruct{2} = [2 4 6];
@@ -39,7 +35,7 @@ SaveFileNameStruct{4} = './AttendedtoHH.mat';
 
 for Repeat=1:size(FileStruct,2)
 
-TriggerSelect = [3 4 5 6]; 
+TriggerSelect = [1 2]; 
 % TriggerSelect = [4 8]; 
 
 Files = FileStruct{Repeat};
@@ -216,80 +212,80 @@ save(SaveFileName,'Average','EpochTime','Fs','Label');
 clear Average BaseLineEpoch EEGAcception EOGAcception AlphaAcception Acception
 
 end
-
-
-load('AttendedtoLL');
-epochs.att{1}.dev{1} = Average.Data{1};
-epochs.att{1}.dev{2} = Average.Data{2};
-epochs.att{1}.dev{3} = Average.Data{3};
-epochs.att{1}.dev{4} = Average.Data{4};
-
-av.att{1}.dev{1} = Average.AllAveraged{1};
-av.att{1}.dev{2} = Average.AllAveraged{2};
-av.att{1}.dev{3} = Average.AllAveraged{3};
-av.att{1}.dev{4} = Average.AllAveraged{4};
-
-load('AttendedtoLH');
-epochs.att{2}.dev{1} = Average.Data{1};
-epochs.att{2}.dev{2} = Average.Data{2};
-epochs.att{2}.dev{3} = Average.Data{3};
-epochs.att{2}.dev{4} = Average.Data{4};
-
-av.att{2}.dev{1} = Average.AllAveraged{1};
-av.att{2}.dev{2} = Average.AllAveraged{2};
-av.att{2}.dev{3} = Average.AllAveraged{3};
-av.att{2}.dev{4} = Average.AllAveraged{4};
-
-load('AttendedtoHL');
-epochs.att{3}.dev{1} = Average.Data{1};
-epochs.att{3}.dev{2} = Average.Data{2};
-epochs.att{3}.dev{3} = Average.Data{3};
-epochs.att{3}.dev{4} = Average.Data{4};
-
-av.att{3}.dev{1} = Average.AllAveraged{1};
-av.att{3}.dev{2} = Average.AllAveraged{2};
-av.att{3}.dev{3} = Average.AllAveraged{3};
-av.att{3}.dev{4} = Average.AllAveraged{4};
-
-load('AttendedtoHH');
-epochs.att{4}.dev{1} = Average.Data{1};
-epochs.att{4}.dev{2} = Average.Data{2};
-epochs.att{4}.dev{3} = Average.Data{3};
-epochs.att{4}.dev{4} = Average.Data{4};
-
-av.att{4}.dev{1} = Average.AllAveraged{1};
-av.att{4}.dev{2} = Average.AllAveraged{2};
-av.att{4}.dev{3} = Average.AllAveraged{3};
-av.att{4}.dev{4} = Average.AllAveraged{4};
-
 % 
-% load('AttendedtoLow.mat')
+% 
+% load('AttendedtoLL');
 % epochs.att{1}.dev{1} = Average.Data{1};
 % epochs.att{1}.dev{2} = Average.Data{2};
 % epochs.att{1}.dev{3} = Average.Data{3};
+% epochs.att{1}.dev{4} = Average.Data{4};
 % 
 % av.att{1}.dev{1} = Average.AllAveraged{1};
 % av.att{1}.dev{2} = Average.AllAveraged{2};
 % av.att{1}.dev{3} = Average.AllAveraged{3};
+% av.att{1}.dev{4} = Average.AllAveraged{4};
 % 
-% load('AttendedtoMid.mat')
+% load('AttendedtoLH');
 % epochs.att{2}.dev{1} = Average.Data{1};
 % epochs.att{2}.dev{2} = Average.Data{2};
 % epochs.att{2}.dev{3} = Average.Data{3};
+% epochs.att{2}.dev{4} = Average.Data{4};
 % 
 % av.att{2}.dev{1} = Average.AllAveraged{1};
 % av.att{2}.dev{2} = Average.AllAveraged{2};
 % av.att{2}.dev{3} = Average.AllAveraged{3};
+% av.att{2}.dev{4} = Average.AllAveraged{4};
 % 
-% load('AttendedtoHigh.mat')
+% load('AttendedtoHL');
 % epochs.att{3}.dev{1} = Average.Data{1};
 % epochs.att{3}.dev{2} = Average.Data{2};
 % epochs.att{3}.dev{3} = Average.Data{3};
+% epochs.att{3}.dev{4} = Average.Data{4};
 % 
 % av.att{3}.dev{1} = Average.AllAveraged{1};
 % av.att{3}.dev{2} = Average.AllAveraged{2};
 % av.att{3}.dev{3} = Average.AllAveraged{3};
+% av.att{3}.dev{4} = Average.AllAveraged{4};
 % 
-save(FolderName,'epochs','av','EpochTime','Fs','Label','FileStruct');
+% load('AttendedtoHH');
+% epochs.att{4}.dev{1} = Average.Data{1};
+% epochs.att{4}.dev{2} = Average.Data{2};
+% epochs.att{4}.dev{3} = Average.Data{3};
+% epochs.att{4}.dev{4} = Average.Data{4};
 % 
-% %Done();
+% av.att{4}.dev{1} = Average.AllAveraged{1};
+% av.att{4}.dev{2} = Average.AllAveraged{2};
+% av.att{4}.dev{3} = Average.AllAveraged{3};
+% av.att{4}.dev{4} = Average.AllAveraged{4};
+% 
+% % 
+% % load('AttendedtoLow.mat')
+% % epochs.att{1}.dev{1} = Average.Data{1};
+% % epochs.att{1}.dev{2} = Average.Data{2};
+% % epochs.att{1}.dev{3} = Average.Data{3};
+% % 
+% % av.att{1}.dev{1} = Average.AllAveraged{1};
+% % av.att{1}.dev{2} = Average.AllAveraged{2};
+% % av.att{1}.dev{3} = Average.AllAveraged{3};
+% % 
+% % load('AttendedtoMid.mat')
+% % epochs.att{2}.dev{1} = Average.Data{1};
+% % epochs.att{2}.dev{2} = Average.Data{2};
+% % epochs.att{2}.dev{3} = Average.Data{3};
+% % 
+% % av.att{2}.dev{1} = Average.AllAveraged{1};
+% % av.att{2}.dev{2} = Average.AllAveraged{2};
+% % av.att{2}.dev{3} = Average.AllAveraged{3};
+% % 
+% % load('AttendedtoHigh.mat')
+% % epochs.att{3}.dev{1} = Average.Data{1};
+% % epochs.att{3}.dev{2} = Average.Data{2};
+% % epochs.att{3}.dev{3} = Average.Data{3};
+% % 
+% % av.att{3}.dev{1} = Average.AllAveraged{1};
+% % av.att{3}.dev{2} = Average.AllAveraged{2};
+% % av.att{3}.dev{3} = Average.AllAveraged{3};
+% % 
+% save(FolderName,'epochs','av','EpochTime','Fs','Label','FileStruct');
+% % 
+% % %Done();

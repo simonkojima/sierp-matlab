@@ -5,7 +5,7 @@ from scipy import io
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.svm import SVC
 
-Directory = "/home/simon/Documents/MATLAB/20181206_B33_Stream/"
+Directory = "/home/simon/Documents/eeg/Stream/MusicalTone/20181206_B33_Stream/"
 SaveFileName = ["LowStream","MidStream","HighStream"]
 
 
