@@ -10,9 +10,11 @@ close all
 %load(foldername)
 load(strcat(foldername,'_Diff'));
 
-class = 4;
+%class = 4;
 
-%for class = 1:4
+topolimits = [-5 5];
+ 
+for class = 1:4
 
 step = 10;
 frameRate = 5;
@@ -30,7 +32,7 @@ outputVideo.FrameRate = frameRate;
 open(outputVideo)
 
 for l = 1:length(I)
-    topoplot(data.getNdata(I(l)),'64ch.ced','maplimits',[-10 10],'whitebk','on');
+    topoplot(data.getNdata(I(l)),'64ch.ced','maplimits',topolimits,'whitebk','on');
     hold on
     colorbar()
     title([num2str(EpochTime(I(l))*1000,'%03.02f'),'ms'])
@@ -53,4 +55,4 @@ end
 close(outputVideo)
 close all
 %rmdir tmp s
-%end
+end
