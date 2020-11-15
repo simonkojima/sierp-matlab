@@ -20,7 +20,7 @@ clearvars
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
 % FileStruct{3} = [6];　
-
+%-----------------------------------------------------
 FileStruct{1} = [1];
 FileStruct{2} = [2];
 FileStruct{3} = [3];
@@ -30,7 +30,15 @@ SaveFileNameStruct{1} = './AttendedtoLL.mat';
 SaveFileNameStruct{2} = './AttendedtoLH.mat';
 SaveFileNameStruct{3} = './AttendedtoHL.mat';
 SaveFileNameStruct{4} = './AttendedtoHH.mat';
-
+%-----------------------------------------------------
+% FileStruct{1} = [5];
+% FileStruct{2} = [6];
+% FileStruct{3} = [7];
+% 
+% SaveFileNameStruct{1} = './AttendedtoL.mat';
+% SaveFileNameStruct{2} = './AttendedtoH.mat';
+% SaveFileNameStruct{3} = './AttendedtoN.mat';
+%-----------------------------------------------------
 % FileStruct{1} = [1 3 5];
 % FileStruct{2} = [2 4 6];
 % 
@@ -40,6 +48,7 @@ SaveFileNameStruct{4} = './AttendedtoHH.mat';
 for Repeat=1:size(FileStruct,2)
 
 TriggerSelect = [3 4 5 6]; 
+%TriggerSelect = [1 2];
 % TriggerSelect = [4 8]; 
 
 Files = FileStruct{Repeat};

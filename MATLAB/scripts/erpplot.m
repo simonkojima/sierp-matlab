@@ -6,25 +6,10 @@ close all
 %Author Simon Kojima
 %Date 200905
 %--------------------------------------------------------------------------
+
 [~,foldername] = fileparts(pwd);
 %load(foldername)
 load(strcat(foldername,'_Diff'))
-
-% dev = 1;
-% 
-% color = {'r','g','b'};
-% 
-% for l=1:3
-%     if l == dev
-%         type{l} = 'dev';
-%     else
-%         type{l} = 'std';
-%     end
-%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Line ',num2str(l)));
-%     %data{l} = EEG(epochs.att{l}.dev{dev});
-% end
-% 
-% figuretitle = sprintf('Figure Title %d',123);
 
 dev = 4;
 
@@ -44,6 +29,35 @@ figuretitle = sprintf('Attended to %d',dev);
 
 %----------------------------------------------------------
 
+% std = 2;
+% 
+% color = {'r','g','b'};
+% 
+% load('AttendedtoL')
+% epochs.att{1}.std{1} = Average.Data{1};
+% epochs.att{1}.std{2} = Average.Data{2};
+% load('AttendedtoH')
+% epochs.att{2}.std{1} = Average.Data{1};
+% epochs.att{2}.std{2} = Average.Data{2};
+% load('AttendedtoN')
+% epochs.att{3}.std{1} = Average.Data{1};
+% epochs.att{3}.std{2} = Average.Data{2};
+% 
+% for l=1:3
+% %     if l == std
+% %         type{l} = 'dev';
+% %     else
+% %         type{l} = 'std';
+% %     end
+%     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
+%     data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',strcat('Attended to ',num2str(l)));
+%     %data{l} = EEG(epochs.att{l}.dev{dev});
+% end
+% 
+% figuretitle = sprintf('Responces to %d',std);
+
+%----------------------------------------------------------
+
 ch = find(strcmpi(Label,'Cz')==1);
 time = EpochTime;
 
@@ -60,7 +74,7 @@ config.chlabel = Label;
  ttest.alpha = 0.05;
  ttest.color = [0.7 0.7 0.7];
 % 
- topo.enable = 1;
+ topo.enable = 0;
  topo.file = '64ch.ced';
  topo.index = 'all';
 
