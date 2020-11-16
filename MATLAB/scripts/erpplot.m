@@ -29,7 +29,7 @@ close all
 
 %----------------------------------------------------------
 
-std = 1;
+att = 3;
 
 color = {'r','g','b'};
 
@@ -43,22 +43,54 @@ load('AttendedtoN')
 epochs.att{3}.std{1} = Average.Data{1};
 epochs.att{3}.std{2} = Average.Data{2};
 
-legends{1} = 'Attended to Low';
-legends{2} = 'Attended to High';
-legends{3} = 'Attended to None';
+legends{1} = 'Responses to Low';
+legends{2} = 'Responses to High';
 
-for l=1:3
+for l=1:2
 %     if l == std
 %         type{l} = 'dev';
 %     else
 %         type{l} = 'std';
 %     end
     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
-    data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',legends{l});
+    data{l} = EEG(epochs.att{att}.std{l},'color',color{l},'legend',legends{l});
     %data{l} = EEG(epochs.att{l}.dev{dev});
 end
 
-figuretitle = sprintf('Responces to %d',std);
+figuretitle = sprintf('Attended to %d',att);
+
+%----------------------------------------------------------
+
+% std = 1;
+% 
+% color = {'r','g','b'};
+% 
+% load('AttendedtoL')
+% epochs.att{1}.std{1} = Average.Data{1};
+% epochs.att{1}.std{2} = Average.Data{2};
+% load('AttendedtoH')
+% epochs.att{2}.std{1} = Average.Data{1};
+% epochs.att{2}.std{2} = Average.Data{2};
+% load('AttendedtoN')
+% epochs.att{3}.std{1} = Average.Data{1};
+% epochs.att{3}.std{2} = Average.Data{2};
+% 
+% legends{1} = 'Attended to Low';
+% legends{2} = 'Attended to High';
+% legends{3} = 'Attended to None';
+% 
+% for l=1:3
+% %     if l == std
+% %         type{l} = 'dev';
+% %     else
+% %         type{l} = 'std';
+% %     end
+%     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
+%     data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',legends{l});
+%     %data{l} = EEG(epochs.att{l}.dev{dev});
+% end
+% 
+% figuretitle = sprintf('Responces to %d',std);
 
 %----------------------------------------------------------
 
