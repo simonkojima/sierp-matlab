@@ -48,7 +48,7 @@ SaveFileNameStruct{4} = './AttendedtoHH.mat';
 for Repeat=1:size(FileStruct,2)
 
 TriggerSelect = [3 4 5 6]; 
-%TriggerSelect = [1 2];
+% TriggerSelect = [1 2];
 % TriggerSelect = [4 8]; 
 
 Files = FileStruct{Repeat};

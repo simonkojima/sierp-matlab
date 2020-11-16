@@ -7,54 +7,58 @@ close all
 %Date 200905
 %--------------------------------------------------------------------------
 
-[~,foldername] = fileparts(pwd);
-%load(foldername)
-load(strcat(foldername,'_Diff'))
-
-dev = 4;
-
-color = {'r','g','b','c'};
-
-for l=1:4
-    if l == dev
-        type{l} = 'dev';
-    else
-        type{l} = 'std';
-    end
-    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
-    %data{l} = EEG(epochs.att{l}.dev{dev});
-end
-
-figuretitle = sprintf('Attended to %d',dev);
-
-%----------------------------------------------------------
-
-% std = 2;
+% [~,foldername] = fileparts(pwd);
+% %load(foldername)
+% load(strcat(foldername,'_Diff'))
 % 
-% color = {'r','g','b'};
+% dev = 4;
 % 
-% load('AttendedtoL')
-% epochs.att{1}.std{1} = Average.Data{1};
-% epochs.att{1}.std{2} = Average.Data{2};
-% load('AttendedtoH')
-% epochs.att{2}.std{1} = Average.Data{1};
-% epochs.att{2}.std{2} = Average.Data{2};
-% load('AttendedtoN')
-% epochs.att{3}.std{1} = Average.Data{1};
-% epochs.att{3}.std{2} = Average.Data{2};
+% color = {'r','g','b','c'};
 % 
-% for l=1:3
-% %     if l == std
-% %         type{l} = 'dev';
-% %     else
-% %         type{l} = 'std';
-% %     end
-%     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
-%     data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',strcat('Attended to ',num2str(l)));
+% for l=1:4
+%     if l == dev
+%         type{l} = 'dev';
+%     else
+%         type{l} = 'std';
+%     end
+%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
 %     %data{l} = EEG(epochs.att{l}.dev{dev});
 % end
 % 
-% figuretitle = sprintf('Responces to %d',std);
+% figuretitle = sprintf('Attended to %d',dev);
+
+%----------------------------------------------------------
+
+std = 1;
+
+color = {'r','g','b'};
+
+load('AttendedtoL')
+epochs.att{1}.std{1} = Average.Data{1};
+epochs.att{1}.std{2} = Average.Data{2};
+load('AttendedtoH')
+epochs.att{2}.std{1} = Average.Data{1};
+epochs.att{2}.std{2} = Average.Data{2};
+load('AttendedtoN')
+epochs.att{3}.std{1} = Average.Data{1};
+epochs.att{3}.std{2} = Average.Data{2};
+
+legends{1} = 'Attended to Low';
+legends{2} = 'Attended to High';
+legends{3} = 'Attended to None';
+
+for l=1:3
+%     if l == std
+%         type{l} = 'dev';
+%     else
+%         type{l} = 'std';
+%     end
+    %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
+    data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',legends{l});
+    %data{l} = EEG(epochs.att{l}.dev{dev});
+end
+
+figuretitle = sprintf('Responces to %d',std);
 
 %----------------------------------------------------------
 
@@ -70,7 +74,7 @@ config.chlabel = Label;
 %devidx(dev) = 1;
 %setting.findpeaks.pos = devidx;
 
- ttest.enable = 1;
+ ttest.enable = 0;
  ttest.alpha = 0.05;
  ttest.color = [0.7 0.7 0.7];
 % 
