@@ -21,11 +21,17 @@ clearvars
 % FileStruct{2} = [5];
 % FileStruct{3} = [6];　
 
-FileStruct{1} = [1];
-FileStruct{2} = [2];
+%-------------------------------------------------------------------------
+
+
+FileStruct{1} = [1 2];
+FileStruct{2} = [3 4];
 
 SaveFileNameStruct{1} = './LStd.mat';
 SaveFileNameStruct{2} = './HStd.mat';
+
+%-------------------------------------------------------------------------
+
 
 % FileStruct{1} = [1 3 5];
 % FileStruct{2} = [2 4 6];

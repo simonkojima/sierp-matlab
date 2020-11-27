@@ -16,39 +16,39 @@ frameRate = 5;
 
 %----------------------------------------------------------
 
-% [~,foldername] = fileparts(pwd);
-% load(foldername)
-% %load(strcat(foldername,'_Diff'));
-% 
-% class = 4;
-% 
-% data{1} = EEG(epochs.att{class}.dev{1});
-% data{2} = EEG(epochs.att{class}.dev{2});
-% data{3} = EEG(epochs.att{class}.dev{3});
-% data{4} = EEG(epochs.att{class}.dev{4});
-% 
-% %filename = strcat(num2str(class),'_',num2str(class),'.avi');
-% filename = strcat(num2str(class),'.avi');
+[~,foldername] = fileparts(pwd);
+%load(foldername)
+load(strcat(foldername,'_Diff'));
+
+class = 4;
+
+data{1} = EEG(epochs.att{class}.dev{1});
+data{2} = EEG(epochs.att{class}.dev{2});
+data{3} = EEG(epochs.att{class}.dev{3});
+data{4} = EEG(epochs.att{class}.dev{4});
+
+%filename = strcat(num2str(class),'_',num2str(class),'.avi');
+filename = strcat(num2str(class),'.avi');
 
 
 %----------------------------------------------------------
-std = 1;
-
-load('AttendedtoL')
-epochs.att{1}.std{1} = Average.Data{1};
-epochs.att{1}.std{2} = Average.Data{2};
-load('AttendedtoH')
-epochs.att{2}.std{1} = Average.Data{1};
-epochs.att{2}.std{2} = Average.Data{2};
-load('AttendedtoN')
-epochs.att{3}.std{1} = Average.Data{1};
-epochs.att{3}.std{2} = Average.Data{2};
-
-data{1} = EEG(epochs.att{1}.std{1});
-data{2} = EEG(epochs.att{2}.std{1});
-data{3} = EEG(epochs.att{3}.std{1});
-
-filename = strcat(num2str(std),'_std_','.avi');
+% std = 1;
+% 
+% load('AttendedtoL')
+% epochs.att{1}.std{1} = Average.Data{1};
+% epochs.att{1}.std{2} = Average.Data{2};
+% load('AttendedtoH')
+% epochs.att{2}.std{1} = Average.Data{1};
+% epochs.att{2}.std{2} = Average.Data{2};
+% load('AttendedtoN')
+% epochs.att{3}.std{1} = Average.Data{1};
+% epochs.att{3}.std{2} = Average.Data{2};
+% 
+% data{1} = EEG(epochs.att{1}.std{1});
+% data{2} = EEG(epochs.att{2}.std{1});
+% data{3} = EEG(epochs.att{3}.std{1});
+% 
+% filename = strcat(num2str(std),'_std_','.avi');
 
 %----------------------------------------------------------
 
