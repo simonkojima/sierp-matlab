@@ -6,27 +6,50 @@ close all
 %Author Simon Kojima
 %Date 200905
 %--------------------------------------------------------------------------
+%four class
+
+% [~,foldername] = fileparts(pwd);
+% load(foldername)
+% %load(strcat(foldername,'_Diff'))
+% 
+% dev = 1;
+% 
+% color = {'r','g','b','c'};
+% 
+% for l=1:4
+%     if l == dev
+%         type{l} = 'dev';
+%     else
+%         type{l} = 'std';
+%     end
+%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
+%     %data{l} = EEG(epochs.att{l}.dev{dev});
+% end
+% 
+% figuretitle = sprintf('Attended to %d',dev);
+
+%--------------------------------------------------------------------------
+% 3 class
 
 [~,foldername] = fileparts(pwd);
-%load(foldername)
-load(strcat(foldername,'_Diff'))
+load(foldername)
+%load(strcat(foldername,'_Diff'))
 
-dev = 4;
+dev = 1;
 
-color = {'r','g','b','c'};
+color = {'r','g','b'};
 
-for l=1:4
+for l=1:3
     if l == dev
         type{l} = 'dev';
     else
         type{l} = 'std';
     end
-    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
+    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
     %data{l} = EEG(epochs.att{l}.dev{dev});
 end
 
 figuretitle = sprintf('Attended to %d',dev);
-
 %----------------------------------------------------------
 
 % att = 3;
@@ -98,6 +121,7 @@ ch = find(strcmpi(Label,'Cz')==1);
 time = EpochTime;
 
 preference.legendEnable = true;
+preference.titleEnable = 0;
 
 config.fs = Fs;
 config.chlabel = Label;
@@ -106,7 +130,14 @@ config.chlabel = Label;
 %devidx(dev) = 1;
 %setting.findpeaks.pos = devidx;
 
- ttest.enable = 0;
+% eeg.linewidth.data = 2;
+% eeg.linewidth.axis = 2;
+% eeg.linewidth.other = 2;
+
+eeg.ylabel = 'Potential (\muV)';
+eeg.xlabel = 'Time (s)';
+
+ ttest.enable = 1;
  ttest.alpha = 0.05;
  ttest.color = [0.7 0.7 0.7];
 % 

@@ -19,7 +19,7 @@ FileStruct{3} = [3 6];
 
 % FileStruct{1} = [4];
 % FileStruct{2} = [5];
-% FileStruct{3} = [6];　
+% FileStruct{3} = [6];
 
 SaveFileNameStruct{1} = './AttendedtoLow.mat';
 SaveFileNameStruct{2} = './AttendedtoMid.mat';
