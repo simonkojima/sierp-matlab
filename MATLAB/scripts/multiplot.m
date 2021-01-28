@@ -6,40 +6,17 @@ close all
 %Author Simon Kojima
 %Date 200905
 %--------------------------------------------------------------------------
-% %four class
-% 
-% [~,foldername] = fileparts(pwd);
-% load(foldername)
-% %load(strcat(foldername,'_Diff'))
-% 
-% dev = 1;
-% 
-% color = {'r','g','b','c'};
-% 
-% for l=1:4
-%     if l == dev
-%         type{l} = 'dev';
-%     else
-%         type{l} = 'std';
-%     end
-%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
-%     %data{l} = EEG(epochs.att{l}.dev{dev});
-% end
-% 
-% figuretitle = sprintf('Attended to %d',dev);
-
-%--------------------------------------------------------------------------
-% 3 class
+%four class
 
 [~,foldername] = fileparts(pwd);
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 1;
+dev = 4;
 
-color = {'r','g','b'};
+color = {'r','g','b','c'};
 
-for l=1:3
+for l=1:4
     if l == dev
         type{l} = 'dev';
     else
@@ -50,6 +27,29 @@ for l=1:3
 end
 
 figuretitle = sprintf('Attended to %d',dev);
+
+%--------------------------------------------------------------------------
+% 3 class
+
+% [~,foldername] = fileparts(pwd);
+% load(foldername)
+% %load(strcat(foldername,'_Diff'))
+% 
+% dev = 1;
+% 
+% color = {'r','g','b'};
+% 
+% for l=1:3
+%     if l == dev
+%         type{l} = 'dev';
+%     else
+%         type{l} = 'std';
+%     end
+%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
+%     %data{l} = EEG(epochs.att{l}.dev{dev});
+% end
+% 
+% figuretitle = sprintf('Attended to %d',dev);
 %----------------------------------------------------------
 
 % att = 3;
@@ -117,11 +117,11 @@ figuretitle = sprintf('Attended to %d',dev);
 
 %----------------------------------------------------------
 
-ch = find(strcmpi(Label,'P4')==1);
+ch = find(strcmpi(Label,'Fz')==1);
 time = EpochTime;
 
-preference.legendEnable = 0;
-preference.titleEnable = 1;
+preference.legendEnable = true;
+preference.titleEnable = 0;
 
 config.fs = Fs;
 config.chlabel = Label;
@@ -134,8 +134,6 @@ eeg.linewidth.data = 2;
 eeg.linewidth.axis = 2;
 eeg.linewidth.other = 2;
 
-preference.fontsize = 20;
-
 eeg.ylabel = 'Potential (\muV)';
 eeg.xlabel = 'Time (s)';
 
@@ -143,7 +141,7 @@ eeg.xlabel = 'Time (s)';
  ttest.alpha = 0.05;
  ttest.color = [0.7 0.7 0.7];
 % 
- topo.enable = 0;
+ topo.enable = 1;
  topo.file = '64ch.ced';
  topo.index = 'dev';%all
  %topo.range = [-10 10];
@@ -237,7 +235,6 @@ end
 %----------------------------------------------------------
 f.('eeg') = figure('Name',strcat('EEG (',config.chlabel{ch},'), ',figuretitle),'NumberTitle','off');
 hold on
-set(gca,'FontSize',preference.fontsize);
 if preference.titleEnable == true
     title(config.chlabel{ch}) ;
 end
@@ -372,7 +369,6 @@ if isfield(preference,'legendEnable') && preference.legendEnable == true
     end
     legend(h,leg)
 end
-
 
 %----------------------------------------------------------
 % draw topography
@@ -590,7 +586,6 @@ if topo.enable == true
         plot([time(I) time(I)], ylim, strcat(data{devIndex}.getcolor(),'-'),'LineWidth',eeg.linewidth.other)
     end
 end
-
 %----------------------------------------------------------
 % if isfield(preference,'legendEnable') && preference.legendEnable == true
 %     figure(f.eeg)
@@ -599,6 +594,17 @@ end
 %     end
 %     legend(h,leg)
 % end
+
+
+
+
+%----------------------------------------------------------
+%----------------------------------------------------------
+% function
+%----------------------------------------------------------
+%----------------------------------------------------------
+
+
 
 function drawnewtopo(topo,time,I,data,preference,ch)
 f.('topo') = figure('Name',topo.figName,'NumberTitle','off');
