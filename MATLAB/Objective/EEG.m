@@ -55,6 +55,10 @@ classdef EEG
             r = obj.data(ch,:);
         end
         
+        function r = getchlabel(obj,ch)
+            r = obj.var.label(ch);
+        end
+        
         function r = getchNdata(obj,ch,N)
             r = obj.data(ch,N);
         end
@@ -98,6 +102,10 @@ classdef EEG
         
         function r = getchepochs(obj,ch)
             r = squeeze(obj.epochs(ch,:,:))';
+        end
+        
+        function r = getfs(obj)
+           r = obj.var.fs; 
         end
         
         function outputArg = method1(obj,inputArg)

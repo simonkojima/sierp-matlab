@@ -297,6 +297,7 @@ if isfield(ttest,'enable') && ttest.enable == 1 && ttest.available == 1
     end
     
     [h,p,ci,stats] = ttest2(t.dev,t.std,'Alpha',ttest.alpha);
+    
     ttest.h(l,:) = h;
     ttest.p(l,:) = p;
     
@@ -310,6 +311,7 @@ if isfield(ttest,'enable') && ttest.enable == 1 && ttest.available == 1
     end
     
 end
+
 %----------------------------------------------------------
 h=[];
 for l = 1:length(data)
