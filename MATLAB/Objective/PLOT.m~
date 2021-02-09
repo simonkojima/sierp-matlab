@@ -35,31 +35,30 @@ classdef PLOT < handle
         
         function setalllinewidth(obj,linewidth)
             obj.var.alllinewidth = linewidth;
-            for m = 1:length(obj.var.figs.eeg)
-                for n = 1:length(obj.var.figs.eeg{m})
+            for m = 1:length(obj.var.figs)
+                for n = 1:length(obj.var.figs{m})
                     obj.etc{m}.linewidth = linewidth;
-                    obj.var.figs.eeg{m}(n).LineWidth = linewidth;
+                    obj.var.figs{m}(n).LineWidth = linewidth;
                 end
             end
         end
         
         function setallcolor(obj,color)
             obj.var.allcolor = color;
-            for m = 1:length(obj.var.figs.eeg)
-                for n = 1:length(obj.var.figs.eeg{m})
+            for m = 1:length(obj.var.figs)
+                for n = 1:length(obj.var.figs{m})
                     obj.etc{m}.color = color;
-                    obj.var.figs.eeg{m}(n).Color = color{n};
+                    obj.var.figs{m}(n).Color = color{n};
                 end
             end
         end
         
         function plot(obj,ch,loc)
-            %obj.var.figs.eeg{loc}=[];
+            %obj.var.figs{loc}=[];
             for m = 1:obj.var.numdata
-                obj.var.figs.eeg{loc}(m) = plot(obj.var.time,obj.data{m}.getchdata(ch));
+                obj.var.figs{loc}(m) = plot(obj.var.time,obj.data{m}.getchdata(ch));
                 hold on;
             end
-            xlim([min(obj.var.time) max(obj.var.time)])
         end
         
         function setnegup(obj)
@@ -85,7 +84,7 @@ classdef PLOT < handle
             %plot([0 0], ylim,'k--','LineWidth',eeg.linewidth.axis)
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                obj.var.figs.Yaxis{obj.var.drawnlocs(m)} = plot([0 0],ylim,'k--','linewidth',linewidth);
+                plot([0 0],ylim,'k--','linewidth',linewidth);
             end
         end
         
@@ -93,58 +92,17 @@ classdef PLOT < handle
             %plot(xlim, [0 0],'k','LineWidth',eeg.linewidth.axis)
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                obj.var.figs.Xaxis{obj.var.drawnlocs(m)} = plot(xlim,[0 0],'k','linewidth',linewidth);
+                plot(xlim,[0 0],'k','linewidth',linewidth);
             end
         end
         
-        function deletesingleXaxis(obj,loc)
-           delete(obj.var.figs.Xaxis{loc});
-        end
-        
-        function deletesingleYaxis(obj,loc)
-           delete(obj.var.figs.Yaxis{loc});
-        end
-        
-        function deletesingleeeg(obj,loc)
-            delete(obj.var.figs.eeg{loc});
-        end
-        
-        function deletesinglettest(obj,loc)
-            delete(obj.var.figs.ttest{loc});
-        end
-        
-        function deleteXaxis(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                obj.deletesingleXaxis(obj.var.drawnlocs(m))
-            end
-        end
-        
-        function deleteYaxis(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                obj.deletesingleYaxis(obj.var.drawnlocs(m))
-            end
-        end
-        
-        function deleteaxis(obj)
-           obj.deleteXaxis(); 
-           obj.deleteYaxis(); 
-        end
-        
-        function deletettest(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                obj.deletesinglettest(obj.var.drawnlocs(m))
-            end
-        end
-        
-        function deleteeeg(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                obj.deletesingleeeg(obj.var.drawnlocs(m))
-            end
+        function deleteplot(obj,loc)
+            delete(obj.var.figs{loc});
         end
         
         function replotdata(obj)
             for m = 1:length(obj.var.drawnlocs)
-                obj.deletesingleeeg(obj.var.drawnlocs(m))
+                obj.deleteplot(obj.var.drawnlocs(m))
                 obj.subplot(obj.etc{obj.var.drawnlocs(m)}.ch,obj.var.drawnlocs(m))
             end
         end
@@ -201,7 +159,7 @@ classdef PLOT < handle
         
         function fillttest(obj,loc,color)
             ch = obj.etc{loc}.ch;
-            %h = obj.var.ttest.h{ch};
+            h = obj.var.ttest.h{ch};
             subplot(obj.var.div(1),obj.var.div(2),loc);
             for m = 1:size(obj.var.ttest.range{ch},1)
                 range = obj.var.ttest.range{ch}(m,:);
@@ -210,12 +168,10 @@ classdef PLOT < handle
                 tmp = ylim();
                 y1 = tmp(1);
                 y2 = tmp(2);
-                obj.var.figs.ttest{loc}(m) = fill([x1 x1 x2 x2],[y1 y2 y2 y1],color);
-                obj.var.figs.ttest{loc}(m).EdgeColor = color;
-                obj.var.figs.ttest{loc}(m).FaceAlpha = 0.5;
-                %fp = fill([x1 x1 x2 x2],[y1 y2 y2 y1],color);
-                %fp.EdgeColor = color;
-                %fp.FaceAlpha = 0.5;
+                
+                fp = fill([x1 x1 x2 x2],[y1 y2 y2 y1],color);
+                fp.EdgeColor = color;
+                fp.FaceAlpha = 0.5;
             end
         end
         
@@ -234,19 +190,7 @@ classdef PLOT < handle
             obj.etc{loc}.ylim = ylim();
         end
         
-        function optimizeylim(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                ylim(obj.etc{obj.var.drawnlocs(m)}.ylim);
-            end
-        end
-        
-        function drawtitle(obj)
-            for m = 1:length(obj.var.drawnlocs)
-                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                title(obj.data{1}.getchlabel(obj.etc{obj.var.drawnlocs(m)}.ch));
-            end
-        end
+        function optimizeylim
         
         function plotMono(ch,type)
             if istext(ch) && istext(type)

@@ -29,9 +29,11 @@ color = {'r','g','b'};
 test = PLOT(data,EpochTime,'div',[3 3]);
 test.subplot(1,1)
 test.subplot(32,3)
+test.ttest(0.05,[0.7 0.7 0.7]);
 test.drawYaxis(2);
 test.drawXaxis(2);
 test.replotdata();
+test.drawtitle();
 test.setnegup();
 test.setallcolor({'r','g','b'});
 test.setalllinewidth(2);
