@@ -7,11 +7,12 @@ close all
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 1;
+dev = 4;
 
-color = {'r','g','b'};
+color = {'k','k','k','k'};
+style = {'-','--',':','-.'};
 
-for l=1:3
+for l=1:4
     if l == dev
         type{l} = 'dev';
     else
@@ -23,19 +24,24 @@ end
 
 figuretitle = sprintf('Attended to %d',dev);
 
-ch = {'F3','Fz','F4','C3','Cz','C4','P3','Pz','P4'};
+%ch = {'F3','Fz','F4','C3','Cz','C4','P3','Pz','P4'};
+ch = {'Cz'};
 
-color = {'r','g','b'};
-test = PLOT(data,EpochTime,'div',[3 3]);
-test.subplot(1,1)
-test.subplot(32,3)
+%color = {'r','g','b'};
+%test = PLOT(data,EpochTime,'div',[3 3]);
+test = PLOT(data,EpochTime,'div',[1 1]);
+test.subplot(32,1)
+%test.subplot(32,3)
 test.ttest(0.05,[0.7 0.7 0.7]);
-test.drawYaxis(2);
-test.drawXaxis(2);
+test.drawYaxis(1.5);
+test.drawXaxis(1.5);
 test.replotdata();
-test.drawtitle();
+%test.drawtitle();
 test.setnegup();
-test.setallcolor({'r','g','b'});
+test.setallcolor(color);
+test.setallstyle(style);
 test.setalllinewidth(2);
 test.setallfontsize(10);
+xlabel('Time (s)');
+ylabel('Potential (\muV)');
 %----------------------------------------------------------

@@ -6,40 +6,17 @@ close all
 %Author Simon Kojima
 %Date 200905
 %--------------------------------------------------------------------------
-% %four class
-% 
-% [~,foldername] = fileparts(pwd);
-% load(foldername)
-% %load(strcat(foldername,'_Diff'))
-% 
-% dev = 1;
-% 
-% color = {'r','g','b','c'};
-% 
-% for l=1:4
-%     if l == dev
-%         type{l} = 'dev';
-%     else
-%         type{l} = 'std';
-%     end
-%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
-%     %data{l} = EEG(epochs.att{l}.dev{dev});
-% end
-% 
-% figuretitle = sprintf('Attended to %d',dev);
-
-%--------------------------------------------------------------------------
-% 3 class
+%four class
 
 [~,foldername] = fileparts(pwd);
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 1;
+dev = 4;
 
-color = {'r','g','b'};
+color = {'r','g','b','c'};
 
-for l=1:3
+for l=1:4
     if l == dev
         type{l} = 'dev';
     else
@@ -50,6 +27,29 @@ for l=1:3
 end
 
 figuretitle = sprintf('Attended to %d',dev);
+
+%--------------------------------------------------------------------------
+% 3 class
+
+% [~,foldername] = fileparts(pwd);
+% load(foldername)
+% %load(strcat(foldername,'_Diff'))
+% 
+% dev = 1;
+% 
+% color = {'r','g','b'};
+% 
+% for l=1:3
+%     if l == dev
+%         type{l} = 'dev';
+%     else
+%         type{l} = 'std';
+%     end
+%     data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
+%     %data{l} = EEG(epochs.att{l}.dev{dev});
+% end
+% 
+% figuretitle = sprintf('Attended to %d',dev);
 %----------------------------------------------------------
 
 % att = 3;
@@ -143,10 +143,10 @@ eeg.xlabel = 'Time (s)';
  ttest.alpha = 0.05;
  ttest.color = [0.7 0.7 0.7];
 % 
- topo.enable = 0;
+ topo.enable = 1;
  topo.file = '64ch.ced';
- topo.index = 'dev';%all
- %topo.range = [-10 10];
+ topo.index = 'all';%all
+ topo.range = [-10 10];
 
 %----------------------------------------------------------
 

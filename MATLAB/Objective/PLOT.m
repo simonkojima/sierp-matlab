@@ -53,6 +53,16 @@ classdef PLOT < handle
             end
         end
         
+        function setallstyle(obj,style)
+            obj.var.allstyle = style;
+            for m = 1:length(obj.var.figs.eeg)
+                for n = 1:length(obj.var.figs.eeg{m})
+                    obj.etc{m}.style = style;
+                    obj.var.figs.eeg{m}(n).LineStyle = style{n};
+                end
+            end
+        end
+        
         function plot(obj,ch,loc)
             %obj.var.figs.eeg{loc}=[];
             for m = 1:obj.var.numdata
@@ -85,7 +95,7 @@ classdef PLOT < handle
             %plot([0 0], ylim,'k--','LineWidth',eeg.linewidth.axis)
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                obj.var.figs.Yaxis{obj.var.drawnlocs(m)} = plot([0 0],ylim,'k--','linewidth',linewidth);
+                obj.var.figs.Yaxis{obj.var.drawnlocs(m)} = plot([0 0],ylim,'k','linewidth',linewidth);
             end
         end
         
