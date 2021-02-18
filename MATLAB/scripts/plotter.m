@@ -1,13 +1,12 @@
 clearvars
 close all
 
-% 3 class
 
 [~,foldername] = fileparts(pwd);
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 4;
+dev = 1;
 
 color = {'k','k','k','k'};
 style = {'-','--',':','-.'};
@@ -41,7 +40,19 @@ test.setnegup();
 test.setallcolor(color);
 test.setallstyle(style);
 test.setalllinewidth(2);
-test.setallfontsize(10);
+test.setallfontsize(18);
 xlabel('Time (s)');
 ylabel('Potential (\muV)');
 %----------------------------------------------------------
+
+function refresh()
+test.deletettest();
+test.ttest(0.05,[0.7 0.7 0.7]);
+test.drawYaxis(1.5);
+test.drawXaxis(1.5);
+test.replotdata();
+test.setallcolor(color);
+test.setallstyle(style);
+test.setalllinewidth(2);
+test.setallfontsize(18);
+end

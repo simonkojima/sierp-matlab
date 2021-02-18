@@ -29,13 +29,13 @@ end
 figuretitle = sprintf('Attended to %d',dev);
 
 %--------------------------------------------------------------------------
-% 3 class
-
+%3 class
+% 
 % [~,foldername] = fileparts(pwd);
 % load(foldername)
 % %load(strcat(foldername,'_Diff'))
 % 
-% dev = 1;
+% dev = 3;
 % 
 % color = {'r','g','b'};
 % 
@@ -52,79 +52,20 @@ figuretitle = sprintf('Attended to %d',dev);
 % figuretitle = sprintf('Attended to %d',dev);
 %----------------------------------------------------------
 
-% att = 3;
-% 
-% color = {'r','g','b'};
-% 
-% load('AttendedtoL')
-% epochs.att{1}.std{1} = Average.Data{1};
-% epochs.att{1}.std{2} = Average.Data{2};
-% load('AttendedtoH')
-% epochs.att{2}.std{1} = Average.Data{1};
-% epochs.att{2}.std{2} = Average.Data{2};
-% load('AttendedtoN')
-% epochs.att{3}.std{1} = Average.Data{1};
-% epochs.att{3}.std{2} = Average.Data{2};
-% 
-% legends{1} = 'Responses to Low';
-% legends{2} = 'Responses to High';
-% 
-% for l=1:2
-% %     if l == std
-% %         type{l} = 'dev';
-% %     else
-% %         type{l} = 'std';
-% %     end
-%     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
-%     data{l} = EEG(epochs.att{att}.std{l},'color',color{l},'legend',legends{l});
-%     %data{l} = EEG(epochs.att{l}.dev{dev});
-% end
-% 
-% figuretitle = sprintf('Attended to %d',att);
-
-%----------------------------------------------------------
-
-% std = 1;
-% 
-% color = {'r','g','b'};
-% 
-% load('AttendedtoL')
-% epochs.att{1}.std{1} = Average.Data{1};
-% epochs.att{1}.std{2} = Average.Data{2};
-% load('AttendedtoH')
-% epochs.att{2}.std{1} = Average.Data{1};
-% epochs.att{2}.std{2} = Average.Data{2};
-% load('AttendedtoN')
-% epochs.att{3}.std{1} = Average.Data{1};
-% epochs.att{3}.std{2} = Average.Data{2};
-% 
-% legends{1} = 'Attended to Low';
-% legends{2} = 'Attended to High';
-% legends{3} = 'Attended to None';
-% 
-% for l=1:3
-% %     if l == std
-% %         type{l} = 'dev';
-% %     else
-% %         type{l} = 'std';
-% %     end
-%     %data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to ',num2str(l)));
-%     data{l} = EEG(epochs.att{l}.std{std},'color',color{l},'legend',legends{l});
-%     %data{l} = EEG(epochs.att{l}.dev{dev});
-% end
-% 
-% figuretitle = sprintf('Responces to %d',std);
-
-%----------------------------------------------------------
-
 ch = find(strcmpi(Label,'Fz')==1);
 time = EpochTime;
 
-preference.legendEnable = true;
+preference.legendEnable = 0;
 preference.titleEnable = 0;
+
+preference.fontsize = 20;
 
 config.fs = Fs;
 config.chlabel = Label;
+
+div = [3 3];
+divch = [10 12 14 30 32 34 50 52 54];
+divlocs = [1 2 3 4 5 6 7 8 9];
 
 %devidx = zeros(1,4);
 %devidx(dev) = 1;
@@ -232,16 +173,25 @@ if ~exist('config','var') || ~isfield(config,'chlabel')
     end
 end
 
+
 %----------------------------------------------------------
 f.('eeg') = figure('Name',strcat('EEG (',config.chlabel{ch},'), ',figuretitle),'NumberTitle','off');
-hold on
+set(gcf, 'WindowState', 'maximized');
+%for div---------------------------------------------------
+for divrep = 1:length(divlocs)
+    ch = divch(divrep);
+%for div---------------------------------------------------
+
 if preference.titleEnable == true
-    title(config.chlabel{ch}) ;
+    title(config.chlabel{ch});
 end
 %----------------------------------------------------------
+subplot(div(1),div(2),divlocs(divrep));
 for l = 1:length(data)
     plot(time,data{l}.getchdata(ch),'k');
+    hold on
 end
+set(gca,'FontSize',preference.fontsize);
 %----------------------------------------------------------
 if isfield(eeg,'yrange')
     if strcmpi(eeg.yrange,'auto')
@@ -369,284 +319,7 @@ if isfield(preference,'legendEnable') && preference.legendEnable == true
     end
     legend(h,leg)
 end
-
+%for div---------------------------------------------------
+end
+%for div---------------------------------------------------
 %----------------------------------------------------------
-% draw topography
-if topo.enable == true
-    topo.label = config.chlabel;
-    drawtopoInother = 0;
-    if ~isfield(topo,'range') || strcmpi(topo.range,'sameaseegplot')
-        figure(f.eeg)
-        topo.range = ylim();
-    end
-    if isfield(topo,'windowmode') && strcmpi(topo.windowmode,'compile')
-        if ~isfield(topo,'compilenum')
-            topo.compilenum = 5;
-        end
-    end
-    if ~isfield(topo,'file')
-        topo.file = strcat(num2str(data{topo.index}.getNumch),'ch.ced');
-    end
-    if ~isfield(topo,'time') || strcmpi(topo.time,'terminal')
-        drawtopoInother = 1;
-        topo.timeineeg = 0;
-        topo.num = 0;
-        while(1)
-            if numel(topo.index) == 1
-                if setting.findpeaks.pos(topo.index) == 1 && setting.findpeaks.neg(topo.index) == 1
-                    
-                    peaklocs = [pospeaklocs{topo.index} negpeaklocs{topo.index}];
-                    [peaklocs,Idx] = sort(peaklocs);
-                    topodata = data{topo.index}.getchNdata(ch,peaklocs);
-                    fprintf(strcat('    time : amp(',Label{ch},')\n'))
-                    fprintf('--------------------\n')
-                    for l=1:length(peaklocs)
-                        if isempty(find(pospeaklocs{topo.index} == peaklocs(l), 1))
-                            fprintf('Neg')
-                        else
-                            fprintf('Pos')
-                        end
-                        fprintf('%5.0f ms : %- 3.3f\n',time(peaklocs(l))*1000,topodata(l))
-                    end
-                elseif setting.findpeaks.pos(topo.index) == 1
-                    fprintf(strcat('    time : amp(',Label{ch},')\n'))
-                    fprintf('-------------------\n')
-                    topodata = data{topo.index}.getchNdata(ch,pospeaklocs{topo.index});
-                    for l=1:length(pospeaklocs{topo.index})
-                        fprintf('Pos')
-                        fprintf('%5.0f ms : %- 3.3f\n',time(pospeaklocs{topo.index}(l))*1000,topodata(l))
-                    end
-                    
-                elseif setting.findpeaks.neg(topo.index) == 1
-                    fprintf(strcat('    time : amp(',Label{ch},')\n'))
-                    fprintf('-------------------\n')
-                    topodata = data{topo.index}.getchNdata(ch,negpeaklocs{topo.index});
-                    for l=1:length(negpeaklocs{topo.index})
-                        fprintf('Neg')
-                        fprintf('%5.0f ms : %- 3.3f\n',time(negpeaklocs{topo.index}(l))*1000,topodata(l))
-                    end
-                end
-            end
-            
-            if strcmpi(topo.range,'sameaseegplot')
-                figure(f.eeg)
-                topo.range = ylim();
-            end
-            
-            s = input('Type time in ms. or just press Enter to exit.\n');
-            if isempty(s)
-                break
-            end
-            s = s/1000;
-            [m,I] = min(abs(time-s));
-            
-            if ~isfield(topo,'windowmode') || strcmpi(topo.windowmode,'new')
-                topo.figName = strcat('Topography(',num2str(time(I)*1000),'ms), ',figuretitle);
-                drawnewtopo(topo,time,I,data,preference,ch);
-            elseif strcmpi(topo.windowmode,'compile')
-                if numel(topo.index) == 1
-                    topo.figName = strcat('Topography',figuretitle);
-                    topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                elseif strcmpi(topo.index,'all')
-                    topo.figName = strcat('Topography (',num2str(1000*s),'ms)');
-                    for i=1:numel(data)
-                        topo.idx_tmp = i;
-                        topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                    end
-                elseif numel(topo.index) > 1
-                    topo.figName = strcat('Topography (',num2str(1000*s),'ms)');
-                    for i=1:numel(topo.index)
-                        topo.idx_tmp = topo.index(i);
-                        topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                    end
-                end
-            end
-            
-            
-        end
-    elseif strcmpi(topo.time,'auto')
-        [~,I] = max(abs(data{topo.index}.getchdata(ch)));
-        topo.figName = strcat('Topography(',num2str(time(I)*1000),'ms), ',figuretitle);
-    elseif strcmpi(topo.time,'all') % Topo Mode = ALL
-        drawtopoInother = 1;
-        topo.timeineeg = 0;
-        %--------------------------------------------------------------------
-        % topo for pos peaks
-        if max(setting.findpeaks.pos) == 1
-            topo.figName = strcat('Topography(Positive Peaks), ',figuretitle);
-            f.('postopo') = figure('Name',topo.figName,'NumberTitle','off');
-            hold on
-            topo.colorbar = 0;
-            for l = 1:length(pospeaklocs{topo.index})
-                subplot(1,length(pospeaklocs{topo.index}),l)
-                drawtopo(topo,time,pospeaklocs{topo.index}(l),data,preference,ch);
-            end
-        end
-        %--------------------------------------------------------------------
-        % topo for neg peaks
-        if max(setting.findpeaks.neg) == 1
-            topo.figName = strcat('Topography(Negative Peaks), ',figuretitle);
-            f.('negtopo') = figure('Name',topo.figName,'NumberTitle','off');
-            hold on
-            topo.colorbar = 0;
-            for l = 1:length(negpeaklocs{topo.index})
-                subplot(1,length(negpeaklocs{topo.index}),l)
-                drawtopo(topo,time,negpeaklocs{topo.index}(l),data,preference,ch);
-            end
-        end
-    elseif strcmpi(topo.time,'range') % Topo Mode = RANGE
-        drawtopoInother = 1;
-        topo.timeineeg = 0;
-        %--------------------------------------------------------------------
-        % topo for pos peaks
-        if max(setting.findpeaks.pos) == 1
-            topo.figName = strcat('Topography(Positive Peaks), ',figuretitle);
-            f.('postopo') = figure('Name',topo.figName,'NumberTitle','off');
-            hold on
-            topo.colorbar = 0;
-            topoTimeIndex = find(time(pospeaklocs{topo.index})>= topo.timerange(1) & time(pospeaklocs{topo.index})<= topo.timerange(2));
-            for l = 1:length(topoTimeIndex)
-                subplot(1,length(topoTimeIndex),l)
-                drawtopo(topo,time,pospeaklocs{topo.index}(topoTimeIndex(l)),data,preference,ch);
-            end
-        end
-        %--------------------------------------------------------------------
-        % topo for neg peaks
-        if max(setting.findpeaks.neg) == 1
-            topo.figName = strcat('Topography(Negative Peaks), ',figuretitle);
-            f.('negtopo') = figure('Name',topo.figName,'NumberTitle','off');
-            hold on
-            topo.colorbar = 0;
-            topoTimeIndex = find(time(negpeaklocs{topo.index})>= topo.timerange(1) & time(negpeaklocs{topo.index})<= topo.timerange(2));
-            for l = 1:length(topoTimeIndex)
-                subplot(1,length(topoTimeIndex),l)
-                drawtopo(topo,time,negpeaklocs{topo.index}(topoTimeIndex(l)),data,preference,ch);
-            end
-        end
-    else
-        %--------------------------------------------------------------------
-        % it topo.time is numeric
-        drawtopoInother = 1;
-        if ~isfield(topo,'timeformat') || strcmpi(topo.timeformat,'ms')
-            topo.time = topo.time/1000;
-        end
-        
-        if ~isfield(topo,'windowmode') || strcmpi(topo.windowmode,'new')
-            drawtopoInother = 1;
-            for l=1:length(topo.time)
-                [m,I] = min(abs(time-topo.time(l)));
-                topo.figName = strcat('Topography(',num2str(time(I)*1000),'ms), ',figuretitle);
-                drawnewtopo(topo,time,I,data,preference,ch);
-            end
-        elseif strcmpi(topo.windowmode,'compile')
-            topo.num = 0;
-            
-            if numel(topo.index) == 1
-                topo.figName = strcat('Topography',figuretitle);
-                for l=1:length(topo.time)
-                    [m,I] = min(abs(time-topo.time(l)));
-                    topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                end
-            elseif strcmpi(topo.index,'all')
-                topo.timeineeg = 0;
-                for l=1:length(topo.time)
-                    [m,I] = min(abs(time-topo.time(l)));
-                    topo.figName = strcat('Topography (',num2str(1000*time(I)),'ms)');
-                    for i=1:numel(data)
-                        topo.idx_tmp = i;
-                        topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                    end
-                end
-            elseif numel(topo.index) > 1
-                topo.timeineeg = 0;
-                for l=1:length(topo.time)               
-                    [m,I] = min(abs(time-topo.time(l)));
-                    topo.figName = strcat('Topography (',num2str(1000*time(I)),'ms)');
-                    for i=1:numel(topo.index)
-                        topo.idx_tmp = topo.index(i);
-                        topo.num = drawcompiledtopo(topo,time,I,data,preference,ch);
-                    end
-                end
-            end
-            
-        end
-    end
-    
-    if drawtopoInother == 0
-        
-        f.('topo') = figure('Name',topo.figName,'NumberTitle','off');
-        hold on
-        
-        drawtopo(topo,time,I,data,preference,ch);
-        
-    end
-    
-    if isfield(topo,'timeineeg') && topo.timeineeg == 1
-        figure(f.eeg)
-        plot([time(I) time(I)], ylim, strcat(data{devIndex}.getcolor(),'-'),'LineWidth',eeg.linewidth.other)
-    end
-end
-%----------------------------------------------------------
-% if isfield(preference,'legendEnable') && preference.legendEnable == true
-%     figure(f.eeg)
-%     for l =1:length(data)
-%         leg{l} = data{l}.getlegend();
-%     end
-%     legend(h,leg)
-% end
-
-
-
-
-%----------------------------------------------------------
-%----------------------------------------------------------
-% function
-%----------------------------------------------------------
-%----------------------------------------------------------
-
-
-
-function drawnewtopo(topo,time,I,data,preference,ch)
-f.('topo') = figure('Name',topo.figName,'NumberTitle','off');
-hold on
-drawtopo(topo,time,I,data,preference,ch);
-end
-
-function num = drawcompiledtopo(topo,time,I,data,preference,ch)
-topo.colorbar = 0;
-if topo.num == 0
-    f.('topo') = figure('Name',topo.figName,'NumberTitle','off');
-    hold on
-end
-topo.num = topo.num + 1;
-subplot(1,topo.compilenum,topo.num)
-drawtopo(topo,time,I,data,preference,ch);
-if topo.num == topo.compilenum
-    topo.num = 0;
-end
-num = topo.num;
-end
-
-function drawtopo(topo,time,I,data,preference,ch)
-
-if preference.titleEnable == true
-    if numel(topo.index) == 1
-        title({strcat(num2str(time(I)*1000),'ms'),strcat(num2str(data{topo.idx_tmp}.getchNdata(ch,I),3),'\muV (',topo.label{ch},')')});
-    elseif numel(topo.index) > 1 && preference.legendEnable
-        title({data{topo.idx_tmp}.getlegend,strcat(num2str(data{topo.idx_tmp}.getchNdata(ch,I),3),'\muV (',topo.label{ch},')')});
-    elseif numel(topo.index) > 1 &&  preference.legendEnable == false
-        title({strcat('Data#',num2str(topo.idx_tmp)),strcat(num2str(data{topo.idx_tmp}.getchNdata(ch,I),3),'\muV (',topo.label{ch},')')});
-    end
-end
-
-topoplot(data{topo.idx_tmp}.getNdata(I),topo.file,'maplimits',topo.range,'whitebk','on');
-if isfield(topo,'colorbar') && topo.colorbar == true
-    colorbar()
-end
-
-end
-
-
-
-
-
