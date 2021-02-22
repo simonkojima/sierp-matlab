@@ -4,6 +4,7 @@ classdef PLOT < handle
     
     properties (SetAccess = private)
         data
+        fig
         var
         etc
     end
@@ -26,14 +27,25 @@ classdef PLOT < handle
                 obj.var.(varargin{odd}) = varargin{odd+1};
             end
             obj.init();
+            obj.fig = figure();
         end
         
         function init(obj)
+           obj.setcf();
            obj.var.alllinewidth = 1;
            obj.var.fontsize = 10;
         end
         
+        function setcf(obj)
+            set(0, 'CurrentFigure', obj.fig)
+        end
+        
+        function test(obj)
+            
+        end
+        
         function setalllinewidth(obj,linewidth) 
+            obj.setcf();
             obj.var.alllinewidth = linewidth;
             for m = 1:length(obj.var.figs.eeg)
                 for n = 1:length(obj.var.figs.eeg{m})
@@ -44,6 +56,7 @@ classdef PLOT < handle
         end
         
         function setallcolor(obj,color)
+            obj.setcf();
             obj.var.allcolor = color;
             for m = 1:length(obj.var.figs.eeg)
                 for n = 1:length(obj.var.figs.eeg{m})
@@ -54,6 +67,7 @@ classdef PLOT < handle
         end
         
         function setallstyle(obj,style)
+            obj.setcf();
             obj.var.allstyle = style;
             for m = 1:length(obj.var.figs.eeg)
                 for n = 1:length(obj.var.figs.eeg{m})
@@ -64,6 +78,7 @@ classdef PLOT < handle
         end
         
         function plot(obj,ch,loc)
+            obj.setcf();
             %obj.var.figs.eeg{loc}=[];
             for m = 1:obj.var.numdata
                 obj.var.figs.eeg{loc}(m) = plot(obj.var.time,obj.data{m}.getchdata(ch));
@@ -73,6 +88,7 @@ classdef PLOT < handle
         end
         
         function setnegup(obj)
+            obj.setcf();
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
                 axis ij;
@@ -80,6 +96,7 @@ classdef PLOT < handle
         end
         
         function setallfontsize(obj,fontsize)
+            obj.setcf();
             obj.var.fontsize = fontsize;
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
@@ -92,6 +109,7 @@ classdef PLOT < handle
         end
         
         function drawYaxis(obj,linewidth)
+            obj.setcf();
             %plot([0 0], ylim,'k--','LineWidth',eeg.linewidth.axis)
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
@@ -100,11 +118,17 @@ classdef PLOT < handle
         end
         
         function drawXaxis(obj,linewidth)
+            obj.setcf();
             %plot(xlim, [0 0],'k','LineWidth',eeg.linewidth.axis)
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
                 obj.var.figs.Xaxis{obj.var.drawnlocs(m)} = plot(xlim,[0 0],'k','linewidth',linewidth);
             end
+        end
+        
+        function clear(obj)
+            obj.setcf();
+            clf(obj.fig)
         end
         
         function deletesingleXaxis(obj,loc)
@@ -155,7 +179,9 @@ classdef PLOT < handle
         function replotdata(obj)
             for m = 1:length(obj.var.drawnlocs)
                 obj.deletesingleeeg(obj.var.drawnlocs(m))
-                obj.subplot(obj.etc{obj.var.drawnlocs(m)}.ch,obj.var.drawnlocs(m))
+                %obj.plotdata(obj.etc{obj.var.drawnlocs(m)}.ch,obj.var.drawnlocs(m))
+                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+                obj.plot(obj.etc{obj.var.drawnlocs(m)}.ch,obj.var.drawnlocs(m))
             end
         end
         
@@ -210,6 +236,7 @@ classdef PLOT < handle
         end
         
         function fillttest(obj,loc,color)
+            obj.setcf();
             ch = obj.etc{loc}.ch;
             %h = obj.var.ttest.h{ch};
             subplot(obj.var.div(1),obj.var.div(2),loc);
@@ -229,7 +256,9 @@ classdef PLOT < handle
             end
         end
         
-        function subplot(obj,ch,loc)
+        function plotdata(obj,ch,loc)
+            obj.setcf();
+            %obj.clear();
             if length(obj.var.div) ~= 2
                 error("set div properly by using 'setdiv.'");
             end
@@ -244,30 +273,48 @@ classdef PLOT < handle
             obj.etc{loc}.ylim = ylim();
         end
         
-        function optimizeylim(obj)
+        function optylim(obj)
+            obj.setcf();
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
                 ylim(obj.etc{obj.var.drawnlocs(m)}.ylim);
             end
         end
         
-        function drawtitle(obj)
+        function title(obj)
+            obj.setcf();
             for m = 1:length(obj.var.drawnlocs)
                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
                 title(obj.data{1}.getchlabel(obj.etc{obj.var.drawnlocs(m)}.ch));
             end
         end
         
-        function plotMono(ch,type)
-            if istext(ch) && istext(type)
-                if isequal(text,'average')
-                    
-                    %plot(objEpoch.getTime,)
-                end
-            else
-                error("Argument");
+        function xlabel(obj,label)
+            for m = 1:length(obj.var.drawnlocs)
+                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+                xlabel(label); 
             end
         end
+        
+        function ylabel(obj,label)
+            for m = 1:length(obj.var.drawnlocs)
+                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+                ylabel(label); 
+            end
+        end
+        
+        function legend(obj)
+            obj.setcf();
+            legends = {};
+            for m = 1:length(obj.data)
+                legends{length(legends)+1} = obj.data{m}.getlegend();
+            end
+            for m = 1:length(obj.var.drawnlocs)
+                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+                legend(obj.var.figs.eeg{obj.var.drawnlocs(m)},legends);
+            end
+        end
+        
     end
 end
 
