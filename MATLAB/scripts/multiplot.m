@@ -6,40 +6,17 @@ close all
 %Author Simon Kojima
 %Date 200905
 %--------------------------------------------------------------------------
-%four class
-
-[~,foldername] = fileparts(pwd);
-load(foldername)
-%load(strcat(foldername,'_Diff'))
-
-dev = 4;
-
-color = {'r','g','b','c'};
-
-for l=1:4
-    if l == dev
-        type{l} = 'dev';
-    else
-        type{l} = 'std';
-    end
-    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
-    %data{l} = EEG(epochs.att{l}.dev{dev});
-end
-
-figuretitle = sprintf('Attended to %d',dev);
-
-%--------------------------------------------------------------------------
-%3 class
+% %four class
 % 
 % [~,foldername] = fileparts(pwd);
 % load(foldername)
 % %load(strcat(foldername,'_Diff'))
 % 
-% dev = 3;
+% dev = 4;
 % 
-% color = {'r','g','b'};
+% color = {'r','g','b','c'};
 % 
-% for l=1:3
+% for l=1:4
 %     if l == dev
 %         type{l} = 'dev';
 %     else
@@ -50,9 +27,32 @@ figuretitle = sprintf('Attended to %d',dev);
 % end
 % 
 % figuretitle = sprintf('Attended to %d',dev);
+
+%--------------------------------------------------------------------------
+%3 class
+
+[~,foldername] = fileparts(pwd);
+load(foldername)
+%load(strcat(foldername,'_Diff'))
+
+dev = 3;
+
+color = {'r','g','b'};
+
+for l=1:3
+    if l == dev
+        type{l} = 'dev';
+    else
+        type{l} = 'std';
+    end
+    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
+    %data{l} = EEG(epochs.att{l}.dev{dev});
+end
+
+figuretitle = sprintf('Attended to %d',dev);
 %----------------------------------------------------------
 
-ch = find(strcmpi(Label,'Fz')==1);
+ch = find(strcmpi(Label,'Cz')==1);
 time = EpochTime;
 
 preference.legendEnable = 0;
@@ -84,7 +84,10 @@ eeg.xlabel = 'Time (s)';
 % 
  topo.enable = 1;
  topo.file = '64ch.ced';
- topo.index = 'dev';%all
+ %topo.index = 'dev';%all
+ topo.index = 1;
+ topo.time = [0.2 0.25 0.3 0.35 0.4];
+ topo.range = [-10 10];
  %topo.range = [-10 10];
 
 %----------------------------------------------------------

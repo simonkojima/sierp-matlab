@@ -8,38 +8,15 @@ close all
 %--------------------------------------------------------------------------
 %four class
 
-[~,foldername] = fileparts(pwd);
-load(foldername)
-%load(strcat(foldername,'_Diff'))
-
-dev = 4;
-
-color = {'r','g','b','c'};
-
-for l=1:4
-    if l == dev
-        type{l} = 'dev';
-    else
-        type{l} = 'std';
-    end
-    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
-    %data{l} = EEG(epochs.att{l}.dev{dev});
-end
-
-figuretitle = sprintf('Attended to %d',dev);
-
-%--------------------------------------------------------------------------
-% 3 class
-
 % [~,foldername] = fileparts(pwd);
 % load(foldername)
 % %load(strcat(foldername,'_Diff'))
 % 
-% dev = 1;
+% dev = 4;
 % 
-% color = {'r','g','b'};
+% color = {'r','g','b','c'};
 % 
-% for l=1:3
+% for l=1:4
 %     if l == dev
 %         type{l} = 'dev';
 %     else
@@ -50,6 +27,29 @@ figuretitle = sprintf('Attended to %d',dev);
 % end
 % 
 % figuretitle = sprintf('Attended to %d',dev);
+
+%--------------------------------------------------------------------------
+% 3 class
+
+[~,foldername] = fileparts(pwd);
+load(foldername)
+%load(strcat(foldername,'_Diff'))
+
+dev = 1;
+
+color = {'r','g','b'};
+
+for l=1:3
+    if l == dev
+        type{l} = 'dev';
+    else
+        type{l} = 'std';
+    end
+    data{l} = EEG(epochs.att{dev}.dev{l},'type',type{l},'color',color{l},'legend',strcat('Responces to D',num2str(l)));
+    %data{l} = EEG(epochs.att{l}.dev{dev});
+end
+
+figuretitle = sprintf('Attended to %d',dev);
 %----------------------------------------------------------
 
 % att = 3;
@@ -121,7 +121,7 @@ ch = find(strcmpi(Label,'P4')==1);
 time = EpochTime;
 
 preference.legendEnable = 0;
-preference.titleEnable = 1;
+preference.titleEnable = 0;
 
 config.fs = Fs;
 config.chlabel = Label;
@@ -145,7 +145,11 @@ eeg.xlabel = 'Time (s)';
 % 
  topo.enable = 1;
  topo.file = '64ch.ced';
- topo.index = 'all';%all
+ %topo.index = 'all';%all
+ topo.windowmode = 'compile';
+ topo.windownum = 5;
+ topo.index = 2;
+ topo.time = [200 250 300 350 400];
  topo.range = [-10 10];
 
 %----------------------------------------------------------
