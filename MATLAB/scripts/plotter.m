@@ -8,9 +8,10 @@ load(foldername)
 
 dev = 3;
 
-num = 3;
-color = {'r','g','b'};
+num = 4;
+color = {'r','g','b','c'};
 %style = {'-','--',':','-.'};
+
 
 for l=1:num
     if l == dev
@@ -35,7 +36,7 @@ test.ttest(0.01,[0.7 0.7 0.7]);
 test.drawYaxis(1.5);
 test.drawXaxis(1.5);
 test.replotdata();
-test.title();
+%test.title();
 test.setnegup();
 test.setallcolor(color);
 %test.setallstyle(style);
@@ -43,16 +44,22 @@ test.setalllinewidth(2);
 test.setallfontsize(18);
 test.xlabel('Time (s)');
 test.ylabel('Potential (\muV)');
-test.legend();
+%test.legend();
 %----------------------------------------------------------
 
+return
+test.deletettest();
+test.ttest(0.05,[0.7 0.7 0.7]);
+test.drawYaxis(1.5);
+test.drawXaxis(1.5);
+test.replotdata();
+test.setallcolor(color);
+test.setalllinewidth(5);
+test.setallfontsize(30);
+%test.setallstyle(style);
+%test.setalllinewidth(2);
+%test.setallfontsize(18);
+%test.legend();
 
-% test.deletettest();
-% test.ttest(0.05,[0.7 0.7 0.7]);
-% test.drawYaxis(1.5);
-% test.drawXaxis(1.5);
-% test.replotdata();
-% test.setallcolor(color);
-% test.setallstyle(style);
-% test.setalllinewidth(2);
-% test.setallfontsize(18);
+
+
