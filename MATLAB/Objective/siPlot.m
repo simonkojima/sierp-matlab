@@ -10,7 +10,7 @@ classdef siPlot < handle
     end
     
     methods
-        function obj = siPlot(data,time,varargin)
+        function obj = siPlot(data,varargin)
             if isequal(class(data),'cell')
                 if isequal(class(data{1}{1}),'sieeg')
                     obj.data = data;
@@ -21,7 +21,7 @@ classdef siPlot < handle
                 error("Argument");
             end
             obj.var.fs = data{1}{1}.getfs();
-            obj.var.time = time;
+            obj.var.time = data{1}{1}.gettime();
             %obj.var.numdata = length(obj.data);
             obj.var.div = [1 1];
             obj.var.drawnlocs = [];

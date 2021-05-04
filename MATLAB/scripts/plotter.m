@@ -19,7 +19,7 @@ for m=1:num
     else
         type{m} = 'std';
     end
-    data{1}{m} = sieeg(epochs.att{dev}.dev{m},'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
+    data{1}{m} = sieeg(epochs.att{dev}.dev{m},'time',EpochTime,'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
     %data{l} = EEG(epochs.att{l}.dev{dev});
 end
 
@@ -29,7 +29,7 @@ for m=1:2
     else
         type{m} = 'std';
     end
-    data{2}{m} = sieeg(epochs.att{m}.dev{dev},'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
+    data{2}{m} = sieeg(epochs.att{m}.dev{dev},'time',EpochTime,'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
     %data{l} = EEG(epochs.att{l}.dev{dev});
 end
 
@@ -40,7 +40,7 @@ figuretitle = sprintf('Attended to %d',dev);
 ch = {'Cz'};
 
 %color = {'r','g','b'};
-test = siPlot(data,EpochTime,'div',[2 2]);
+test = siPlot(data,'div',[2 2]);
 test.plotdata(1,32,1)
 test.plotdata(2,32,3)
 test.ttest(0.1,[0.7 0.7 0.7]);

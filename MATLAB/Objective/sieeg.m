@@ -96,6 +96,13 @@ classdef sieeg
             end
         end
         
+        function r = gettime(obj)
+            r=0;
+            if isfield(obj.var,'time')
+                r = obj.var.time;
+            end
+        end
+        
         function r = getepochs(obj)
             r = obj.epochs;
         end

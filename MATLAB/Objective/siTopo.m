@@ -10,7 +10,7 @@ classdef siTopo
     end
     
     methods
-        function obj = siTopo(data,time,ced,range,varargin)
+        function obj = siTopo(data,ced,range,varargin)
             if isequal(class(data),'cell')
                 if isequal(class(data{1}{1}),'sieeg')
                     obj.data = data;
@@ -23,7 +23,7 @@ classdef siTopo
             obj.var.range = range;
             obj.var.ced = ced;
             %obj.var.fs = data{1}.getfs();
-            obj.var.time = time;
+            obj.var.time = data{1}{1}.gettime();
             obj.var.numdata = length(obj.data);
             obj.var.div = [1 1];
             obj.var.drawnlocs = [];

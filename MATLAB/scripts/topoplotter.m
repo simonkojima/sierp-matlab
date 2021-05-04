@@ -16,7 +16,7 @@ for m=1:num
     else
         type{m} = 'std';
     end
-    data{1}{m} = EEG(epochs.att{dev}.dev{m});
+    data{1}{m} = sieeg(epochs.att{dev}.dev{m},'time',EpochTime);
 end
 
 for m=1:num
@@ -25,10 +25,10 @@ for m=1:num
     else
         type{m} = 'std';
     end
-    data{2}{m} = EEG(epochs.att{m}.dev{dev});
+    data{2}{m} = sieeg(epochs.att{m}.dev{dev},'time',EpochTime);
 end
 
-test = siTopo(data,EpochTime,'64ch.ced',[-4 4],'div',[2 4]);
+test = siTopo(data,'64ch.ced',[-4 4],'div',[2 4]);
 
 idx_subplot = 1;
 test.plot(1,1,1,0.25);
