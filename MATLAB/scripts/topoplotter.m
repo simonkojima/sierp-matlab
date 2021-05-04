@@ -6,26 +6,43 @@ close all
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 3;
+dev = 1;
 
 num = 3;
 
-for l=1:num
-    if l == dev
-        type{l} = 'dev';
+for m=1:num
+    if m == dev
+        type{m} = 'dev';
     else
-        type{l} = 'std';
+        type{m} = 'std';
     end
-    data{l} = EEG(epochs.att{dev}.dev{l});
+    data{1}{m} = EEG(epochs.att{dev}.dev{m});
 end
 
-test = TOPO(data,EpochTime,'64ch.ced',[-10 10],'div',[3 5]);
-
-idx = 0;
-time = [0.2 0.25 0.3 0.35 0.4];
-for m = 1:3
-    for n = 1:5
-        idx = idx + 1;
-        test.plot(idx,m,time(n));
+for m=1:num
+    if m == dev
+        type{m} = 'dev';
+    else
+        type{m} = 'std';
     end
+    data{2}{m} = EEG(epochs.att{m}.dev{dev});
+end
+
+test = siTopo(data,EpochTime,'64ch.ced',[-4 4],'div',[2 4]);
+
+idx_subplot = 1;
+test.plot(1,1,1,0.25);
+test.plot(2,1,5,0.25);
+
+%test.plot(idx_data,idx_subplot,m,time);
+
+return
+idx_subplot = 0;
+time = 0.39;
+for m = 1:4
+    %for n = 1:5
+        idx_subplot = idx_subplot + 1;
+        %test.plot(idx,m,time(n));
+        test.plot(1,idx_subplot,m,time);
+    %end
 end

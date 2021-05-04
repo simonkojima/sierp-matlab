@@ -1,4 +1,4 @@
-classdef TOPO
+classdef siTopo
     %TOPO Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -10,13 +10,15 @@ classdef TOPO
     end
     
     methods
-        function obj = TOPO(data,time,ced,range,varargin)
-            if isequal(class(data),'EEG')
-                obj.data{1} = data;
-            elseif isequal(class(data),'cell')
-                obj.data = data;
+        function obj = siTopo(data,time,ced,range,varargin)
+            if isequal(class(data),'cell')
+                if isequal(class(data{1}{1}),'sieeg')
+                    obj.data = data;
+                else
+                    error("argument");
+                end
             else
-                error("Argument") ;
+                error("Argument");
             end
             obj.var.range = range;
             obj.var.ced = ced;
@@ -32,10 +34,10 @@ classdef TOPO
             obj.fig = figure();
         end
         
-        function plot(obj,idx,numdata,time)
-            subplot(obj.var.div(1),obj.var.div(2),idx);
+        function plot(obj,idx_data,numdata,idx_subplot,time)
+            subplot(obj.var.div(1),obj.var.div(2),idx_subplot);
             [m,I] = min(abs(obj.var.time-time));
-            topoplot(obj.data{numdata}.getNdata(I),obj.var.ced,'maplimits',obj.var.range,'whitebk','on');
+            topoplot(obj.data{idx_data}{numdata}.getNdata(I),obj.var.ced,'maplimits',obj.var.range,'whitebk','on');
         end
         
         function init(obj)
