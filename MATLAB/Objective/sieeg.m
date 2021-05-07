@@ -1,4 +1,4 @@
-classdef sieeg
+classdef sieeg < handle
     %EEG Summary of this class goes here
     %   Detailed explanation goes here
     

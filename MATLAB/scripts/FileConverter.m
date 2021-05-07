@@ -1,50 +1,44 @@
-close all
 clearvars
 %--------------------------------------------------------------------------
 %   EEG to MAT File Converter
 %   Author : Simon Kojima
-%   Version : 3
+%   Version : 4
 %--------------------------------------------------------------------------
-%   Settings
 
 [Path,FolderName] = fileparts(pwd);
 EEGFileName = strcat(Path,'/',FolderName,'/',FolderName,'_');
-%EEGFileName = '20190717_B35_Stream_';
-FileNumber = 6;
 
 %--------------------------------------------------------------------------
-
-for l=1:FileNumber
-   
-    FileNumberString = num2str(l);
+idx = 0;
+while 1
+    idx = idx + 1;
     
-    for m=1:4-strlength(FileNumberString)
+    FileNumberString = num2str(idx);
+    for m = 1:4-strlength(num2str(idx))
         FileNumberString = strcat(num2str(0),FileNumberString);
     end
-    
-    Data = bva_loadeeg(strcat(strcat(EEGFileName,FileNumberString),'.vhdr'));
-    Trigger = bva_readmarker(strcat(strcat(EEGFileName,FileNumberString),'.vmrk'));
-    [Fs,Label] = bva_readheader(strcat(strcat(EEGFileName,FileNumberString),'.vhdr'));
-    
-    ConvertedData.data = double(Data);
 
-    ConvertedTriggerData = zeros(1,size(Data,2));
-    
-    for m=1:size(Trigger,2)
-        ConvertedTriggerData(Trigger(2,m)) = Trigger(1,m);
+    if exist(strcat(EEGFileName,FileNumberString,'.eeg')) ~= 2
+        return
     end
     
-    ConvertedData.trig = ConvertedTriggerData;
+    data = bva_loadeeg(strcat(EEGFileName,FileNumberString,'.vhdr'));
+    eeg.data = double(data);
     
-    Data = ConvertedData.data;
-    Trigger = ConvertedData.trig;
+    trig = bva_readmarker(strcat(EEGFileName,FileNumberString,'.vmrk'));
     
-    Time = 1/Fs:1/Fs:size(Data,2)/Fs;
+    ConvertedTriggerData = zeros(1,size(eeg.data,2));
     
-    save(strcat(strcat(EEGFileName,FileNumberString),'.mat'),'Data','Trigger','Time','Fs','Label');
+    for m=1:size(trig,2)
+        ConvertedTriggerData(trig(2,m)) = trig(1,m);
+    end
     
+    eeg.trig = ConvertedTriggerData;
+    
+    [eeg.fs,eeg.label] = bva_readheader(strcat(EEGFileName,FileNumberString,'.vhdr'));
+    
+    eeg.time = 1/eeg.fs:1/eeg.fs:size(eeg.data,2)/eeg.fs;
+    
+    
+    save(strcat(EEGFileName,FileNumberString,'.mat'),'eeg');
 end
-
-clearvars
-%fprintf('Completed !!\n');
-%Done();
