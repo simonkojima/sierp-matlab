@@ -51,6 +51,7 @@ classdef siSig < handle
             idx = length(obj.epochs)+1;
             obj.epochs{idx}.data = epoch;
             obj.epochs{idx}.range = range;
+            obj.epochs{idx}.time = range(1):1/obj.fs:range(2);
             obj.epochs{idx}.trig = trig;
             obj.epochs{idx}.N.raw = sum(obj.eeg.trig == trig);
             obj.var.trig_idx = [obj.var.trig_idx [trig;idx]];
@@ -127,6 +128,16 @@ classdef siSig < handle
         
         function r = trig2epochidx(obj,trig)
             r = obj.var.trig_idx(2,(obj.var.trig_idx(1,:) == trig));
+        end
+        
+        function r = get_epoch_data(obj,trig,ch)
+            idx = obj.trig2epochidx(trig);
+            
+            if nargin == 2
+               ch = 1:size(obj.epochs{idx}.data,1); 
+            end
+            
+            r = obj.epochs{idx}.data(ch,:,:);
         end
         
     end

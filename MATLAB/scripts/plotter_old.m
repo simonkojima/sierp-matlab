@@ -4,6 +4,7 @@ close all
 
 [~,foldername] = fileparts(pwd);
 load(foldername)
+%load(strcat(foldername,'_Diff'))
 
 dev = 1;
 
@@ -11,9 +12,6 @@ num = 3;
 color = {'r','g','b','c'};
 %style = {'-','--',':','-.'};
 
-ch_eeg = 1:64;
-
-trig = [2 8 32];
 
 for m=1:num
     if m == dev
@@ -21,8 +19,20 @@ for m=1:num
     else
         type{m} = 'std';
     end
-    data{1}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',epochs.att{dev}.fs);
+    data{1}{m} = sieeg(epochs.att{dev}.dev{m},'time',EpochTime,'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
+    %data{l} = EEG(epochs.att{l}.dev{dev});
 end
+
+for m=1:2
+    if m == dev
+        type{m} = 'dev';
+    else
+        type{m} = 'std';
+    end
+    data{2}{m} = sieeg(epochs.att{m}.dev{dev},'time',EpochTime,'type',type{m},'label',Label,'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',Fs);
+    %data{l} = EEG(epochs.att{l}.dev{dev});
+end
+
 
 figuretitle = sprintf('Attended to %d',dev);
 
@@ -32,7 +42,7 @@ ch = {'Cz'};
 %color = {'r','g','b'};
 test = siPlot(data,'div',[2 2]);
 test.plotdata(1,32,1)
-%test.plotdata(2,32,3)
+test.plotdata(2,32,3)
 test.ttest(0.1,[0.7 0.7 0.7]);
 test.drawYaxis(1.5);
 test.drawXaxis(1.5);
