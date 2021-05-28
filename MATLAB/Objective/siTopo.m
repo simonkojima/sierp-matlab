@@ -34,9 +34,9 @@ classdef siTopo
             obj.fig = figure();
         end
         
-        function plot(obj,idx_data,numdata,idx_subplot,time)
+        function plot(obj,idx_data,numdata,time,idx_subplot)
             subplot(obj.var.div(1),obj.var.div(2),idx_subplot);
-            [m,I] = min(abs(obj.var.time-time));
+            [~,I] = min(abs(obj.var.time-time));
             topoplot(obj.data{idx_data}{numdata}.getNdata(I),obj.var.ced,'maplimits',obj.var.range,'whitebk','on');
         end
         

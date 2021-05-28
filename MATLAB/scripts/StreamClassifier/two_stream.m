@@ -5,13 +5,10 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-% file_idx{1} = [1 3];
-% file_idx{2} = [2 4];
-%file_idx{3} = [3 6];
+file_idx{1} = [1 3];
+file_idx{2} = [2 4];
 
-file_idx{1} = [5 6];
-
-trig_sel = [1 3];
+trig_sel = [3 4];
 
 range = [-0.1 0.5];
 range_baseline = [-0.05 0];
@@ -22,7 +19,7 @@ filter_order = 2;
 ch_eeg = 1:64;
 ch_eog = 65:66;
 
-th_eeg = [-100 100];       %min max (uV uV)
+th_eeg = [-200 200];       %min max (uV uV)
 th_eog = [-500 500];       %min max (uV uV)
 
 sig = [];
@@ -50,4 +47,4 @@ for rep=1:size(file_idx,2)
     sig{rep}.del_raw_eeg();
     epochs.att{rep} = sig{rep};
 end
-save(name_folder,'epochs');
+save(name_folder,'epochs','trig_sel');

@@ -6,35 +6,26 @@ close all
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-dev = 1;
+num = 2;
 
-num = 3;
+ch_eeg = 1:64;
 
-for m=1:num
-    if m == dev
-        type{m} = 'dev';
-    else
-        type{m} = 'std';
+trig = trig_sel;
+
+for dev = 1:num
+    for m = 1:num
+        data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time);
     end
-    data{1}{m} = sieeg(epochs.att{dev}.dev{m},'time',EpochTime);
 end
 
-for m=1:num
-    if m == dev
-        type{m} = 'dev';
-    else
-        type{m} = 'std';
-    end
-    data{2}{m} = sieeg(epochs.att{m}.dev{dev},'time',EpochTime);
-end
+test = siTopo(data,'64ch.ced',[-5 5],'div',[1 2]);
 
-test = siTopo(data,'64ch.ced',[-4 4],'div',[2 4]);
 
-idx_subplot = 1;
-test.plot(1,1,1,0.25);
-test.plot(2,1,5,0.25);
+% att, dev
+test.plot(2,1,0.22,1);
+test.plot(2,2,0.22,2);
 
-%test.plot(idx_data,idx_subplot,m,time);
+% plot(attended_to,responses_to,time,subplot)
 
 return
 idx_subplot = 0;
