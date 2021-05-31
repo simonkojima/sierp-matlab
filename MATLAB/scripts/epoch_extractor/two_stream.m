@@ -19,7 +19,7 @@ filter_order = 2;
 ch_eeg = 1:64;
 ch_eog = 65:66;
 
-th_eeg = [-200 200];       %min max (uV uV)
+th_eeg = [-100 100];       %min max (uV uV)
 th_eog = [-500 500];       %min max (uV uV)
 
 sig = [];

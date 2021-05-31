@@ -55,6 +55,7 @@ classdef siSig < handle
             obj.epochs{idx}.trig = trig;
             obj.epochs{idx}.N.raw = sum(obj.eeg.trig == trig);
             obj.var.trig_idx = [obj.var.trig_idx [trig;idx]];
+            fprintf('Trigger No.%d, %d epochs were extracted.\n',trig,obj.epochs{idx}.N.raw);
         end
         
         function obj = baseline(obj,trig,range)
@@ -105,12 +106,15 @@ classdef siSig < handle
             if ~isfield(obj.epochs{idx},'reject')
                 obj.epochs{idx}.reject{1}.n_rej = sum(~acc);
                 obj.epochs{idx}.reject{1}.ch = ch_idx;
+                obj.epochs{idx}.reject{1}.th = [min_uv max_uv];
             else
                 idx_rej = length(obj.epochs{idx}.reject)+1;
                 obj.epochs{idx}.reject{idx_rej}.n_rej = sum(~acc);
                 obj.epochs{idx}.reject{idx_rej}.ch = ch_idx;
+                obj.epochs{idx}.reject{idx_rej}.th = [min_uv max_uv];
             end                      
             obj.epochs{idx}.N.current = obj.get_epoch_size(trig,3);
+            fprintf('Trigger No.%d, %d epochs out of %d were rejected.\n',trig,obj.epochs{idx}.N.raw,sum(~acc));
         end
         
         function r = get_epoch_size(obj,trig,dim)

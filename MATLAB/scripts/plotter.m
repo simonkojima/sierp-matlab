@@ -1,7 +1,6 @@
 clearvars
 close all
 
-
 [~,foldername] = fileparts(pwd);
 load(foldername)
 
@@ -15,7 +14,7 @@ trig = trig_sel;
 
 for dev =1:num
     for m=1:num
-        if m == 2 %dev
+        if m == dev %dev
             type{m} = 'dev';
         else
             type{m} = 'std';
@@ -31,9 +30,9 @@ figuretitle = sprintf('Attended to %d',dev);
 ch = {'Cz'};
 
 %color = {'r','g','b'};
-test = siPlot(data,'div',[1 1]);
-test.plotdata(2,32,1)
-%test.plotdata(2,32,2)
+test = siPlot(data,'div',[1 2]);
+test.plotdata(1,32,1)
+test.plotdata(2,32,2)
 %test.plotdata(2,32,3)
 test.ttest(0.1,[0.7 0.7 0.7]);
 test.drawYaxis(1.5);
@@ -47,8 +46,9 @@ test.setalllinewidth(2);
 test.setallfontsize(20);
 test.xlabel('Time (s)');
 test.ylabel('Potential (\muV)');
-%test.legend(1);
-%test.legend(2);
+%test.legend(1,{'std','dev'});
+test.legend(1);
+test.legend(2);
 %----------------------------------------------------------
 
 return

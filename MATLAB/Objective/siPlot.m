@@ -305,16 +305,18 @@ classdef siPlot < handle
             end
         end
         
-        function legend(obj,idx)
+        function legend(obj,loc)
             obj.setcf();
+            subplot(obj.var.div(1),obj.var.div(2),loc);
             legends = {};
-            for m = 1:length(obj.data)
-                legends{length(legends)+1} = obj.data{idx}{m}.getlegend();
+            for m = 1:length(obj.data{obj.get_dataidx(loc)})
+                legends{length(legends)+1} = obj.data{obj.get_dataidx(loc)}{m}.getlegend();
             end
-            for m = 1:length(obj.var.drawnlocs)
-                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                legend(obj.var.figs.eeg{obj.var.drawnlocs(m)},legends);
-            end
+            legend(obj.var.figs.eeg{obj.var.drawnlocs(loc)},legends)
+        end
+        
+        function r = get_dataidx(obj,loc)
+            r = obj.etc{loc}.dataidx;
         end
         
     end

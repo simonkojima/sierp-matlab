@@ -20,6 +20,7 @@ end
 
 test = siTopo(data,'64ch.ced',[-5 5],'div',[1 2]);
 
+return
 
 % att, dev
 test.plot(2,1,0.22,1);
