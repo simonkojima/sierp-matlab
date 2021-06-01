@@ -22,6 +22,7 @@ end
 niter = 0;
 fc = 0;
 
+fprintf('processing -');
 while (niter<N_itermax)
     niter = niter+1;
     % Tangent space mapping
@@ -38,10 +39,26 @@ while (niter<N_itermax)
     % back to the manifold
     A = UnTangent_space(TA,A);
     fc = fcn;
+    
+    %-----------------------------------
+    
+    fprintf(repmat('\b',1,1))
+    switch rem(niter,3)
+        case 1
+            fprintf('\\');
+        case 2
+            fprintf('/');
+        otherwise
+            fprintf('-');
+    end
+    %-----------------------------------
 end
+fprintf(repmat('\b',1,1))
+fprintf('-> completed\n')
 
 if niter==N_itermax
-    disp('Warning : Nombre d''it�rations maximum atteint');
+    %disp('Warning : Nombre d''it�rations maximum atteint');
+    disp('Warning : Number of iterations reached maximum');
 end
 
 critere = fc;

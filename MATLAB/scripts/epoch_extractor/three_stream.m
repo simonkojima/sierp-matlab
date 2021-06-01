@@ -5,13 +5,11 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-% file_idx{1} = [1 3];
-% file_idx{2} = [2 4];
-%file_idx{3} = [3 6];
+file_idx{1} = [1 4];
+file_idx{2} = [2 5];
+file_idx{3} = [3 6];
 
-file_idx{1} = [5 6];
-
-trig_sel = [1 3];
+trig_sel = [2 8 32];
 
 range = [-0.1 0.5];
 range_baseline = [-0.05 0];
@@ -50,4 +48,4 @@ for rep=1:size(file_idx,2)
     sig{rep}.del_raw_eeg();
     epochs.att{rep} = sig{rep};
 end
-save(name_folder,'epochs');
+save(name_folder,'epochs','trig_sel');

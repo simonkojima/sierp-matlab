@@ -114,7 +114,7 @@ classdef siSig < handle
                 obj.epochs{idx}.reject{idx_rej}.th = [min_uv max_uv];
             end                      
             obj.epochs{idx}.N.current = obj.get_epoch_size(trig,3);
-            fprintf('Trigger No.%d, %d epochs out of %d were rejected.\n',trig,obj.epochs{idx}.N.raw,sum(~acc));
+            fprintf('Trigger No.%d, %d epochs out of %d were rejected.\n',trig,sum(~acc),obj.epochs{idx}.N.current);
         end
         
         function r = get_epoch_size(obj,trig,dim)
