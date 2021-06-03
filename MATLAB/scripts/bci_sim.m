@@ -1,20 +1,27 @@
-clearvars
-close all
+if exist('NOCLEAR') == 0
+    clearvars
+end
 
 [~,name_folder] = fileparts(pwd);
 load(name_folder);
 
 num = 3;
 ch_eeg = 1:64;
-ld_ratio = 0.1;
+%ld_ratio = 0.1;
 
 script_version = 1;
 lib_linear_type_solver = 6;
 
-log_txt.destination = '/home/simon/git/work/research/log';
+file_suffix = strcat('_',num2str(ld_ratio*10));
+
+if isunix
+    log_txt.destination = '/home/simon/git/bci//log';
+elseif ispc
+    log_txt.destination = 'C:\\Users\\Simon\\git\\bci\\log';
+end
 log_txt.filename = name_folder;
 
-file = fopen(strcat(log_txt.destination,'/',log_txt.filename,'.txt'),'a+');
+file = fopen(strcat(log_txt.destination,'/',log_txt.filename,file_suffix,'.txt'),'a+');
 
 %%-------------------------------------------------------------------------
 % generate data sets
@@ -90,14 +97,14 @@ end
 for m = 1:num
     ld{m}.Y = ld{m}.Y(:);
     td{m}.Y = td{m}.Y(:);
-    mdl{m} = train(ld{m}.Y,sparse(ld{m}.vec),strcat("-s ",num2str(lib_linear_type_solver)));
-    labels{m} = predict(zeros(size(td{m}.vec,1),1),sparse(td{m}.vec),mdl{m});
+    mdl(m) = train(ld{m}.Y,sparse(ld{m}.vec),strcat("-s ",num2str(lib_linear_type_solver)));
+    labels{m} = predict(zeros(size(td{m}.vec,1),1),sparse(td{m}.vec),mdl(m));
 end
 
 for m = 1:num
    labels{m} = labels{m}(:);
    td{m}.Y = td{m}.Y(:);
-   [mcc{m},f1{m},acc{m},tp{m},tn{m},fp{m},fn{m}] = ClassifierEvaluation(labels{m},td{m}.Y,1);
+   [mcc(m),f1(m),acc(m),tp(m),tn(m),fp(m),fn(m)] = ClassifierEvaluation(labels{m},td{m}.Y,1);
 end
 t_end = toc(t_start);
 
@@ -119,17 +126,17 @@ for m = 1:num
     fprintf(file,'learning data     : %d\n',length(ld{m}.Y));
     fprintf(file,'test data         : %d\n',length(td{m}.Y));
     fprintf(file,'actual_ld_ratio   : %.3f\n',actual_ld_ratio(m));
-    fprintf(file,'True Positive     : %.0f\n',tp{m});
-    fprintf(file,'True Negative     : %.0f\n',tn{m});
-    fprintf(file,'False Positive    : %.0f\n',fp{m});
-    fprintf(file,'False Negative    : %.0f\n',fn{m});
-    fprintf(file,'Accurecy          : %.0f%%\n',acc{m}*100);
-    fprintf(file,'F1 Score          : %.2f\n',f1{m});
-    fprintf(file,'MCC               : %.2f\n',mcc{m});
+    fprintf(file,'True Positive     : %.0f\n',tp(m));
+    fprintf(file,'True Negative     : %.0f\n',tn(m));
+    fprintf(file,'False Positive    : %.0f\n',fp(m));
+    fprintf(file,'False Negative    : %.0f\n',fn(m));
+    fprintf(file,'Accurecy          : %.0f%%\n',acc(m)*100);
+    fprintf(file,'F1 Score          : %.2f\n',f1(m));
+    fprintf(file,'MCC               : %.2f\n',mcc(m));
 end
 fclose(file);
 
-if exist(strcat(name_folder,'_log.mat')) == 0
+if exist(strcat(name_folder,'_log',file_suffix,'.mat')) == 0
     log_mat = [];
     log_mat.mcc = mcc;
     log_mat.acc = acc;
@@ -139,18 +146,20 @@ if exist(strcat(name_folder,'_log.mat')) == 0
     log_mat.fp = fp;
     log_mat.fn = fn;
     log_mat.t_end = t_end;
+    log_mat.actual_ld_ratio = actual_ld_ratio;
 else
-    load(strcat(name_folder,'_log.mat'));
+    load(strcat(name_folder,'_log',file_suffix,'.mat'));
     for m = 1:num
-        log_mat.mcc{m} = cat(1,log_mat.mcc{m},mcc{m});
-        log_mat.acc{m} = cat(1,log_mat.acc{m},acc{m});
-        log_mat.f1{m} = cat(1,log_mat.f1{m},f1{m});
-        log_mat.tp{m} = cat(1,log_mat.tp{m},tp{m});
-        log_mat.tn{m} = cat(1,log_mat.tn{m},tn{m});
-        log_mat.fp{m} = cat(1,log_mat.fp{m},fp{m});
-        log_mat.fn{m} = cat(1,log_mat.fn{m},fn{m});
+        log_mat.mcc = cat(1,log_mat.mcc,mcc);
+        log_mat.acc = cat(1,log_mat.acc,acc);
+        log_mat.f1 = cat(1,log_mat.f1,f1);
+        log_mat.tp = cat(1,log_mat.tp,tp);
+        log_mat.tn = cat(1,log_mat.tn,tn);
+        log_mat.fp = cat(1,log_mat.fp,fp);
+        log_mat.fn = cat(1,log_mat.fn,fn);
+        log_mat.actual_ld_ratio = cat(1,log_mat.actual_ld_ratio,actual_ld_ratio);
     end
     log_mat.t_end = cat(1,log_mat.t_end,t_end);
 end
 
-save(strcat(name_folder,'_log.mat'),'log_mat');
+save(strcat(name_folder,'_log',file_suffix,'.mat'),'log_mat');
