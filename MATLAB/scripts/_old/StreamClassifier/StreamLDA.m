@@ -60,7 +60,7 @@ for l=1:2
 end
 
 for l=1:size(TrainingData.X,2)
-    [MCC(l),F1(l),Accuracy(l)] = ClassifierEvaluation(Res{l},Y{l},1);
+    [MCC(l),F1(l),Accuracy(l)] = ClassifierEvaluation(Res{l},Y{l},1);    
 end
 
 fprintf('\n');

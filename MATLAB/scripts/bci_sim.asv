@@ -6,15 +6,15 @@ load(name_folder);
 
 num = 3;
 ch_eeg = 1:64;
-ld_ratio = 0.1;
+ld_ratio = 0.9;
 
 script_version = 1;
 lib_linear_type_solver = 6;
 
-log_txt.destination = '/home/simon/git/work/research/log';
-log_txt.filename = name_folder;
+log.destination = '/home/simon/git/work/research/log';
+log.filename = name_folder;
 
-file = fopen(strcat(log_txt.destination,'/',log_txt.filename,'.txt'),'a+');
+file = fopen(strcat(log.destination,'/',log.filename,'.txt'),'a+');
 
 %%-------------------------------------------------------------------------
 % generate data sets
@@ -106,7 +106,7 @@ fprintf('time : %dm%ds\n',floor(t_end/60),floor(rem(t_end,60)));
 %%-------------------------------------------------------------------------
 % save log
 
-fprintf(file,'\n---------------------------------------------\n');
+fprintf(file,'\n--\n');
 fprintf(file,strcat(string(datetime('now','format','y/M/d HH:mm:ss')),'\n'));
 fprintf(file,'ld_ratio          : %.1f\n',ld_ratio);
 fprintf(file,'lib-linear solver : %d\n',lib_linear_type_solver);
@@ -116,8 +116,6 @@ fprintf(file,'script version    : %.1f\n',script_version);
 for m = 1:num
     fprintf(file,'\n');
     fprintf(file,'class %d\n',m);
-    fprintf(file,'learning data     : %d\n',length(ld{m}.Y));
-    fprintf(file,'test data         : %d\n',length(td{m}.Y));
     fprintf(file,'actual_ld_ratio   : %.3f\n',actual_ld_ratio(m));
     fprintf(file,'True Positive     : %.0f\n',tp{m});
     fprintf(file,'True Negative     : %.0f\n',tn{m});
@@ -129,28 +127,22 @@ for m = 1:num
 end
 fclose(file);
 
-if exist(strcat(name_folder,'_log.mat')) == 0
-    log_mat = [];
-    log_mat.mcc = mcc;
-    log_mat.acc = acc;
-    log_mat.f1 = f1;
-    log_mat.tp = tp;
-    log_mat.tn = tn;
-    log_mat.fp = fp;
-    log_mat.fn = fn;
-    log_mat.t_end = t_end;
+if exist('20181206_B33_Stream_log.mat') == 0
+    log.mcc = mcc;
+    log.acc = acc;
+    log.f1 = f1;
+    log.tp = tp;
+    log.tn = tn;
+    log.fp = fp;
+    log.fn = fn;
 else
-    load(strcat(name_folder,'_log.mat'));
-    for m = 1:num
-        log_mat.mcc{m} = cat(1,log_mat.mcc{m},mcc{m});
-        log_mat.acc{m} = cat(1,log_mat.acc{m},acc{m});
-        log_mat.f1{m} = cat(1,log_mat.f1{m},f1{m});
-        log_mat.tp{m} = cat(1,log_mat.tp{m},tp{m});
-        log_mat.tn{m} = cat(1,log_mat.tn{m},tn{m});
-        log_mat.fp{m} = cat(1,log_mat.fp{m},fp{m});
-        log_mat.fn{m} = cat(1,log_mat.fn{m},fn{m});
+    for m = 1:3
+        log.mcc{m} = cat(1,log.mccmcc{m});
+        log.acc = acc;
+        log.f1 = f1;
+        log.tp = tp;
+        log.tn = tn;
+        log.fp = fp;
+        log.fn = fn;
     end
-    log_mat.t_end = cat(1,log_mat.t_end,t_end);
 end
-
-save(strcat(name_folder,'_log.mat'),'log_mat');
