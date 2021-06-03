@@ -1,0 +1,430 @@
+
+---------------------------------------------
+2021/6/4 00:39:49
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m13s
+script version    : 1.0
+
+class 1
+learning data     : 148
+test data         : 23
+actual_ld_ratio   : 0.865
+True Positive     : 8
+True Negative     : 15
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 157
+test data         : 15
+actual_ld_ratio   : 0.913
+True Positive     : 5
+True Negative     : 9
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 93%
+F1 Score          : 0.91
+MCC               : 0.87
+
+class 3
+learning data     : 159
+test data         : 14
+actual_ld_ratio   : 0.919
+True Positive     : 2
+True Negative     : 11
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 93%
+F1 Score          : 0.80
+MCC               : 0.78
+
+---------------------------------------------
+2021/6/4 00:42:59
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m8s
+script version    : 1.0
+
+class 1
+learning data     : 151
+test data         : 20
+actual_ld_ratio   : 0.883
+True Positive     : 6
+True Negative     : 13
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 95%
+F1 Score          : 0.92
+MCC               : 0.89
+
+class 2
+learning data     : 155
+test data         : 17
+actual_ld_ratio   : 0.901
+True Positive     : 4
+True Negative     : 12
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 94%
+F1 Score          : 0.89
+MCC               : 0.86
+
+class 3
+learning data     : 147
+test data         : 26
+actual_ld_ratio   : 0.850
+True Positive     : 13
+True Negative     : 12
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 96%
+F1 Score          : 0.96
+MCC               : 0.93
+
+---------------------------------------------
+2021/6/4 00:46:15
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m14s
+script version    : 1.0
+
+class 1
+learning data     : 158
+test data         : 13
+actual_ld_ratio   : 0.924
+True Positive     : 4
+True Negative     : 9
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 151
+test data         : 21
+actual_ld_ratio   : 0.878
+True Positive     : 4
+True Negative     : 17
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 3
+learning data     : 159
+test data         : 14
+actual_ld_ratio   : 0.919
+True Positive     : 2
+True Negative     : 11
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 93%
+F1 Score          : 0.80
+MCC               : 0.78
+
+---------------------------------------------
+2021/6/4 00:49:32
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m15s
+script version    : 1.0
+
+class 1
+learning data     : 149
+test data         : 22
+actual_ld_ratio   : 0.871
+True Positive     : 5
+True Negative     : 17
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 160
+test data         : 12
+actual_ld_ratio   : 0.930
+True Positive     : 3
+True Negative     : 9
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 3
+learning data     : 162
+test data         : 11
+actual_ld_ratio   : 0.936
+True Positive     : 2
+True Negative     : 9
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+---------------------------------------------
+2021/6/4 00:52:52
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m18s
+script version    : 1.0
+
+class 1
+learning data     : 161
+test data         : 10
+actual_ld_ratio   : 0.942
+True Positive     : 1
+True Negative     : 8
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 90%
+F1 Score          : 0.67
+MCC               : 0.67
+
+class 2
+learning data     : 157
+test data         : 15
+actual_ld_ratio   : 0.913
+True Positive     : 3
+True Negative     : 12
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 3
+learning data     : 160
+test data         : 13
+actual_ld_ratio   : 0.925
+True Positive     : 5
+True Negative     : 8
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+---------------------------------------------
+2021/6/4 00:55:58
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m4s
+script version    : 1.0
+
+class 1
+learning data     : 145
+test data         : 26
+actual_ld_ratio   : 0.848
+True Positive     : 8
+True Negative     : 16
+False Positive    : 0
+False Negative    : 2
+Accurecy          : 92%
+F1 Score          : 0.89
+MCC               : 0.84
+
+class 2
+learning data     : 145
+test data         : 27
+actual_ld_ratio   : 0.843
+True Positive     : 10
+True Negative     : 17
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 3
+learning data     : 154
+test data         : 19
+actual_ld_ratio   : 0.890
+True Positive     : 3
+True Negative     : 12
+False Positive    : 0
+False Negative    : 4
+Accurecy          : 79%
+F1 Score          : 0.60
+MCC               : 0.57
+
+---------------------------------------------
+2021/6/4 00:59:14
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m14s
+script version    : 1.0
+
+class 1
+learning data     : 159
+test data         : 12
+actual_ld_ratio   : 0.930
+True Positive     : 3
+True Negative     : 9
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 155
+test data         : 17
+actual_ld_ratio   : 0.901
+True Positive     : 5
+True Negative     : 11
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 94%
+F1 Score          : 0.91
+MCC               : 0.87
+
+class 3
+learning data     : 155
+test data         : 18
+actual_ld_ratio   : 0.896
+True Positive     : 3
+True Negative     : 13
+False Positive    : 0
+False Negative    : 2
+Accurecy          : 89%
+F1 Score          : 0.75
+MCC               : 0.72
+
+---------------------------------------------
+2021/6/4 01:02:33
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m17s
+script version    : 1.0
+
+class 1
+learning data     : 157
+test data         : 14
+actual_ld_ratio   : 0.918
+True Positive     : 6
+True Negative     : 8
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 159
+test data         : 13
+actual_ld_ratio   : 0.924
+True Positive     : 5
+True Negative     : 7
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 92%
+F1 Score          : 0.91
+MCC               : 0.85
+
+class 3
+learning data     : 159
+test data         : 14
+actual_ld_ratio   : 0.919
+True Positive     : 2
+True Negative     : 11
+False Positive    : 0
+False Negative    : 1
+Accurecy          : 93%
+F1 Score          : 0.80
+MCC               : 0.78
+
+---------------------------------------------
+2021/6/4 01:05:47
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m13s
+script version    : 1.0
+
+class 1
+learning data     : 153
+test data         : 18
+actual_ld_ratio   : 0.895
+True Positive     : 6
+True Negative     : 12
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 151
+test data         : 21
+actual_ld_ratio   : 0.878
+True Positive     : 5
+True Negative     : 14
+False Positive    : 0
+False Negative    : 2
+Accurecy          : 90%
+F1 Score          : 0.83
+MCC               : 0.79
+
+class 3
+learning data     : 156
+test data         : 17
+actual_ld_ratio   : 0.902
+True Positive     : 4
+True Negative     : 13
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+---------------------------------------------
+2021/6/4 01:09:03
+ld_ratio          : 0.9
+lib-linear solver : 6
+time              : 3m14s
+script version    : 1.0
+
+class 1
+learning data     : 158
+test data         : 13
+actual_ld_ratio   : 0.924
+True Positive     : 6
+True Negative     : 7
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 2
+learning data     : 160
+test data         : 12
+actual_ld_ratio   : 0.930
+True Positive     : 2
+True Negative     : 10
+False Positive    : 0
+False Negative    : 0
+Accurecy          : 100%
+F1 Score          : 1.00
+MCC               : 1.00
+
+class 3
+learning data     : 152
+test data         : 21
+actual_ld_ratio   : 0.879
+True Positive     : 5
+True Negative     : 11
+False Positive    : 0
+False Negative    : 5
+Accurecy          : 76%
+F1 Score          : 0.67
+MCC               : 0.59
