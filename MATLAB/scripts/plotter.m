@@ -1,5 +1,5 @@
 clearvars
-close all
+%close all
 
 [~,foldername] = fileparts(pwd);
 load(foldername)
@@ -20,7 +20,7 @@ for dev =1:num
             type{m} = 'std';
         end
         %data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',epochs.att{dev}.fs);
-        data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',type{m},'fs',epochs.att{dev}.fs);
+        data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',strcat('D',num2str(m)),'fs',epochs.att{dev}.fs);
     end
 end
 
@@ -34,7 +34,7 @@ test = siPlot(data,'div',[1 2]);
 test.plotdata(1,32,1)
 test.plotdata(2,32,2)
 %test.plotdata(2,32,3)
-test.ttest(0.1,[0.7 0.7 0.7]);
+test.ttest(0.01,[0.7 0.7 0.7]);
 test.drawYaxis(1.5);
 test.drawXaxis(1.5);
 test.replotdata();

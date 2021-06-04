@@ -69,7 +69,7 @@ classdef siTopo
         end
         
         function play(obj,idx_data,numdata,fps,duration)
-            figure()
+            %figure()
             time = obj.var.time(obj.var.time >= duration(1) & obj.var.time <= duration(2));
             for m = 1:length(time)
                 title([num2str(time(m)*1000,'%03.02f'),'ms'])

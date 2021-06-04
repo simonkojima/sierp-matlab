@@ -86,6 +86,8 @@ classdef siSig < handle
             
             idx = obj.trig2epochidx(trig);
             ch_data = obj.epochs{idx}.data(ch_idx,:,:);
+            
+            obj.epochs{idx}.N.previous = obj.get_epoch_size(trig,3);
 
             for m = 1:obj.get_epoch_size(trig,3)
                if min(min(ch_data(:,:,m))) < min_uv || max(max(ch_data(:,:,m))) > max_uv
@@ -112,9 +114,9 @@ classdef siSig < handle
                 obj.epochs{idx}.reject{idx_rej}.n_rej = sum(~acc);
                 obj.epochs{idx}.reject{idx_rej}.ch = ch_idx;
                 obj.epochs{idx}.reject{idx_rej}.th = [min_uv max_uv];
-            end                      
+            end
             obj.epochs{idx}.N.current = obj.get_epoch_size(trig,3);
-            fprintf('Trigger No.%d, %d epochs out of %d were rejected.\n',trig,sum(~acc),obj.epochs{idx}.N.current);
+            fprintf('Trigger No.%d, %d epochs out of %d were rejected.\n',trig,sum(~acc),obj.epochs{idx}.N.previous);
         end
         
         function r = get_epoch_size(obj,trig,dim)

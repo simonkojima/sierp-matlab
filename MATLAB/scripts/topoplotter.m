@@ -1,5 +1,5 @@
 clearvars
-close all
+%close all
 
 
 [~,foldername] = fileparts(pwd);
@@ -18,13 +18,19 @@ for dev = 1:num
     end
 end
 
-test = siTopo(data,'64ch.ced',[-5 5],'div',[1 2]);
+test = siTopo(data,'64ch.ced',[-10 10],'div',[1 2]);
 
-return
+test.play(1,1,30,[0.25 0.35]);
 
 % att, dev
-test.plot(2,1,0.22,1);
-test.plot(2,2,0.22,2);
+% test.plot(1,1,0.3,1);
+% test.plot(1,2,0.3,2);
+% 
+%test.win_plot(1,1,[0.25 0.35],1);
+%test.win_plot(1,2,[0.25 0.35],2);
+
+% test.win_plot(2,1,[0.2 0.4],1);
+% test.win_plot(2,2,[0.2 0.4],2);
 
 % plot(attended_to,responses_to,time,subplot)
 
