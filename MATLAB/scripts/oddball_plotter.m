@@ -4,35 +4,26 @@ clearvars
 [~,foldername] = fileparts(pwd);
 load(foldername)
 
-num = 2;
-color = {'r','b'};
+color = {'k','r','b'};
 %style = {'-','--',':','-.'};
 
 ch_eeg = 1:64;
 
 trig = trig_sel;
 
-for dev =1:num
-    for m=1:num
-        if m == dev %dev
-            type{m} = 'dev';
-        else
-            type{m} = 'std';
-        end
-        %data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',strcat('Responses to D',num2str(m)),'fs',epochs.att{dev}.fs);
-        data{dev}{m} = sieeg(epochs.att{dev}.get_epoch_data(trig(m),ch_eeg),'time',epochs.att{dev}.epochs{m}.time,'type',type{m},'color',color{m},'legend',strcat('D',num2str(m)),'fs',epochs.att{dev}.fs);
-    end
-end
+data{1}{1} = sieeg(epochs.att{1}.get_epoch_data(1,ch_eeg),'time',epochs.att{1}.epochs{1}.time,'type','std','legend','Std','fs',epochs.att{1}.fs);
+data{1}{2}= sieeg(epochs.att{1}.get_epoch_data(2,ch_eeg),'time',epochs.att{1}.epochs{2}.time,'type','dev','legend','Dev_1','fs',epochs.att{1}.fs);
+%data{1}{3}= sieeg(epochs.att{1}.get_epoch_data(3,ch_eeg),'time',epochs.att{1}.epochs{3}.time,'type','dev','legend','Dev_2','fs',epochs.att{1}.fs);
 
-figuretitle = sprintf('Attended to %d',dev);
+%figuretitle = sprintf('Attended to %d',dev);
 
 %ch = {'F3','Fz','F4','C3','Cz','C4','P3','Pz','P4'};
 ch = {'Cz'};
 
 %color = {'r','g','b'};
-test = siPlot(data,'div',[1 2]);
+test = siPlot(data,'div',[1 1]);
 test.plotdata(1,32,1)
-test.plotdata(2,32,2)
+%test.plotdata(2,32,2)
 %test.plotdata(2,32,3)
 test.ttest(0.01,[0.7 0.7 0.7]);
 test.drawYaxis(1.5);
@@ -47,8 +38,8 @@ test.setallfontsize(20);
 test.xlabel('Time (s)');
 test.ylabel('Potential (\muV)');
 %test.legend(1,{'std','dev'});
-test.legend(1);
-test.legend(2);
+%test.legend(1);
+%test.legend(2);
 %----------------------------------------------------------
 
 return

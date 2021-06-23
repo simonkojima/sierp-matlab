@@ -6,7 +6,7 @@ clearvars
 load(foldername)
 %load(strcat(foldername,'_Diff'))
 
-num = 2;
+num = 4;
 
 ch_eeg = 1:64;
 
@@ -18,16 +18,18 @@ for dev = 1:num
     end
 end
 
-test = siTopo(data,'64ch.ced',[-10 10],'div',[1 2]);
+test = siTopo(data,'64ch.ced',[-5 5],'div',[1 2]);
 
-test.play(1,1,30,[0.25 0.35]);
+%test.play(1,1,30,[0.27 0.33]);
 
 % att, dev
-% test.plot(1,1,0.3,1);
+test.plot(3,3,0.238,1);
 % test.plot(1,2,0.3,2);
-% 
-%test.win_plot(1,1,[0.25 0.35],1);
-%test.win_plot(1,2,[0.25 0.35],2);
+
+%win = [0.263 0.31];
+
+%test.win_plot(2,1,win,1);
+%test.win_plot(2,2,win,2);
 
 % test.win_plot(2,1,[0.2 0.4],1);
 % test.win_plot(2,2,[0.2 0.4],2);

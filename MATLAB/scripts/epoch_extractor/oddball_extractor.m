@@ -5,13 +5,12 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-file_idx{1} = [1 3];
-file_idx{2} = [2 4];
+file_idx{1} = [2 6];
 
-trig_sel = [3 4];
+trig_sel = [1 2];
 
 range = [-0.1 0.5];
-range_baseline = [-1 0];
+range_baseline = [-0.05 0];
 
 filter = [1 40];
 filter_order = 2;
