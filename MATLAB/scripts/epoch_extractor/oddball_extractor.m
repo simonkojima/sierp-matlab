@@ -5,11 +5,11 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-file_idx{1} = [2 6];
+file_idx{1} = [3 7];
 
-trig_sel = [1 2];
+trig_sel = [1 2 3];
 
-range = [-0.1 0.5];
+range = [-0.1 0.6];
 range_baseline = [-0.05 0];
 
 filter = [1 40];
@@ -18,7 +18,7 @@ filter_order = 2;
 ch_eeg = 1:64;
 ch_eog = 65:66;
 
-th_eeg = [-100 100];       %min max (uV uV)
+th_eeg = [-Inf Inf];       %min max (uV uV)
 th_eog = [-500 500];       %min max (uV uV)
 
 sig = [];

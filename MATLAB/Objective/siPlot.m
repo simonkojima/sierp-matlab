@@ -283,12 +283,25 @@ classdef siPlot < handle
             end
         end
         
-        function title(obj)
+        function ylim(obj,loc,ylim_val)
             obj.setcf();
-            for m = 1:length(obj.var.drawnlocs)
-                subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
-                title(obj.data{1}.getchlabel(obj.etc{obj.var.drawnlocs(m)}.ch));
-            end
+            subplot(obj.var.div(1),obj.var.div(2),loc);
+            ylim(ylim_val);
+%             for m = 1:length(obj.var.drawnlocs)
+%                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+%                 ylim(obj.etc{obj.var.drawnlocs(m)}.ylim);
+%             end
+        end
+        
+        function title(obj,loc,title_str)
+            %obj.setcf();
+%             for m = 1:length(obj.var.drawnlocs)
+%                 subplot(obj.var.div(1),obj.var.div(2),obj.var.drawnlocs(m));
+%                 title(obj.data{1}.getchlabel(obj.etc{obj.var.drawnlocs(m)}.ch));
+%             end
+            obj.setcf();
+            subplot(obj.var.div(1),obj.var.div(2),loc);
+            title(title_str);
         end
         
         function xlabel(obj,label)
