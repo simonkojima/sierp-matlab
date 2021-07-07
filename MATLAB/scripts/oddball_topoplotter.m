@@ -10,7 +10,7 @@ trig = trig_sel;
 
 data{1}{1} = sieeg(epochs.att{1}.get_epoch_data(1,ch_eeg),'time',epochs.att{1}.epochs{1}.time);
 data{1}{2}= sieeg(epochs.att{1}.get_epoch_data(2,ch_eeg),'time',epochs.att{1}.epochs{2}.time);
-data{1}{3}= sieeg(epochs.att{1}.get_epoch_data(3,ch_eeg),'time',epochs.att{1}.epochs{3}.time);
+%data{1}{3}= sieeg(epochs.att{1}.get_epoch_data(3,ch_eeg),'time',epochs.att{1}.epochs{3}.time);
 
 test = siTopo(data,'64ch.ced',[-10 10],'div',[4 7]);
 

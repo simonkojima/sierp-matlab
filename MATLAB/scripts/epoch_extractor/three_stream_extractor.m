@@ -25,7 +25,7 @@ th_eog = [-500 500];       %min max (uV uV)
 
 sig = [];
 for rep=1:size(file_idx,2)
-    
+    sig{rep} = siSig();
     [~,name_folder] = fileparts(pwd);
     for idx = 1:length(file_idx{rep})
         FileNumberString = num2str(file_idx{rep}(idx));
@@ -34,7 +34,7 @@ for rep=1:size(file_idx,2)
         end
         strcat(name_folder,'_',FileNumberString,'.mat')
         load(strcat(name_folder,'_',FileNumberString,'.mat'));
-        sig{rep} = siSig();
+        
         sig{rep}.append_data(eeg);
     end
     

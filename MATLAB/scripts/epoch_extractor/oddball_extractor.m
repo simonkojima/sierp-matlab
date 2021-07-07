@@ -5,9 +5,9 @@ clearvars
 
 %%-------------------------------------------------------------------------
 
-file_idx{1} = [3 7];
+file_idx{1} = [1 5];
 
-trig_sel = [1 2 3];
+trig_sel = [1 2];
 
 range = [-0.1 0.6];
 range_baseline = [-0.05 0];
@@ -18,12 +18,12 @@ filter_order = 2;
 ch_eeg = 1:64;
 ch_eog = 65:66;
 
-th_eeg = [-Inf Inf];       %min max (uV uV)
+th_eeg = [-100 100];       %min max (uV uV)
 th_eog = [-500 500];       %min max (uV uV)
 
 sig = [];
 for rep=1:size(file_idx,2)
-    
+    sig{rep} = siSig();
     [~,name_folder] = fileparts(pwd);
     for idx = 1:length(file_idx{rep})
         FileNumberString = num2str(file_idx{rep}(idx));
@@ -32,10 +32,9 @@ for rep=1:size(file_idx,2)
         end
         strcat(name_folder,'_',FileNumberString,'.mat')
         load(strcat(name_folder,'_',FileNumberString,'.mat'));
-        sig{rep} = siSig();
         sig{rep}.append_data(eeg);
     end
-    
+
     sig{rep}.filter(filter(1),filter(2),filter_order);
     for m = 1:length(trig_sel)
         sig{rep}.epoch(trig_sel(m),range);
