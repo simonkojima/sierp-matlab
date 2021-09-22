@@ -1,6 +1,2 @@
-# BCIToolBox
-BCI ToolBox for Analysis
-
+# Library for ERP Analysis and BCI
 Author : Simon Kojima
-
-Require EEGLAB, bvaloader
