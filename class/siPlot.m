@@ -4,7 +4,9 @@
 %	Author : Simon Kojima
 %	Ver1.0 2021/08/31
 %	Ver1.1 2021/09/02
-%
+%   Ver1.2 2021/09/22
+%   Ver1.3 2021/10/13
+%   Ver1.4 2021/12/8
 
 classdef siPlot < handle
     
@@ -20,7 +22,7 @@ classdef siPlot < handle
         function obj = siPlot(div,varargin)
 			obj.etc.div = div;
 			obj.fig = figure('SizeChangedFcn',@resizeui);
-			obj.props.axis = 'xy';
+			obj.props.axis = 'ij';
 			for m = 1:div(1)*div(2)
 				obj.data{m}.objs = [];
 				obj.data{m}.epoch = [];
@@ -44,6 +46,15 @@ classdef siPlot < handle
 			%		obj.data{m}.misc.axis.x.XData = xlim();
 			%	end
 			end
+        end
+
+        function legend(obj,loc,labels)
+            N = length(obj.data{loc}.objs);
+            plots = [];
+            for n = 1:N
+                plots = cat(2,plots,obj.data{loc}.objs{n});
+            end
+            legend(plots,labels)
         end
 
 		function opt_lim(obj,loc,varargin)
@@ -136,7 +147,7 @@ classdef siPlot < handle
 
 			mode = 'mesh';
 			opts = [];
-
+                
 			if length(obj.data{loc}.misc.ttest) > 0
 				for m = length(obj.data{loc}.misc.ttest):-1:1
 					if strcmpi(obj.data{loc}.misc.ttest{m}.mode,'line')
@@ -193,7 +204,7 @@ classdef siPlot < handle
 				end
 			end
 
-			if h(end) == 1;
+			if h(end) == 1
 				range(size(range,1),2) = length(h);
 			end
 
@@ -201,6 +212,7 @@ classdef siPlot < handle
 
 			obj.data{loc}.misc.ttest{idx}.h = h;
 			obj.data{loc}.misc.ttest{idx}.range = range;
+            obj.data{loc}.misc.ttest{idx}.mode = mode;
 
 			if length(varargin) > 0	
 				is_opts = ones(length(varargin),1);

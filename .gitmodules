@@ -1,0 +1,12 @@
+[submodule "libs/bvaloader"]
+	path = libs/bvaloader
+	url = https://github.com/stefanSchinkel/bvaloader.git
+[submodule "libs/eeglab"]
+	path = libs/eeglab
+	url = https://github.com/sccn/eeglab.git
+[submodule "libs/covariancetoolbox"]
+	path = libs/covariancetoolbox
+	url = https://github.com/alexandrebarachant/covariancetoolbox.git
+[submodule "libs/liblinear"]
+	path = libs/liblinear
+	url = https://github.com/cjlin1/liblinear.git

@@ -1,2 +1,2 @@
-# Library for ERP Analysis and BCI
+# Library for ERP Analysis
 Author : Simon Kojima
